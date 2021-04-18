@@ -48,3 +48,4 @@ app.*.map.json
 /files
 /patches
 /test/dump
+/test_driver/dump
