@@ -32,7 +32,7 @@ void main() {
       Map<String, dynamic>? jsonMap = jsonDecode(json);
       VersionEntity? entity;
       if (jsonMap != null) {
-        entity = VersionEntity().fromJson(jsonMap);
+        entity = VersionEntity.fromJson(jsonMap);
       }
       expect(jsonMap, isNotNull);
       expect(entity, isNotNull);
@@ -50,7 +50,7 @@ void main() {
       Map<String, dynamic>? jsonMap = jsonDecode(json);
       VersionEntity? entity;
       if (jsonMap != null) {
-        entity = VersionEntity().fromJson(jsonMap);
+        entity = VersionEntity.fromJson(jsonMap);
       }
       expect(jsonMap, isNotNull);
       expect(entity, isNotNull);
@@ -71,7 +71,7 @@ void main() {
       Map<String, dynamic>? jsonMap = jsonDecode(json);
       VersionEntity? entity;
       if (jsonMap != null) {
-        entity = VersionEntity().fromJson(jsonMap);
+        entity = VersionEntity.fromJson(jsonMap);
       }
       expect(jsonMap, isNotNull);
       expect(entity, isNotNull);
@@ -92,7 +92,7 @@ void main() {
       Map<String, dynamic>? jsonMap = jsonDecode(json);
       VersionEntity? entity;
       if (jsonMap != null) {
-        entity = VersionEntity().fromJson(jsonMap);
+        entity = VersionEntity.fromJson(jsonMap);
       }
       expect(jsonMap, isNotNull);
       expect(entity, isNotNull);
@@ -112,7 +112,7 @@ void main() {
       """;
       Map<String, dynamic>? jsonMap = jsonDecode(json);
       if (jsonMap != null) {
-        expect(() => VersionEntity().fromJson(jsonMap),
+        expect(() => VersionEntity.fromJson(jsonMap),
             throwsA(predicate((e) => e is TypeError)));
       }
     });
