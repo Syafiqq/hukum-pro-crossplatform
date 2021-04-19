@@ -1,4 +1,4 @@
-import 'package:hukum_pro/arch/doman/entity/misc/version_entity.dart';
+import 'package:hukum_pro/arch/domain/entity/misc/version_entity.dart';
 import 'package:equatable/equatable.dart';
 
 versionEntityFromJson(VersionEntity data, Map<String, dynamic> json) {

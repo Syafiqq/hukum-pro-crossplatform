@@ -8,7 +8,7 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:hukum_pro/arch/doman/entity/misc/version_entity.dart';
+import 'package:hukum_pro/arch/domain/entity/misc/version_entity.dart';
 
 void main() {
   group('version entity json parser', () {
