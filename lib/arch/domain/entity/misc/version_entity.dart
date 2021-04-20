@@ -6,9 +6,9 @@ part 'version_entity.g.dart';
 // ignore: must_be_immutable
 @JsonSerializable(anyMap: true)
 class VersionEntity extends Equatable {
-  VersionDetailEntity? detail;
-  int? milis;
-  String? timestamp;
+  final VersionDetailEntity? detail;
+  final int? milis;
+  final String? timestamp;
 
   VersionEntity(this.detail, this.milis, this.timestamp);
 
@@ -21,7 +21,7 @@ class VersionEntity extends Equatable {
 // ignore: must_be_immutable
 @JsonSerializable(anyMap: true)
 class VersionDetailEntity extends Equatable {
-  List<String>? filenames;
+  final List<String>? filenames;
 
   VersionDetailEntity(this.filenames);
 
