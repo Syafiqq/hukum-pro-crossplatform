@@ -1,7 +1,7 @@
 class DefinedException implements Exception {
-  Error? internalError;
+  Exception? internalException;
   String? code;
   String? message;
 
-  DefinedException(this.internalError, this.code, this.message) : super();
+  DefinedException(this.internalException, this.code, this.message) : super();
 }
