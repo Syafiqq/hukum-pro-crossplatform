@@ -217,7 +217,7 @@ packages:
       name: firebase_core_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.0"
+    version: "4.0.1"
   firebase_core_web:
     dependency: transitive
     description:
@@ -232,6 +232,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "7.0.0-dev.0"
+  firebase_database_mocks:
+    dependency: "direct dev"
+    description:
+      path: "."
+      ref: firebase-7-support
+      resolved-ref: de469bbd22549161b9c3a66919df775e5392c586
+      url: "https://github.com/Syafiqq/firebase_database_mocks.git"
+    source: git
+    version: "0.1.0+4"
   fixnum:
     dependency: transitive
     description:
@@ -353,6 +362,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
+  mockito:
+    dependency: transitive
+    description:
+      name: mockito
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.1.4"
   node_preamble:
     dependency: transitive
     description:
