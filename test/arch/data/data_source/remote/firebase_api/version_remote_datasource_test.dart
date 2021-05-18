@@ -124,7 +124,7 @@ void main() {
     });
 
     group('$Query', () {
-      test('observing value events', () async {
+      test('read data once', () async {
         mockHandleId = 87;
         const String path = 'foo';
         final Query query = database.reference().child(path);
@@ -144,24 +144,15 @@ void main() {
                   (_) {});
         }
 
-        final AsyncQueue<Event> events = AsyncQueue<Event>();
-
-        // Subscribe and allow subscription to complete.
-        final StreamSubscription<Event> subscription =
-            query.onValue.listen(events.add);
         await Future<void>.delayed(const Duration());
-
+        Future<DataSnapshot> futureSnapshot = query.once();
+        await Future<void>.delayed(const Duration(seconds: 1));
         await simulateEvent('1');
-        await simulateEvent('2');
-        final Event event1 = await events.remove();
-        final Event event2 = await events.remove();
-        expect(event1.snapshot.key, path);
-        expect(event1.snapshot.value, '1');
-        expect(event2.snapshot.key, path);
-        expect(event2.snapshot.value, '2');
+        DataSnapshot snapshot = await futureSnapshot;
 
-        // Cancel subscription and allow cancellation to complete.
-        await subscription.cancel();
+        expect(snapshot.key, path);
+        expect(snapshot.value, '1');
+
         await Future<void>.delayed(const Duration());
 
         expect(
