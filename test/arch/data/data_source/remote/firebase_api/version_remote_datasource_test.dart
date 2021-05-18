@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:firebase_core_platform_interface/firebase_core_platform_interface.dart';
+import 'package:hukum_pro/arch/data/data_source/remote/impl/firebase_api.dart';
 
 void _initializeMethodChannel() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -58,7 +59,7 @@ void main() {
     int mockHandleId = 0;
     final List<MethodCall> log = <MethodCall>[];
 
-    const String databaseURL = 'https://fake-database-url2.firebaseio.com';
+    const String databaseURL = 'https://test.com';
     late FirebaseDatabase database;
 
     setUp(() async {
