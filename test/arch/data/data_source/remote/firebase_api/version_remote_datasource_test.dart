@@ -7,7 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:firebase_core_platform_interface/firebase_core_platform_interface.dart';
 
-void initializeMethodChannel() {
+void _initializeMethodChannel() {
   TestWidgetsFlutterBinding.ensureInitialized();
   MethodChannelFirebase.channel.setMockMethodCallHandler((call) async {
     if (call.method == 'Firebase#initializeCore') {
@@ -36,7 +36,7 @@ void initializeMethodChannel() {
 }
 
 void main() {
-  initializeMethodChannel();
+  _initializeMethodChannel();
   late FirebaseApp app;
 
   setUpAll(() async {
