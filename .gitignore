@@ -49,3 +49,4 @@ app.*.map.json
 /patches
 /test/dump
 /test_driver/dump
+/coverage
