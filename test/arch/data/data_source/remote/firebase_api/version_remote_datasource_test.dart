@@ -78,7 +78,7 @@ void main() {
             late Map<String, dynamic> updatedValue;
             Future<void> simulateEvent(
                 int transactionKey, final MutableData mutableData) async {
-              await ServicesBinding.instance!.defaultBinaryMessenger
+              await ServicesBinding.instance?.defaultBinaryMessenger
                   .handlePlatformMessage(
                 channel.name,
                 channel.codec.encodeMethodCall(
@@ -94,8 +94,11 @@ void main() {
                   ),
                 ),
                 (data) {
+                  if (data == null) {
+                    return;
+                  }
                   updatedValue = channel.codec
-                      .decodeEnvelope(data!)['value']
+                      .decodeEnvelope(data)['value']
                       .cast<String, dynamic>();
                 },
               );
@@ -125,7 +128,7 @@ void main() {
     });
 
     Future<void> simulateEvent(int handle, String path, dynamic value) async {
-      await ServicesBinding.instance!.defaultBinaryMessenger
+      await ServicesBinding.instance?.defaultBinaryMessenger
           .handlePlatformMessage(
               channel.name,
               channel.codec.encodeMethodCall(
@@ -189,6 +192,8 @@ void main() {
 
       setUp(() async {
         firebaseApi = FirebaseApi(database);
+
+        expect(firebaseApi, isNotNull);
       });
 
       test('it should successfully retrieve version', () async {
