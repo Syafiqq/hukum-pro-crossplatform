@@ -200,42 +200,25 @@ void main() {
         var handleId = 87;
         mockHandleId = handleId;
 
-        const String path = 'foo';
-        final Query query = database.reference().child(path);
+        const String path = 'versions_new/v1';
 
-        Future<DataSnapshot> futureSnapshot = query.once();
+        var futureSnapshot = firebaseApi.getVersion();
         await Future<void>.delayed(const Duration(seconds: 1));
-        await simulateEvent(handleId, path, '1');
-        DataSnapshot snapshot = await futureSnapshot;
 
-        expect(snapshot.key, path);
-        expect(snapshot.value, '1');
+        await simulateEvent(handleId, path, {
+          '1603971592286': {
+            'detail': {
+              'filenames': [
+                '1603971592286-1-1.json',
+              ]
+            },
+            'milis': 1603971592286,
+            'timestamp': '2020-10-29 18:39:52'
+          }
+        });
 
-        expect(
-          log,
-          <Matcher>[
-            isMethodCall(
-              'Query#observe',
-              arguments: <String, dynamic>{
-                'app': app.name,
-                'databaseURL': databaseURL,
-                'path': path,
-                'parameters': <String, dynamic>{},
-                'eventType': '_EventType.value',
-              },
-            ),
-            isMethodCall(
-              'Query#removeObserver',
-              arguments: <String, dynamic>{
-                'app': app.name,
-                'databaseURL': databaseURL,
-                'path': path,
-                'parameters': <String, dynamic>{},
-                'handle': 87,
-              },
-            ),
-          ],
-        );
+        var snapshot = await futureSnapshot;
+        expect(snapshot, isNotNull);
       });
     });
   });
