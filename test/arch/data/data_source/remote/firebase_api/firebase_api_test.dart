@@ -613,6 +613,64 @@ void main() {
           ],
         );
       });
+
+      test('read data once', () async {
+        mockHandleId = 87;
+        const String path = 'foo';
+        final Query query = database.reference().child(path);
+        Future<void> simulateEvent(String value) async {
+          await ServicesBinding.instance!.defaultBinaryMessenger
+              .handlePlatformMessage(
+              channel.name,
+              channel.codec.encodeMethodCall(
+                MethodCall('Event', <String, dynamic>{
+                  'handle': 87,
+                  'snapshot': <String, dynamic>{
+                    'key': path,
+                    'value': value,
+                  },
+                }),
+              ),
+                  (_) {});
+        }
+
+        await Future<void>.delayed(const Duration());
+        Future<DataSnapshot> futureSnapshot = query.once();
+        await Future<void>.delayed(const Duration(seconds: 1));
+        await simulateEvent('1');
+        DataSnapshot snapshot = await futureSnapshot;
+
+        expect(snapshot.key, path);
+        expect(snapshot.value, '1');
+
+        await Future<void>.delayed(const Duration());
+
+        expect(
+          log,
+          <Matcher>[
+            isMethodCall(
+              'Query#observe',
+              arguments: <String, dynamic>{
+                'app': app.name,
+                'databaseURL': databaseURL,
+                'path': path,
+                'parameters': <String, dynamic>{},
+                'eventType': '_EventType.value',
+              },
+            ),
+            isMethodCall(
+              'Query#removeObserver',
+              arguments: <String, dynamic>{
+                'app': app.name,
+                'databaseURL': databaseURL,
+                'path': path,
+                'parameters': <String, dynamic>{},
+                'handle': 87,
+              },
+            ),
+          ],
+        );
+      });
     });
   });
 }
