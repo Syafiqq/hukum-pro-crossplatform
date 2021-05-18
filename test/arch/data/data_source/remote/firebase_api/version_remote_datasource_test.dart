@@ -143,50 +143,6 @@ void main() {
               (_) {});
     }
 
-    group('$Query', () {
-      test('read data once', () async {
-        var handleId = 87;
-        mockHandleId = handleId;
-
-        const String path = 'foo';
-        final Query query = database.reference().child(path);
-
-        Future<DataSnapshot> futureSnapshot = query.once();
-        await Future<void>.delayed(const Duration(seconds: 1));
-        await simulateEvent(handleId, path, '1');
-        DataSnapshot snapshot = await futureSnapshot;
-
-        expect(snapshot.key, path);
-        expect(snapshot.value, '1');
-
-        expect(
-          log,
-          <Matcher>[
-            isMethodCall(
-              'Query#observe',
-              arguments: <String, dynamic>{
-                'app': app.name,
-                'databaseURL': databaseURL,
-                'path': path,
-                'parameters': <String, dynamic>{},
-                'eventType': '_EventType.value',
-              },
-            ),
-            isMethodCall(
-              'Query#removeObserver',
-              arguments: <String, dynamic>{
-                'app': app.name,
-                'databaseURL': databaseURL,
-                'path': path,
-                'parameters': <String, dynamic>{},
-                'handle': 87,
-              },
-            ),
-          ],
-        );
-      });
-    });
-
     group('$FirebaseApi', () {
       late FirebaseApi firebaseApi;
 
