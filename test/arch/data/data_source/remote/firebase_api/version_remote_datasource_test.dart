@@ -7,6 +7,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:firebase_core_platform_interface/firebase_core_platform_interface.dart';
 import 'package:hukum_pro/arch/data/data_source/remote/impl/firebase_api.dart';
+import 'package:hukum_pro/arch/domain/entity/misc/version_entity.dart';
+import 'package:hukum_pro/common/exception/built_in.dart';
 
 void _initializeMethodChannel() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -152,29 +154,46 @@ void main() {
         expect(firebaseApi, isNotNull);
       });
 
-      test('it should successfully retrieve version', () async {
+      test('retrieve version', () async {
         var handleId = 87;
         mockHandleId = handleId;
 
-        const String path = 'versions_new/v1';
+        VersionEntity? entity;
 
-        var futureSnapshot = firebaseApi.getVersion();
+        firebaseApi.getVersion().then((result) {
+          entity = result;
+        }).catchError((e) {});
+
         await Future<void>.delayed(const Duration(seconds: 1));
-
-        await simulateEvent(handleId, path, {
-          '1603971592286': {
-            'detail': {
-              'filenames': [
-                '1603971592286-1-1.json',
-              ]
-            },
-            'milis': 1603971592286,
-            'timestamp': '2020-10-29 18:39:52'
-          }
+        await simulateEvent(handleId, 'versions_new/v1', {
+          '1': {'detail': {}, 'milis': 0, 'timestamp': ''}
         });
+        await Future<void>.delayed(const Duration(milliseconds: 500));
 
-        var snapshot = await futureSnapshot;
-        expect(snapshot, isNotNull);
+        expect(entity, isNotNull);
+        expect(entity, isA<VersionEntity>());
+
+        expect(entity?.detail, isNotNull);
+        expect(entity?.milis, 0);
+        expect(entity?.timestamp, '');
+      });
+
+      test('retrieve not exist error ', () async {
+        var handleId = 87;
+        mockHandleId = handleId;
+
+        Exception? exception;
+
+        const String path = '';
+        firebaseApi.getVersion().then((result) {}).catchError((e) {
+          exception = e as Exception?;
+        });
+        await Future<void>.delayed(const Duration(seconds: 1));
+        await simulateEvent(handleId, path, {});
+        await Future<void>.delayed(const Duration(milliseconds: 500));
+
+        expect(exception, isNotNull);
+        expect(exception, isA<DataNotExistsException>());
       });
     });
   });
