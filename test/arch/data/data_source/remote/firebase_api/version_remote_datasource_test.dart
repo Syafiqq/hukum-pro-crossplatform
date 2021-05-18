@@ -235,26 +235,3 @@ void main() {
     });
   });
 }
-
-/// Queue whose remove operation is asynchronous, awaiting a corresponding add.
-class AsyncQueue<T> {
-  Map<int, Completer<T>> _completers = <int, Completer<T>>{};
-  int _nextToRemove = 0;
-  int _nextToAdd = 0;
-
-  void add(T element) {
-    _completer(_nextToAdd++).complete(element);
-  }
-
-  Future<T> remove() {
-    return _completer(_nextToRemove++).future;
-  }
-
-  Completer<T> _completer(int index) {
-    if (_completers.containsKey(index)) {
-      return _completers.remove(index)!;
-    } else {
-      return _completers[index] = Completer<T>();
-    }
-  }
-}
