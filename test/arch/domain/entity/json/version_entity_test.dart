@@ -6,74 +6,94 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 
+import 'package:equatable/equatable.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hukum_pro/arch/domain/entity/misc/version_entity.dart';
 
 void main() {
   group('$VersionEntity', () {
-    group('fromJson', () {
-      test('success parse', () {
-        var jsonMap = {
-          'detail': {
-            'filenames': ['1']
-          },
-          'milis': 1,
-          'timestamp': '1'
-        };
-        var entity = VersionEntity.fromJson(jsonMap);
-        expect(entity.detail?.filenames, ['1']);
-        expect(entity.milis, 1);
-        expect(entity.timestamp, '1');
+    group('parse', () {
+      group('fromJson', () {
+        test('success parse', () {
+          var jsonMap = {
+            'detail': {
+              'filenames': ['1']
+            },
+            'milis': 1,
+            'timestamp': '1'
+          };
+          var entity = VersionEntity.fromJson(jsonMap);
+          expect(entity.detail?.filenames, ['1']);
+          expect(entity.milis, 1);
+          expect(entity.timestamp, '1');
+        });
+
+        test('success parse from empty json', () {
+          var jsonMap = {};
+          var entity = VersionEntity.fromJson(jsonMap);
+          expect(entity.detail, isNull);
+          expect(entity.milis, isNull);
+          expect(entity.timestamp, isNull);
+        });
+
+        test('success parse from non related json', () {
+          var jsonMap = {'a': 1, 'b': 2, 'c': 4};
+          var entity = VersionEntity.fromJson(jsonMap);
+          expect(entity.detail, isNull);
+          expect(entity.milis, isNull);
+          expect(entity.timestamp, isNull);
+        });
+
+        test('success parse from null value', () {
+          var jsonMap = {'detail': null, 'milis': null, 'timestamp': null};
+          var entity = VersionEntity.fromJson(jsonMap);
+          expect(entity.detail, isNull);
+          expect(entity.milis, isNull);
+          expect(entity.timestamp, isNull);
+        });
+
+        test('failed parse from incorrect data type', () {
+          var jsonMap = {'detail': 1, 'milis': 1, 'timestamp': 1};
+          expect(() => VersionEntity.fromJson(jsonMap),
+              throwsA(predicate((e) => e is TypeError)));
+        });
       });
 
-      test('success parse from empty json', () {
-        var jsonMap = {};
-        var entity = VersionEntity.fromJson(jsonMap);
-        expect(entity.detail, isNull);
-        expect(entity.milis, isNull);
-        expect(entity.timestamp, isNull);
-      });
+      group('toJson', () {
+        test('success parse', () {
+          var entity = VersionEntity(VersionDetailEntity([]), 1, '1');
+          var jsonMap = entity.toJson();
+          expect(jsonMap.keys.length, 3);
+          expect(jsonMap['detail'], {'filenames': []});
+          expect(jsonMap['milis'], 1);
+          expect(jsonMap['timestamp'], '1');
+        });
 
-      test('success parse from non related json', () {
-        var jsonMap = {'a': 1, 'b': 2, 'c': 4};
-        var entity = VersionEntity.fromJson(jsonMap);
-        expect(entity.detail, isNull);
-        expect(entity.milis, isNull);
-        expect(entity.timestamp, isNull);
-      });
-
-      test('success parse from null value', () {
-        var jsonMap = {'detail': null, 'milis': null, 'timestamp': null};
-        var entity = VersionEntity.fromJson(jsonMap);
-        expect(entity.detail, isNull);
-        expect(entity.milis, isNull);
-        expect(entity.timestamp, isNull);
-      });
-
-      test('failed parse from incorrect data type', () {
-        var jsonMap = {'detail': 1, 'milis': 1, 'timestamp': 1};
-        expect(() => VersionEntity.fromJson(jsonMap),
-            throwsA(predicate((e) => e is TypeError)));
+        test('success parse from null value', () {
+          var entity = VersionEntity(null, null, null);
+          var jsonMap = entity.toJson();
+          expect(jsonMap.keys.length, 3);
+          expect(jsonMap['detail'], isNull);
+          expect(jsonMap['milis'], isNull);
+          expect(jsonMap['timestamp'], isNull);
+        });
       });
     });
 
-    group('toJson', () {
-      test('success parse', () {
-        var entity = VersionEntity(VersionDetailEntity([]), 1, '1');
-        var jsonMap = entity.toJson();
-        expect(jsonMap.keys.length, 3);
-        expect(jsonMap['detail'], {'filenames': []});
-        expect(jsonMap['milis'], 1);
-        expect(jsonMap['timestamp'], '1');
+    group('$Equatable', () {
+      test('compare same instance', () {
+        var version = VersionEntity(null, null, null);
+        expect(version == version, true);
       });
 
-      test('success parse from null value', () {
-        var entity = VersionEntity(null, null, null);
-        var jsonMap = entity.toJson();
-        expect(jsonMap.keys.length, 3);
-        expect(jsonMap['detail'], isNull);
-        expect(jsonMap['milis'], isNull);
-        expect(jsonMap['timestamp'], isNull);
+      test('compare different instance', () {
+        var version = VersionEntity(null, null, null);
+        expect(version == VersionEntity(null, null, null), true);
+      });
+
+      test('failed different value', () {
+        var version = VersionEntity(null, 1, null);
+        expect(version == VersionEntity(null, 2, null), false);
       });
     });
   });
