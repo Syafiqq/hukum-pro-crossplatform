@@ -97,5 +97,16 @@ void main() {
             throwsA(isInstanceOf<ParseFailedException>()));
       });
     });
+
+    group('saveToLocal', () {
+      test('set version', () async {
+        var entity = VersionEntity(null, null, null);
+        verifyNever(mockVersionCacheDatasource.setVersion(entity));
+
+        await versionRepository.saveToLocal(entity);
+
+        verify(mockVersionCacheDatasource.setVersion(entity)).called(1);
+      });
+    });
   });
 }
