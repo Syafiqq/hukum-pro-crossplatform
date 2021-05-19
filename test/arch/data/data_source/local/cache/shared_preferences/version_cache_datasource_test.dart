@@ -26,40 +26,43 @@ void main() {
       setUp(() async {
         cache = SharedPreferencesImpl(sharedPreferences);
       });
-      test('return null', () async {
-        SharedPreferences.setMockInitialValues({});
-        await sharedPreferences.reload();
 
-        var entity = await cache.getVersion();
+      group('getVersion', () {
+        test('return null', () async {
+          SharedPreferences.setMockInitialValues({});
+          await sharedPreferences.reload();
 
-        expect(entity, isNull);
-      });
+          var entity = await cache.getVersion();
 
-      test('return version', () async {
-        SharedPreferences.setMockInitialValues({
-          'version': '{"milis": 1}',
+          expect(entity, isNull);
         });
-        await sharedPreferences.reload();
 
-        var entity = await cache.getVersion();
+        test('return version', () async {
+          SharedPreferences.setMockInitialValues({
+            'version': '{"milis": 1}',
+          });
+          await sharedPreferences.reload();
 
-        expect(entity, isNotNull);
-        expect(entity, isA<VersionEntity>());
+          var entity = await cache.getVersion();
 
-        expect(entity?.detail, isNull);
-        expect(entity?.milis, 1);
-        expect(entity?.timestamp, isNull);
-      });
+          expect(entity, isNotNull);
+          expect(entity, isA<VersionEntity>());
 
-      test('throws parse failed exception from invalid version content type',
-          () async {
-        SharedPreferences.setMockInitialValues({
-          'version': '{"milis": "1"}',
+          expect(entity?.detail, isNull);
+          expect(entity?.milis, 1);
+          expect(entity?.timestamp, isNull);
         });
-        await sharedPreferences.reload();
 
-        expect(() async => await cache.getVersion(),
-            throwsA(isInstanceOf<ParseFailedException>()));
+        test('throws parse failed exception from invalid version content type',
+            () async {
+          SharedPreferences.setMockInitialValues({
+            'version': '{"milis": "1"}',
+          });
+          await sharedPreferences.reload();
+
+          expect(() async => await cache.getVersion(),
+              throwsA(isInstanceOf<ParseFailedException>()));
+        });
       });
     });
   });
