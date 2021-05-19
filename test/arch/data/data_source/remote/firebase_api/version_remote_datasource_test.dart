@@ -168,7 +168,6 @@ void main() {
         await simulateEvent(handleId, 'versions_new/v1', {
           '1': {'detail': {}, 'milis': 0, 'timestamp': ''}
         });
-        await Future<void>.delayed(const Duration(milliseconds: 500));
 
         expect(entity, isNotNull);
         expect(entity, isA<VersionEntity>());
@@ -189,7 +188,6 @@ void main() {
         });
         await Future<void>.delayed(const Duration(seconds: 1));
         await simulateEvent(handleId, '', {});
-        await Future<void>.delayed(const Duration(milliseconds: 500));
 
         expect(exception, isNotNull);
         expect(exception, isA<DataNotExistsException>());
@@ -208,7 +206,6 @@ void main() {
         await simulateEvent(handleId, 'versions_new/v1', {
           '1': {'detail': 1, 'milis': 2, 'timestamp': 3}
         });
-        await Future<void>.delayed(const Duration(milliseconds: 500));
 
         expect(exception, isNotNull);
         expect(exception, isA<ParseFailedException>());
