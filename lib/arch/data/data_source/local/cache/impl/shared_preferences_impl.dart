@@ -24,4 +24,11 @@ class SharedPreferencesImpl implements VersionCacheDatasource {
       throw ParseFailedException(VersionEntity, null, e);
     }
   }
+
+  @override
+  Future<void> setVersion(VersionEntity version) async {
+    var versionMap = version.toJson();
+    var versionRawJson = jsonEncode(versionMap);
+    await cache.setString('version', versionRawJson);
+  }
 }
