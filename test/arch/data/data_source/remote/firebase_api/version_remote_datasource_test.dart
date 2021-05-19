@@ -164,10 +164,11 @@ void main() {
           entity = result;
         }).catchError((e) {});
 
-        await Future<void>.delayed(const Duration(seconds: 1));
+        await Future<void>.delayed(Duration(seconds: 2));
         await simulateEvent(handleId, 'versions_new/v1', {
           '1': {'detail': {}, 'milis': 0, 'timestamp': ''}
         });
+        await Future<void>.delayed(Duration(seconds: 2));
 
         expect(entity, isNotNull);
         expect(entity, isA<VersionEntity>());
@@ -186,7 +187,7 @@ void main() {
         firebaseApi.getVersion().then((result) {}).catchError((e) {
           exception = e as Exception?;
         });
-        await Future<void>.delayed(const Duration(seconds: 1));
+        await Future<void>.delayed(Duration(seconds: 1));
         await simulateEvent(handleId, '', {});
 
         expect(exception, isNotNull);
@@ -202,7 +203,7 @@ void main() {
         firebaseApi.getVersion().then((result) {}).catchError((e) {
           exception = e as Exception?;
         });
-        await Future<void>.delayed(const Duration(seconds: 1));
+        await Future<void>.delayed(Duration(seconds: 1));
         await simulateEvent(handleId, 'versions_new/v1', {
           '1': {'detail': 1, 'milis': 2, 'timestamp': 3}
         });
