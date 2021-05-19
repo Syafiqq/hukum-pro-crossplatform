@@ -53,8 +53,8 @@ void main() {
           expect(entity?.timestamp, isNull);
         });
 
-        test('throws parse failed exception from invalid version content type',
-            () async {
+        test(
+            'throws parse failed exception from invalid content type', () async {
           SharedPreferences.setMockInitialValues({
             'version': '{"milis": "1"}',
           });
@@ -62,6 +62,20 @@ void main() {
 
           expect(() async => await cache.getVersion(),
               throwsA(isInstanceOf<ParseFailedException>()));
+        });
+      });
+
+      group('setVersion', () {
+        test('success set', () async {
+          var entityBefore = await cache.getVersion();
+          expect(entityBefore, isNull);
+
+          var entityNow = VersionEntity(null, 1, null);
+          await cache.setVersion(entityNow);
+
+          var entityAfter = await cache.getVersion();
+          expect(entityAfter, isNotNull);
+          expect(entityAfter, entityNow);
         });
       });
     });
