@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hukum_pro/arch/data/data_source/local/cache/contract/version_cache_datasource.dart';
 import 'package:hukum_pro/arch/data/data_source/remote/contract/version_remote_datasource.dart';
 import 'package:hukum_pro/arch/data/repository/version_repository_impl.dart';
 import 'package:hukum_pro/arch/domain/entity/misc/version_entity.dart';
@@ -9,51 +10,56 @@ import 'package:mockito/mockito.dart';
 
 import 'version_repository_test.mocks.dart';
 
-@GenerateMocks([VersionRemoteDatasource])
+@GenerateMocks([VersionRemoteDatasource, VersionCacheDatasource])
 void main() {
   group('$VersionRepository', () {
     late VersionRemoteDatasource mockVersionRemoteDatasource;
+    late VersionCacheDatasource mockVersionCacheDatasource;
     late VersionRepositoryImpl versionRepository;
 
     setUp(() {
       mockVersionRemoteDatasource = MockVersionRemoteDatasource();
-      versionRepository = VersionRepositoryImpl(mockVersionRemoteDatasource);
+      mockVersionCacheDatasource = MockVersionCacheDatasource();
+      versionRepository = VersionRepositoryImpl(
+          mockVersionRemoteDatasource, mockVersionCacheDatasource);
     });
 
-    test('success get version', () async {
-      when(mockVersionRemoteDatasource.getVersion())
-          .thenAnswer((_) async => VersionEntity(null, null, null));
+    group('fetchFromRemote', () {
+      test('success get version', () async {
+        when(mockVersionRemoteDatasource.getVersion())
+            .thenAnswer((_) async => VersionEntity(null, null, null));
 
-      expect(() async => await mockVersionRemoteDatasource.getVersion(),
-          isNotNull);
+        expect(() async => await mockVersionRemoteDatasource.getVersion(),
+            isNotNull);
 
-      var version = await versionRepository.fetchFromRemote();
-      expect(version, isNotNull);
-      expect(version.detail, isNull);
-      expect(version.milis, isNull);
-      expect(version.timestamp, isNull);
-    });
+        var version = await versionRepository.fetchFromRemote();
+        expect(version, isNotNull);
+        expect(version.detail, isNull);
+        expect(version.milis, isNull);
+        expect(version.timestamp, isNull);
+      });
 
-    test('throw data not exists', () async {
-      when(mockVersionRemoteDatasource.getVersion())
-          .thenThrow(DataNotExistsException(null, null));
+      test('throw data not exists', () async {
+        when(mockVersionRemoteDatasource.getVersion())
+            .thenThrow(DataNotExistsException(null, null));
 
-      expect(() async => await mockVersionRemoteDatasource.getVersion(),
-          throwsA(isInstanceOf<DataNotExistsException>()));
+        expect(() async => await mockVersionRemoteDatasource.getVersion(),
+            throwsA(isInstanceOf<DataNotExistsException>()));
 
-      expect(() async => await versionRepository.fetchFromRemote(),
-          throwsA(isInstanceOf<DataNotExistsException>()));
-    });
+        expect(() async => await versionRepository.fetchFromRemote(),
+            throwsA(isInstanceOf<DataNotExistsException>()));
+      });
 
-    test('throw parse failed', () async {
-      when(mockVersionRemoteDatasource.getVersion())
-          .thenThrow(ParseFailedException(VersionEntity, null, null));
+      test('throw parse failed', () async {
+        when(mockVersionRemoteDatasource.getVersion())
+            .thenThrow(ParseFailedException(VersionEntity, null, null));
 
-      expect(() async => await mockVersionRemoteDatasource.getVersion(),
-          throwsA(isInstanceOf<ParseFailedException>()));
+        expect(() async => await mockVersionRemoteDatasource.getVersion(),
+            throwsA(isInstanceOf<ParseFailedException>()));
 
-      expect(() async => await versionRepository.fetchFromRemote(),
-          throwsA(isInstanceOf<ParseFailedException>()));
+        expect(() async => await versionRepository.fetchFromRemote(),
+            throwsA(isInstanceOf<ParseFailedException>()));
+      });
     });
   });
 }
