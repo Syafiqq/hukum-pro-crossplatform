@@ -41,16 +41,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  integration_test:
-    sdk: flutter
-  flutter_driver:
-    sdk: flutter
   test: any
-
-  firebase_database_mocks:
-    git:
-      url: https://github.com/Syafiqq/firebase_database_mocks.git
-      ref: firebase-7-support
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
