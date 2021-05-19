@@ -16,10 +16,7 @@ class SharedPreferencesImpl implements VersionCacheDatasource {
     if (versionRawJson == null) {
       return null;
     }
-    var versionMap = jsonDecode(versionRawJson) as Map<String, dynamic>?;
-    if (versionMap == null) {
-      throw ParseFailedException(VersionEntity, null, null);
-    }
+    Map<String, dynamic> versionMap = jsonDecode(versionRawJson);
     try {
       VersionEntity version = VersionEntity.fromJson(versionMap);
       return version;
