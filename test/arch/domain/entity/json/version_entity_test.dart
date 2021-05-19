@@ -97,4 +97,74 @@ void main() {
       });
     });
   });
+  group('$VersionDetailEntity', () {
+    group('parse', () {
+      group('fromJson', () {
+        test('success parse', () {
+          var jsonMap = {
+            'filenames': ['1']
+          };
+          var entity = VersionDetailEntity.fromJson(jsonMap);
+          expect(entity.filenames, ['1']);
+        });
+
+        test('success parse from empty json', () {
+          var jsonMap = {};
+          var entity = VersionDetailEntity.fromJson(jsonMap);
+          expect(entity.filenames, isNull);
+        });
+
+        test('success parse from non related json', () {
+          var jsonMap = {'a': 1, 'b': 2, 'c': 4};
+          var entity = VersionDetailEntity.fromJson(jsonMap);
+          expect(entity.filenames, isNull);
+        });
+
+        test('success parse from null value', () {
+          var jsonMap = {'filenames': null};
+          var entity = VersionDetailEntity.fromJson(jsonMap);
+          expect(entity.filenames, isNull);
+        });
+
+        test('failed parse from incorrect data type', () {
+          var jsonMap = {'filenames': 1};
+          expect(() => VersionDetailEntity.fromJson(jsonMap),
+              throwsA(predicate((e) => e is TypeError)));
+        });
+      });
+
+      group('toJson', () {
+        test('success parse', () {
+          var entity = VersionDetailEntity([]);
+          var jsonMap = entity.toJson();
+          expect(jsonMap.keys.length, 1);
+          expect(jsonMap['filenames'], []);
+        });
+
+        test('success parse from null value', () {
+          var entity = VersionDetailEntity(null);
+          var jsonMap = entity.toJson();
+          expect(jsonMap.keys.length, 1);
+          expect(jsonMap['filenames'], isNull);
+        });
+      });
+    });
+
+    group('$Equatable', () {
+      test('compare same instance', () {
+        var version = VersionDetailEntity(null);
+        expect(version == version, true);
+      });
+
+      test('compare different instance', () {
+        var version = VersionDetailEntity(null);
+        expect(version == VersionDetailEntity(null), true);
+      });
+
+      test('failed different value', () {
+        var version = VersionDetailEntity(['1']);
+        expect(version == VersionDetailEntity(['2']), false);
+      });
+    });
+  });
 }
