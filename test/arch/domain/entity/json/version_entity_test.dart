@@ -15,32 +15,21 @@ void main() {
       test('success parse', () {
         var jsonMap = {
           'detail': {
-            'filenames': [
-              '1603971592286-1-1.json',
-              '1603971592286-2-1.json',
-              '1603971592286-3-1.json',
-              '1603971592286-4-1.json',
-              '1603971592286-5-1.json',
-              '1603971592286-6-1.json'
-            ]
+            'filenames': ['1']
           },
-          'milis': 1603971592286,
-          'timestamp': '2020-10-29 18:39:52'
+          'milis': 1,
+          'timestamp': '1'
         };
         var entity = VersionEntity.fromJson(jsonMap);
-        expect(jsonMap, isNotNull);
-        expect(entity, isNotNull);
-        expect(entity.detail, isNotNull);
-        expect(entity.milis, isNotNull);
-        expect(entity.timestamp, isNotNull);
+        expect(entity.detail?.filenames, ['1']);
+        expect(entity.milis, 1);
+        expect(entity.timestamp, '1');
         print(entity);
       });
 
       test('success parse from empty json', () {
         var jsonMap = {};
         var entity = VersionEntity.fromJson(jsonMap);
-        expect(jsonMap, isNotNull);
-        expect(entity, isNotNull);
         expect(entity.detail, isNull);
         expect(entity.milis, isNull);
         expect(entity.timestamp, isNull);
@@ -50,8 +39,6 @@ void main() {
       test('success parse from non related json', () {
         var jsonMap = {'a': 1, 'b': 2, 'c': 4};
         var entity = VersionEntity.fromJson(jsonMap);
-        expect(jsonMap, isNotNull);
-        expect(entity, isNotNull);
         expect(entity.detail, isNull);
         expect(entity.milis, isNull);
         expect(entity.timestamp, isNull);
@@ -61,8 +48,6 @@ void main() {
       test('success parse from null value', () {
         var jsonMap = {'detail': null, 'milis': null, 'timestamp': null};
         var entity = VersionEntity.fromJson(jsonMap);
-        expect(jsonMap, isNotNull);
-        expect(entity, isNotNull);
         expect(entity.detail, isNull);
         expect(entity.milis, isNull);
         expect(entity.timestamp, isNull);
@@ -70,11 +55,30 @@ void main() {
       });
 
       test('failed parse from incorrect data type', () {
-        var jsonMap = {'detail': 1, 'milis': 2, 'timestamp': 3};
+        var jsonMap = {'detail': 1, 'milis': 1, 'timestamp': 1};
         expect(() => VersionEntity.fromJson(jsonMap),
             throwsA(predicate((e) => e is TypeError)));
       });
     });
-    group('toJson', () {});
+
+    group('toJson', () {
+      test('success parse', () {
+        var entity = VersionEntity(VersionDetailEntity([]), 1, '1');
+        var jsonMap = entity.toJson();
+        expect(jsonMap.keys.length, 3);
+        expect(jsonMap['detail'], {'filenames': []});
+        expect(jsonMap['milis'], 1);
+        expect(jsonMap['timestamp'], '1');
+      });
+
+      test('success parse from null value', () {
+        var entity = VersionEntity(null, null, null);
+        var jsonMap = entity.toJson();
+        expect(jsonMap.keys.length, 3);
+        expect(jsonMap['detail'], isNull);
+        expect(jsonMap['milis'], isNull);
+        expect(jsonMap['timestamp'], isNull);
+      });
+    });
   });
 }
