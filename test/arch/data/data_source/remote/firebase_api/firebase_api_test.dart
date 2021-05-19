@@ -531,7 +531,7 @@ void main() {
         // Subscribe and allow subscription to complete.
         final StreamSubscription<Event> subscription =
             query.onValue.listen((_) {}, onError: errors.add);
-        await Future<void>.delayed(const Duration());
+        await Future<void>.delayed(Duration.zero);
 
         await simulateError('Bad foo');
         await simulateError('Bad bar');
@@ -572,7 +572,7 @@ void main() {
         // Subscribe and allow subscription to complete.
         final StreamSubscription<Event> subscription =
             query.onValue.listen(events.add);
-        await Future<void>.delayed(const Duration());
+        await Future<void>.delayed(Duration.zero);
 
         await simulateEvent('1');
         await simulateEvent('2');
@@ -585,7 +585,7 @@ void main() {
 
         // Cancel subscription and allow cancellation to complete.
         await subscription.cancel();
-        await Future<void>.delayed(const Duration());
+        await Future<void>.delayed(Duration.zero);
 
         expect(
           log,
@@ -634,16 +634,16 @@ void main() {
                   (_) {});
         }
 
-        await Future<void>.delayed(const Duration());
+        await Future<void>.delayed(Duration.zero);
         Future<DataSnapshot> futureSnapshot = query.once();
-        await Future<void>.delayed(const Duration(seconds: 1));
+        await Future<void>.delayed(Duration(seconds: 1));
         await simulateEvent('1');
         DataSnapshot snapshot = await futureSnapshot;
 
         expect(snapshot.key, path);
         expect(snapshot.value, '1');
 
-        await Future<void>.delayed(const Duration());
+        await Future<void>.delayed(Duration.zero);
 
         expect(
           log,
