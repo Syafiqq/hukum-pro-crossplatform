@@ -101,6 +101,9 @@ void main() {
     group('saveToLocal', () {
       test('set version', () async {
         var entity = VersionEntity(null, null, null);
+        when(mockVersionCacheDatasource.setVersion(entity))
+            .thenAnswer((_) => null);
+
         verifyNever(mockVersionCacheDatasource.setVersion(entity));
 
         await versionRepository.saveToLocal(entity);
