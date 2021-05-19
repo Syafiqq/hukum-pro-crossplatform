@@ -184,16 +184,34 @@ void main() {
 
         Exception? exception;
 
-        const String path = '';
         firebaseApi.getVersion().then((result) {}).catchError((e) {
           exception = e as Exception?;
         });
         await Future<void>.delayed(const Duration(seconds: 1));
-        await simulateEvent(handleId, path, {});
+        await simulateEvent(handleId, '', {});
         await Future<void>.delayed(const Duration(milliseconds: 500));
 
         expect(exception, isNotNull);
         expect(exception, isA<DataNotExistsException>());
+      });
+
+      test('retrieve parse failed error ', () async {
+        var handleId = 87;
+        mockHandleId = handleId;
+
+        Exception? exception;
+
+        firebaseApi.getVersion().then((result) {}).catchError((e) {
+          exception = e as Exception?;
+        });
+        await Future<void>.delayed(const Duration(seconds: 1));
+        await simulateEvent(handleId, 'versions_new/v1', {
+          '1': {'detail': 1, 'milis': 2, 'timestamp': 3}
+        });
+        await Future<void>.delayed(const Duration(milliseconds: 500));
+
+        expect(exception, isNotNull);
+        expect(exception, isA<ParseFailedException>());
       });
     });
   });
