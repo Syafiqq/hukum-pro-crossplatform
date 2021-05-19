@@ -18,7 +18,7 @@ VersionEntity _$VersionEntityFromJson(Map json) {
 
 Map<String, dynamic> _$VersionEntityToJson(VersionEntity instance) =>
     <String, dynamic>{
-      'detail': instance.detail,
+      'detail': instance.detail?.toJson(),
       'milis': instance.milis,
       'timestamp': instance.timestamp,
     };
