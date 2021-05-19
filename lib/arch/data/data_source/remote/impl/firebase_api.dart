@@ -19,12 +19,14 @@ class FirebaseApi implements VersionRemoteDatasource {
         .once();
     var versions = snapshot.value?.values as Iterable?;
     var rawVersion = versions?.firstOrNull as Map?;
-    if (rawVersion == null) throw DataNotExistsException(null);
+    if (rawVersion == null) throw DataNotExistsException(null, null);
     try {
       VersionEntity version = VersionEntity.fromJson(rawVersion);
       return version;
     } on Exception catch (e) {
-      throw ParseFailedException(VersionEntity, e);
+      throw ParseFailedException(VersionEntity, e, null);
+    } on TypeError catch (e) {
+      throw ParseFailedException(VersionEntity, null, e);
     }
   }
 }
