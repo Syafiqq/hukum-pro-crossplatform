@@ -50,3 +50,4 @@ app.*.map.json
 /test/dump
 /test_driver/dump
 /coverage
+/
