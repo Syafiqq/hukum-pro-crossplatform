@@ -50,4 +50,5 @@ app.*.map.json
 /test/dump
 /test_driver/dump
 /coverage
-/
+**/test/**/*.mocks.dart
+**/entity/**/*.g.dart
