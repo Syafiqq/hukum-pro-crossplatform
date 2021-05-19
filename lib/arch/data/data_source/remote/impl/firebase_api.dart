@@ -23,8 +23,6 @@ class FirebaseApi implements VersionRemoteDatasource {
     try {
       VersionEntity version = VersionEntity.fromJson(rawVersion);
       return version;
-    } on Exception catch (e) {
-      throw ParseFailedException(VersionEntity, e, null);
     } on TypeError catch (e) {
       throw ParseFailedException(VersionEntity, null, e);
     }
