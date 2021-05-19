@@ -24,7 +24,6 @@ void main() {
         expect(entity.detail?.filenames, ['1']);
         expect(entity.milis, 1);
         expect(entity.timestamp, '1');
-        print(entity);
       });
 
       test('success parse from empty json', () {
@@ -33,7 +32,6 @@ void main() {
         expect(entity.detail, isNull);
         expect(entity.milis, isNull);
         expect(entity.timestamp, isNull);
-        print(entity);
       });
 
       test('success parse from non related json', () {
@@ -42,7 +40,6 @@ void main() {
         expect(entity.detail, isNull);
         expect(entity.milis, isNull);
         expect(entity.timestamp, isNull);
-        print(entity);
       });
 
       test('success parse from null value', () {
@@ -51,7 +48,6 @@ void main() {
         expect(entity.detail, isNull);
         expect(entity.milis, isNull);
         expect(entity.timestamp, isNull);
-        print(entity);
       });
 
       test('failed parse from incorrect data type', () {
