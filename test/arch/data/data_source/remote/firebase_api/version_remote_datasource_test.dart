@@ -1,11 +1,12 @@
 import 'dart:async';
 
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_core_platform_interface/firebase_core_platform_interface.dart';
+import 'package:firebase_database/firebase_database.dart';
+
 import 'package:hukum_pro/arch/data/data_source/remote/impl/firebase_api.dart';
 import 'package:hukum_pro/arch/domain/entity/misc/version_entity.dart';
 import 'package:hukum_pro/common/exception/built_in.dart';
@@ -129,7 +130,8 @@ void main() {
       log.clear();
     });
 
-    Future<void> simulateEvent(int handle, String path, dynamic value) async {
+    Future<void> simulateEvent(
+        int handle, String path, dynamic value, List<String> childKeys) async {
       await ServicesBinding.instance?.defaultBinaryMessenger
           .handlePlatformMessage(
               channel.name,
@@ -140,6 +142,7 @@ void main() {
                     'key': path,
                     'value': value,
                   },
+                  'childKeys': childKeys
                 }),
               ),
               (_) {});
@@ -164,11 +167,12 @@ void main() {
           entity = result;
         }).catchError((e) {});
 
-        await Future<void>.delayed(Duration(seconds: 2));
+        await Future<void>.delayed(Duration(seconds: 1));
         await simulateEvent(handleId, 'versions_new/v1', {
           '1': {'detail': {}, 'milis': 0, 'timestamp': ''}
-        });
-        await Future<void>.delayed(Duration(seconds: 2));
+        }, [
+          '1'
+        ]);
 
         expect(entity, isNotNull);
         expect(entity, isA<VersionEntity>());
@@ -188,7 +192,7 @@ void main() {
           exception = e as Exception?;
         });
         await Future<void>.delayed(Duration(seconds: 1));
-        await simulateEvent(handleId, '', {});
+        await simulateEvent(handleId, '', {}, []);
 
         expect(exception, isNotNull);
         expect(exception, isA<DataNotExistsException>());
@@ -206,7 +210,9 @@ void main() {
         await Future<void>.delayed(Duration(seconds: 1));
         await simulateEvent(handleId, 'versions_new/v1', {
           '1': {'detail': 1, 'milis': 2, 'timestamp': 3}
-        });
+        }, [
+          '1'
+        ]);
 
         expect(exception, isNotNull);
         expect(exception, isA<ParseFailedException>());
