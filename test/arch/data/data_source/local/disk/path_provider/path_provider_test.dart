@@ -69,6 +69,11 @@ void main() async {
       return file.writeAsString('$counter');
     }
 
+    Future<int> readCounter(File file) async {
+      final contents = await file.readAsString();
+      return int.parse(contents);
+    }
+
     group('File', () {
       late String path;
       late Directory directory;
@@ -100,6 +105,23 @@ void main() async {
         expect(await file.exists(), false);
         await file.create();
         expect(await file.exists(), true);
+      });
+
+      group('Operation', () {
+        test('create file automatically while write', () async {
+          expect(await file.exists(), false);
+          await writeCounter(file, 1);
+          expect(await file.exists(), true);
+          expect(await readCounter(file), 1);
+        });
+
+        test('cannot create file automatically while read', () async {
+          expect(await file.exists(), false);
+          expect(
+              () async => await readCounter(file),
+              throwsA(isInstanceOf<FileSystemException>()
+                  .having((e) => e.message, 'message', 'Cannot open file')));
+        });
       });
     });
   });
