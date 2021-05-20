@@ -19,9 +19,9 @@ void main() async {
       log.add(methodCall);
       switch (methodCall.method) {
         case 'getApplicationDocumentsDirectory':
-          return '${directory.path}/app-doc-dir/';
+          return '${directory.path}/app-doc-dir';
         case 'getTemporaryDirectory':
-          return '${directory.path}/temp-dir/';
+          return '${directory.path}/temp-dir';
         default:
           return null;
       }
@@ -59,6 +59,48 @@ void main() async {
           ),
         ],
       );
+    });
+
+    Future<File> getFile(String path) async {
+      return File(path);
+    }
+
+    Future<File> writeCounter(File file, int counter) async {
+      return file.writeAsString('$counter');
+    }
+
+    group('File', () {
+      late String path;
+      late Directory directory;
+      late File file;
+      setUpAll(() async {
+        directory = await getApplicationDocumentsDirectory();
+        path = '${directory.path}/file.json';
+      });
+
+      setUp(() async {
+        file = await getFile(path);
+        try {
+          await file.delete(recursive: true);
+        } on FileSystemException catch (e) {
+          if (e.message != 'Deletion failed') {
+            throw e;
+          }
+        }
+      });
+
+      test('cannot create file because not exist directory', () async {
+        expect(await file.exists(), false);
+        expect(() async => await file.create(),
+            throwsA(isInstanceOf<FileSystemException>()));
+      });
+
+      test('create file because exists directory', () async {
+        await directory.create();
+        expect(await file.exists(), false);
+        await file.create();
+        expect(await file.exists(), true);
+      });
     });
   });
 }
