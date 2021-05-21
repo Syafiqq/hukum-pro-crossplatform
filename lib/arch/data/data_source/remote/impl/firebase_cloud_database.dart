@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flinq/flinq.dart';
 import 'package:hukum_pro/arch/data/data_source/remote/contract/version_remote_datasource.dart';
@@ -11,20 +12,24 @@ class FirebaseCloudDatabase implements VersionRemoteDatasource {
 
   @override
   Future<VersionEntity> getVersion() async {
-    var snapshot = await _database
-        .reference()
-        .child('versions_new/v1')
-        .orderByKey()
-        .limitToLast(1)
-        .once();
-    var versions = snapshot.value?.values as Iterable?;
-    var rawVersion = versions?.firstOrNull as Map?;
-    if (rawVersion == null) throw DataNotExistsException(null, null);
     try {
-      VersionEntity version = VersionEntity.fromJson(rawVersion);
-      return version;
-    } on TypeError catch (e) {
-      throw ParseFailedException(VersionEntity, null, e);
+      var snapshot = await _database
+          .reference()
+          .child('versions_new/v1')
+          .orderByKey()
+          .limitToLast(1)
+          .once();
+      var versions = snapshot.value?.values as Iterable?;
+      var rawVersion = versions?.firstOrNull as Map?;
+      if (rawVersion == null) throw DataNotExistsException(null, null);
+      try {
+        VersionEntity version = VersionEntity.fromJson(rawVersion);
+        return version;
+      } on TypeError catch (e) {
+        throw ParseFailedException(VersionEntity, null, e);
+      }
+    } on FirebaseException catch (e) {
+      throw DataFetchFailureException(e, null);
     }
   }
 }
