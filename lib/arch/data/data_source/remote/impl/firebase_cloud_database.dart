@@ -1,13 +1,13 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flinq/flinq.dart';
 import 'package:hukum_pro/arch/data/data_source/remote/contract/version_remote_datasource.dart';
 import 'package:hukum_pro/arch/domain/entity/misc/version_entity.dart';
 import 'package:hukum_pro/common/exception/built_in.dart';
-import 'package:flinq/flinq.dart';
 
-class FirebaseApi implements VersionRemoteDatasource {
+class FirebaseCloudDatabase implements VersionRemoteDatasource {
   FirebaseDatabase _database;
 
-  FirebaseApi(this._database);
+  FirebaseCloudDatabase(this._database);
 
   @override
   Future<VersionEntity> getVersion() async {

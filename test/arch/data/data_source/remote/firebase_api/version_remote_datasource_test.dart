@@ -1,13 +1,11 @@
 import 'dart:async';
 
-import 'package:flutter/services.dart';
-import 'package:flutter_test/flutter_test.dart';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_core_platform_interface/firebase_core_platform_interface.dart';
 import 'package:firebase_database/firebase_database.dart';
-
-import 'package:hukum_pro/arch/data/data_source/remote/impl/firebase_api.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:hukum_pro/arch/data/data_source/remote/impl/firebase_cloud_database.dart';
 import 'package:hukum_pro/arch/domain/entity/misc/version_entity.dart';
 import 'package:hukum_pro/common/exception/built_in.dart';
 
@@ -148,11 +146,11 @@ void main() {
               (_) {});
     }
 
-    group('$FirebaseApi', () {
-      late FirebaseApi firebaseApi;
+    group('$FirebaseCloudDatabase', () {
+      late FirebaseCloudDatabase firebaseApi;
 
       setUp(() async {
-        firebaseApi = FirebaseApi(database);
+        firebaseApi = FirebaseCloudDatabase(database);
 
         expect(firebaseApi, isNotNull);
       });
