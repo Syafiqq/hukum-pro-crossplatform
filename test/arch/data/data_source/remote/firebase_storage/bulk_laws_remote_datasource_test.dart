@@ -4,10 +4,14 @@
 
 // @dart=2.9
 
+import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_storage_platform_interface/firebase_storage_platform_interface.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hukum_pro/arch/data/data_source/remote/contract/bulk_laws_remote_datasource.dart';
+import 'package:hukum_pro/arch/data/data_source/remote/impl/firebase_cloud_storage.dart';
 import 'package:mockito/mockito.dart';
 
 import 'library/mock.dart';
@@ -16,10 +20,17 @@ MockReferencePlatform mockReference = MockReferencePlatform();
 MockListResultPlatform mockListResultPlatform = MockListResultPlatform();
 MockUploadTaskPlatform mockUploadTaskPlatform = MockUploadTaskPlatform();
 MockDownloadTaskPlatform mockDownloadTaskPlatform = MockDownloadTaskPlatform();
+MockTaskSnapshotPlatform mockTaskSnapshotPlatform = MockTaskSnapshotPlatform();
 
 void main() {
   setupFirebaseStorageMocks();
+  Directory directory;
+
   FirebaseStorage storage;
+
+  setUpAll(() async {
+    directory = await Directory.systemTemp.createTemp();
+  });
 
   group('$Reference', () {
     setUpAll(() async {
@@ -46,5 +57,42 @@ void main() {
         verify(mockReference.writeToFile(testFile));
       });
     });
+
+    group('$BulkLawsRemoteDatasource', () {
+      BulkLawsRemoteDatasource datasource;
+      File file;
+
+      setUp(() async {
+        datasource = FirebaseCloudStorage(storage);
+        file = File('${directory.path}/test.json');
+        await file.deleteIfExists();
+      });
+
+      test('success get file', () async {
+        when(mockReference.writeToFile(file))
+            .thenReturn(mockDownloadTaskPlatform);
+        when(mockDownloadTaskPlatform.snapshot)
+            .thenReturn(mockTaskSnapshotPlatform);
+        when(mockDownloadTaskPlatform.onComplete).thenAnswer((_) async {
+          await file.create();
+          return mockTaskSnapshotPlatform;
+        });
+
+        expect(await file.exists(), false);
+
+        await datasource.downloadBulkLaws('a', file);
+
+        expect(await file.exists(), true);
+        verify(mockReference.writeToFile(file));
+      });
+    });
   });
+}
+
+extension FileRemoval on File {
+  Future<void> deleteIfExists() async {
+    try {
+      await this.delete();
+    } on FileSystemException {}
+  }
 }
