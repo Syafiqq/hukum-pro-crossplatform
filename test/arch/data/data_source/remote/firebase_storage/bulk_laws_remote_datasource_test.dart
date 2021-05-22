@@ -12,6 +12,7 @@ import 'package:firebase_storage_platform_interface/firebase_storage_platform_in
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hukum_pro/arch/data/data_source/remote/contract/bulk_laws_remote_datasource.dart';
 import 'package:hukum_pro/arch/data/data_source/remote/impl/firebase_cloud_storage.dart';
+import 'package:hukum_pro/common/exception/built_in.dart';
 import 'package:mockito/mockito.dart';
 
 import 'library/mock.dart';
@@ -84,6 +85,42 @@ void main() {
 
         expect(await file.exists(), true);
         verify(mockReference.writeToFile(file));
+      });
+
+      test('throw firebase exception', () async {
+        when(mockReference.writeToFile(file))
+            .thenReturn(mockDownloadTaskPlatform);
+        when(mockDownloadTaskPlatform.snapshot)
+            .thenReturn(mockTaskSnapshotPlatform);
+        when(mockDownloadTaskPlatform.onComplete).thenAnswer((_) async {
+          throw FirebaseException(plugin: '0');
+        });
+
+        expect(
+            () async => await datasource.downloadBulkLaws('a', file),
+            throwsA(isInstanceOf<DataFetchFailureException>().having(
+                (e) => e.internalException,
+                'internalException',
+                isInstanceOf<FirebaseException>()
+                    .having((e) => e.plugin, 'plugin', '0'))));
+      });
+
+      test('throw file system exception', () async {
+        when(mockReference.writeToFile(file))
+            .thenReturn(mockDownloadTaskPlatform);
+        when(mockDownloadTaskPlatform.snapshot)
+            .thenReturn(mockTaskSnapshotPlatform);
+        when(mockDownloadTaskPlatform.onComplete).thenAnswer((_) async {
+          throw FileSystemException('0');
+        });
+
+        expect(
+            () async => await datasource.downloadBulkLaws('a', file),
+            throwsA(isInstanceOf<DataFetchFailureException>().having(
+                (e) => e.internalException,
+                'internalException',
+                isInstanceOf<FileSystemException>()
+                    .having((e) => e.message, 'message', '0'))));
       });
     });
   });
