@@ -1,5 +1,7 @@
+// @dart=2.9
+
 import 'package:flutter_test/flutter_test.dart';
-import 'package:hukum_pro/arch/data/data_source/local/cache/contract/version_cache_datasource.dart';
+import 'package:hukum_pro/arch/data/data_source/local/contract/version_local_datasource.dart';
 import 'package:hukum_pro/arch/data/data_source/remote/contract/version_remote_datasource.dart';
 import 'package:hukum_pro/arch/data/repository/version_repository_impl.dart';
 import 'package:hukum_pro/arch/domain/entity/misc/version_entity.dart';
@@ -10,16 +12,16 @@ import 'package:mockito/mockito.dart';
 
 import 'version_repository_test.mocks.dart';
 
-@GenerateMocks([VersionRemoteDatasource, VersionCacheDatasource])
+@GenerateMocks([VersionRemoteDatasource, VersionLocalDatasource])
 void main() {
   group('$VersionRepository', () {
-    late VersionRemoteDatasource mockVersionRemoteDatasource;
-    late VersionCacheDatasource mockVersionCacheDatasource;
-    late VersionRepositoryImpl versionRepository;
+    VersionRemoteDatasource mockVersionRemoteDatasource;
+    VersionLocalDatasource mockVersionCacheDatasource;
+    VersionRepositoryImpl versionRepository;
 
     setUp(() {
       mockVersionRemoteDatasource = MockVersionRemoteDatasource();
-      mockVersionCacheDatasource = MockVersionCacheDatasource();
+      mockVersionCacheDatasource = MockVersionLocalDatasource();
       versionRepository = VersionRepositoryImpl(
           mockVersionRemoteDatasource, mockVersionCacheDatasource);
     });
@@ -101,6 +103,9 @@ void main() {
     group('saveToLocal', () {
       test('set version', () async {
         var entity = VersionEntity(null, null, null);
+        when(mockVersionCacheDatasource.setVersion(entity))
+            .thenAnswer((_) => null);
+
         verifyNever(mockVersionCacheDatasource.setVersion(entity));
 
         await versionRepository.saveToLocal(entity);

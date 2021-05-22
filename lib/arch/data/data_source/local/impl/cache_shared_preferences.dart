@@ -1,14 +1,14 @@
 import 'dart:convert';
 
-import 'package:hukum_pro/arch/data/data_source/local/cache/contract/version_cache_datasource.dart';
+import 'package:hukum_pro/arch/data/data_source/local/contract/version_local_datasource.dart';
 import 'package:hukum_pro/arch/domain/entity/misc/version_entity.dart';
 import 'package:hukum_pro/common/exception/built_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SharedPreferencesImpl implements VersionCacheDatasource {
+class CacheSharedPreferences implements VersionLocalDatasource {
   SharedPreferences cache;
 
-  SharedPreferencesImpl(this.cache);
+  CacheSharedPreferences(this.cache);
 
   @override
   Future<VersionEntity?> getVersion() async {

@@ -4,12 +4,11 @@
 
 import 'dart:async';
 
-import 'package:flutter/services.dart';
-import 'package:flutter_test/flutter_test.dart';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_core_platform_interface/firebase_core_platform_interface.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void initializeMethodChannel() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -621,16 +620,16 @@ void main() {
         Future<void> simulateEvent(String value) async {
           await ServicesBinding.instance!.defaultBinaryMessenger
               .handlePlatformMessage(
-              channel.name,
-              channel.codec.encodeMethodCall(
-                MethodCall('Event', <String, dynamic>{
-                  'handle': 87,
-                  'snapshot': <String, dynamic>{
-                    'key': path,
-                    'value': value,
-                  },
-                }),
-              ),
+                  channel.name,
+                  channel.codec.encodeMethodCall(
+                    MethodCall('Event', <String, dynamic>{
+                      'handle': 87,
+                      'snapshot': <String, dynamic>{
+                        'key': path,
+                        'value': value,
+                      },
+                    }),
+                  ),
                   (_) {});
         }
 
