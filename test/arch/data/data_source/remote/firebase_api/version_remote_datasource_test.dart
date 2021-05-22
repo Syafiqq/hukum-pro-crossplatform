@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'dart:async';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -8,6 +10,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hukum_pro/arch/data/data_source/remote/impl/firebase_cloud_database.dart';
 import 'package:hukum_pro/arch/domain/entity/misc/version_entity.dart';
 import 'package:hukum_pro/common/exception/built_in.dart';
+import 'package:hukum_pro/common/exception/defined_exception.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
+
+import 'version_remote_datasource_test.mocks.dart';
 
 void _initializeMethodChannel() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -37,9 +44,10 @@ void _initializeMethodChannel() {
   });
 }
 
+@GenerateMocks([FirebaseDatabase])
 void main() {
   _initializeMethodChannel();
-  late FirebaseApp app;
+  FirebaseApp app;
 
   setUpAll(() async {
     app = await Firebase.initializeApp(
@@ -61,7 +69,7 @@ void main() {
     final List<MethodCall> log = <MethodCall>[];
 
     const String databaseURL = 'https://test.com';
-    late FirebaseDatabase database;
+    FirebaseDatabase database;
 
     setUp(() async {
       database = FirebaseDatabase(app: app, databaseURL: databaseURL);
@@ -76,7 +84,7 @@ void main() {
           case 'FirebaseDatabase#setPersistenceCacheSizeBytes':
             return true;
           case 'DatabaseReference#runTransaction':
-            late Map<String, dynamic> updatedValue;
+            Map<String, dynamic> updatedValue;
             Future<void> simulateEvent(
                 int transactionKey, final MutableData mutableData) async {
               await ServicesBinding.instance?.defaultBinaryMessenger
@@ -131,7 +139,7 @@ void main() {
     Future<void> simulateEvent(
         int handle, String path, dynamic value, List<String> childKeys) async {
       await ServicesBinding.instance?.defaultBinaryMessenger
-          .handlePlatformMessage(
+          ?.handlePlatformMessage(
               channel.name,
               channel.codec.encodeMethodCall(
                 MethodCall('Event', <String, dynamic>{
@@ -146,8 +154,25 @@ void main() {
               (_) {});
     }
 
+    Future<void> simulateError(int handle, String errorMessage) async {
+      await ServicesBinding.instance?.defaultBinaryMessenger
+          ?.handlePlatformMessage(
+              channel.name,
+              channel.codec.encodeMethodCall(
+                MethodCall('Error', <String, dynamic>{
+                  'handle': handle,
+                  'error': <String, dynamic>{
+                    'code': 0,
+                    'message': errorMessage,
+                    'details': 'details',
+                  },
+                }),
+              ),
+              (_) {});
+    }
+
     group('$FirebaseCloudDatabase', () {
-      late FirebaseCloudDatabase firebaseApi;
+      FirebaseCloudDatabase firebaseApi;
 
       setUp(() async {
         firebaseApi = FirebaseCloudDatabase(database);
@@ -155,11 +180,11 @@ void main() {
         expect(firebaseApi, isNotNull);
       });
 
-      test('retrieve version', () async {
+      test('return version', () async {
         var handleId = 87;
         mockHandleId = handleId;
 
-        VersionEntity? entity;
+        VersionEntity entity;
 
         firebaseApi.getVersion().then((result) {
           entity = result;
@@ -180,14 +205,14 @@ void main() {
         expect(entity?.timestamp, '');
       });
 
-      test('retrieve not exist error ', () async {
+      test('throws not exist error', () async {
         var handleId = 87;
         mockHandleId = handleId;
 
-        Exception? exception;
+        Exception exception;
 
         firebaseApi.getVersion().then((result) {}).catchError((e) {
-          exception = e as Exception?;
+          exception = e as Exception;
         });
         await Future<void>.delayed(Duration(seconds: 1));
         await simulateEvent(handleId, '', {}, []);
@@ -196,14 +221,14 @@ void main() {
         expect(exception, isA<DataNotExistsException>());
       });
 
-      test('retrieve parse failed error ', () async {
+      test('throws parse failed error', () async {
         var handleId = 87;
         mockHandleId = handleId;
 
-        Exception? exception;
+        Exception exception;
 
         firebaseApi.getVersion().then((result) {}).catchError((e) {
-          exception = e as Exception?;
+          exception = e as Exception;
         });
         await Future<void>.delayed(Duration(seconds: 1));
         await simulateEvent(handleId, 'versions_new/v1', {
@@ -214,6 +239,43 @@ void main() {
 
         expect(exception, isNotNull);
         expect(exception, isA<ParseFailedException>());
+      });
+
+      test('throws fetch failed due to firebase error', () async {
+        var firebaseDatabase = MockFirebaseDatabase();
+        when(firebaseDatabase.reference())
+            .thenThrow(FirebaseException(plugin: "0"));
+        var firebaseApi = FirebaseCloudDatabase(firebaseDatabase);
+
+        expect(
+            () async => await firebaseApi.getVersion(),
+            throwsA(isInstanceOf<DataFetchFailureException>().having(
+                (e) => e.internalException,
+                'internalException',
+                isInstanceOf<FirebaseException>()
+                    .having((e) => e.plugin, 'plugin', '0'))));
+      });
+
+      test('throws fetch failed due to database error', () async {
+        var handleId = 99;
+        mockHandleId = handleId;
+
+        Exception exception;
+
+        firebaseApi.getVersion().then((result) {}).catchError((e) {
+          exception = e as Exception;
+        });
+        await Future<void>.delayed(Duration(seconds: 1));
+        await simulateError(handleId, '0');
+
+        expect(exception, isNotNull);
+        expect(
+            exception,
+            isA<DataFetchFailureException>().having(
+                (e) => e.internalException,
+                'internalException',
+                isInstanceOf<DefinedException>()
+                    .having((e) => e.message, 'message', '0')));
       });
     });
   });
