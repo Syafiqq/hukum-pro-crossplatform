@@ -5,10 +5,10 @@ import 'package:hukum_pro/arch/domain/entity/misc/version_entity.dart';
 import 'package:hukum_pro/common/exception/built_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SharedPreferencesImpl implements VersionLocalDatasource {
+class CacheSharedPreferences implements VersionLocalDatasource {
   SharedPreferences cache;
 
-  SharedPreferencesImpl(this.cache);
+  CacheSharedPreferences(this.cache);
 
   @override
   Future<VersionEntity?> getVersion() async {

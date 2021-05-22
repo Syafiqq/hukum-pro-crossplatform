@@ -620,16 +620,16 @@ void main() {
         Future<void> simulateEvent(String value) async {
           await ServicesBinding.instance!.defaultBinaryMessenger
               .handlePlatformMessage(
-              channel.name,
-              channel.codec.encodeMethodCall(
-                MethodCall('Event', <String, dynamic>{
-                  'handle': 87,
-                  'snapshot': <String, dynamic>{
-                    'key': path,
-                    'value': value,
-                  },
-                }),
-              ),
+                  channel.name,
+                  channel.codec.encodeMethodCall(
+                    MethodCall('Event', <String, dynamic>{
+                      'handle': 87,
+                      'snapshot': <String, dynamic>{
+                        'key': path,
+                        'value': value,
+                      },
+                    }),
+                  ),
                   (_) {});
         }
 
