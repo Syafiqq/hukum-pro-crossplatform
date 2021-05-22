@@ -6,10 +6,10 @@ import 'package:hukum_pro/arch/domain/entity/misc/version_entity.dart';
 import 'package:hukum_pro/arch/domain/repository/bulk_laws_repository.dart';
 
 class BulkLawsRepositoryImpl implements BulkLawsRepository {
-  BulkLawsLocalDatasource localDatasource;
   BulkLawsRemoteDatasource remoteDatasource;
+  BulkLawsLocalDatasource localDatasource;
 
-  BulkLawsRepositoryImpl(this.localDatasource, this.remoteDatasource);
+  BulkLawsRepositoryImpl(this.remoteDatasource, this.localDatasource);
 
   @override
   Future<void> downloadLaw(String name, File destination) async {

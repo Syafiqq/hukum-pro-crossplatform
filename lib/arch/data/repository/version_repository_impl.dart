@@ -5,9 +5,9 @@ import 'package:hukum_pro/arch/domain/repository/version_repository.dart';
 
 class VersionRepositoryImpl implements VersionRepository {
   VersionRemoteDatasource remoteDatasource;
-  VersionLocalDatasource cacheDatasource;
+  VersionLocalDatasource localDatasource;
 
-  VersionRepositoryImpl(this.remoteDatasource, this.cacheDatasource);
+  VersionRepositoryImpl(this.remoteDatasource, this.localDatasource);
 
   @override
   Future<VersionEntity> fetchFromRemote() async =>
@@ -15,9 +15,9 @@ class VersionRepositoryImpl implements VersionRepository {
 
   @override
   Future<VersionEntity?> fetchFromLocal() async =>
-      await cacheDatasource.getVersion();
+      await localDatasource.getVersion();
 
   @override
   Future<void> saveToLocal(VersionEntity version) async =>
-      await cacheDatasource.setVersion(version);
+      await localDatasource.setVersion(version);
 }
