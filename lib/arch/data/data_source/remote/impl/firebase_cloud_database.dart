@@ -4,6 +4,7 @@ import 'package:flinq/flinq.dart';
 import 'package:hukum_pro/arch/data/data_source/remote/contract/version_remote_datasource.dart';
 import 'package:hukum_pro/arch/domain/entity/misc/version_entity.dart';
 import 'package:hukum_pro/common/exception/built_in.dart';
+import 'package:hukum_pro/common/exception/defined_exception.dart';
 
 class FirebaseCloudDatabase implements VersionRemoteDatasource {
   FirebaseDatabase _database;
@@ -30,6 +31,9 @@ class FirebaseCloudDatabase implements VersionRemoteDatasource {
       }
     } on FirebaseException catch (e) {
       throw DataFetchFailureException(e, null);
+    } on DatabaseError catch (e) {
+      throw DataFetchFailureException(
+          DefinedException(null, null, "00F-${e.code}", e.message), null);
     }
   }
 }
