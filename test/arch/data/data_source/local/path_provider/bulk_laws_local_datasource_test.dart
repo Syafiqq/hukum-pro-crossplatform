@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hukum_pro/arch/data/data_source/local/contract/bulk_laws_local_datasource.dart';
 import 'package:hukum_pro/arch/data/data_source/local/impl/disk_path_provider.dart';
+import 'package:hukum_pro/common/exception/built_in.dart';
+import 'package:path_provider/path_provider.dart';
 
 void main() async {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -33,7 +35,7 @@ void main() async {
   });
 
   group('$BulkLawsLocalDatasource', () {
-    test('return app-doc-dir', () async {
+    test('return files', () async {
       var id = '1';
       var names = ['1.json', '2.json', '3.json'];
 
@@ -49,6 +51,18 @@ void main() async {
             .having((e) => e.path, 'path', contains('/1/'))
             .having((e) => e.path, 'path', contains('/3.json')),
       ]);
+    });
+
+    test('throws error', () async {
+      channel.setMockMethodCallHandler((MethodCall methodCall) async => null);
+      var id = '1';
+      var names = ['1.json'];
+      expect(
+          () async => await datasource.getBulkDiskReferences(id, names),
+          throwsA(isInstanceOf<DataLocationNotFoundException>().having(
+              (e) => e.internalException,
+              'internalException',
+              isA<MissingPlatformDirectoryException>())));
     });
   });
 }
