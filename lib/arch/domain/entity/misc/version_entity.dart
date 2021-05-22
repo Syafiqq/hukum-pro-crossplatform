@@ -3,7 +3,6 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'version_entity.g.dart';
 
-// ignore: must_be_immutable
 @JsonSerializable(anyMap: true, explicitToJson: true)
 class VersionEntity extends Equatable {
   final VersionDetailEntity? detail;
@@ -20,7 +19,6 @@ class VersionEntity extends Equatable {
   Map<String, dynamic> toJson() => _$VersionEntityToJson(this);
 }
 
-// ignore: must_be_immutable
 @JsonSerializable(anyMap: true, explicitToJson: true)
 class VersionDetailEntity extends Equatable {
   final List<String>? filenames;
