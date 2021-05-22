@@ -1,4 +1,5 @@
 import 'package:hukum_pro/common/exception/defined_exception.dart';
+import 'package:hukum_pro/common/exception/retryable_exception.dart';
 
 // Data
 // 001-001 = Data not exist
@@ -19,7 +20,7 @@ class ParseFailedException extends DefinedException {
             "cannot parse to defined data $type");
 }
 
-class DataFetchFailureException extends DefinedException {
+class DataFetchFailureException extends RetryableException {
   DataFetchFailureException(Exception? internalException, Error? internalError)
       : super(internalException, internalError, "001-003",
             "request data failed to retrieve");
