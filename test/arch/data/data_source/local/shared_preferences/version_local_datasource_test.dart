@@ -5,7 +5,7 @@ import 'package:hukum_pro/common/exception/built_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shared_preferences_platform_interface/shared_preferences_platform_interface.dart';
 
-import 'shared_preferences_test.dart';
+import 'library/shared_preferences_test.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
