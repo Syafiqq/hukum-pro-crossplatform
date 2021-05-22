@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:hukum_pro/arch/data/data_source/local/contract/bulk_laws_local_datasource.dart';
 import 'package:hukum_pro/arch/data/data_source/remote/contract/bulk_laws_remote_datasource.dart';
-import 'package:hukum_pro/arch/domain/entity/misc/version_entity.dart';
 import 'package:hukum_pro/arch/domain/repository/bulk_laws_repository.dart';
 
 class BulkLawsRepositoryImpl implements BulkLawsRepository {

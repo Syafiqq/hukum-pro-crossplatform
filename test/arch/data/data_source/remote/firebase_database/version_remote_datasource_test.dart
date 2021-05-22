@@ -88,7 +88,7 @@ void main() {
             Future<void> simulateEvent(
                 int transactionKey, final MutableData mutableData) async {
               await ServicesBinding.instance?.defaultBinaryMessenger
-                  .handlePlatformMessage(
+                  ?.handlePlatformMessage(
                 channel.name,
                 channel.codec.encodeMethodCall(
                   MethodCall(
