@@ -42,7 +42,7 @@ void _initializeMethodChannel() {
   });
 }
 
-@GenerateMocks([FirebaseDatabase])
+@GenerateMocks([FirebaseDatabase, DatabaseReference, Query, DataSnapshot])
 void main() {
   _initializeMethodChannel();
   late FirebaseApp app;
@@ -249,6 +249,18 @@ void main() {
       test('throws not exist error', () async {
         var handleId = 87;
         mockHandleId = handleId;
+
+        var firebaseDatabase = MockFirebaseDatabase();
+        var databaseReference = MockDatabaseReference();
+        var databaseQuery = MockQuery();
+        var dataSnapshot = MockDataSnapshot();
+        when(firebaseDatabase.reference()).thenAnswer((_) => databaseReference);
+        when(databaseReference.child(any)).thenAnswer((_) => databaseReference);
+        when(databaseReference.orderByKey()).thenAnswer((_) => databaseQuery);
+        when(databaseQuery.once()).thenAnswer((_) async => dataSnapshot);
+        when(dataSnapshot.value).thenAnswer((_) => null);
+
+        var firebaseApi = FirebaseCloudDatabase(firebaseDatabase);
 
         Exception? exception;
 
