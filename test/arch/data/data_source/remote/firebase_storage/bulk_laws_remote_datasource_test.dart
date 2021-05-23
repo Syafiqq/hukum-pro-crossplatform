@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-// @dart=2.9
-
 import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -25,9 +23,9 @@ MockTaskSnapshotPlatform mockTaskSnapshotPlatform = MockTaskSnapshotPlatform();
 
 void main() {
   setupFirebaseStorageMocks();
-  Directory directory;
+  late Directory directory;
 
-  FirebaseStorage storage;
+  late FirebaseStorage storage;
 
   setUpAll(() async {
     directory = await Directory.systemTemp.createTemp();
@@ -60,8 +58,8 @@ void main() {
     });
 
     group('$BulkLawsRemoteDatasource', () {
-      BulkLawsRemoteDatasource datasource;
-      File file;
+      late BulkLawsRemoteDatasource datasource;
+      late File file;
 
       setUp(() async {
         datasource = FirebaseCloudStorage(storage);
