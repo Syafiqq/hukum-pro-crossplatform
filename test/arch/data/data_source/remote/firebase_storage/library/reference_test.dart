@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-// @dart=2.9
-
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
@@ -24,8 +22,8 @@ MockDownloadTaskPlatform mockDownloadTaskPlatform = MockDownloadTaskPlatform();
 
 Future<void> main() async {
   setupFirebaseStorageMocks();
-  FirebaseStorage storage;
-  Reference testRef;
+  late FirebaseStorage storage;
+  late Reference testRef;
   FullMetadata testFullMetadata = FullMetadata(testMetadataMap);
   ListOptions testListOptions =
       const ListOptions(maxResults: testMaxResults, pageToken: testPageToken);
@@ -250,17 +248,17 @@ Future<void> main() async {
 
     group('putString()', () {
       test('raw string values', () {
-        /*final result = testRef.putString(testString);
+        final result = testRef.putString(testString);
 
         expect(result, isA<Task>());
 
         // confirm raw string was converted to a Base64 format
         String data = base64.encode(utf8.encode(testString));
-        verify(mockReference.putString(data, PutStringFormat.base64));*/
+        verify(mockReference.putString(data, PutStringFormat.base64));
       });
 
       test('data_url format', () {
-        /*UriData uriData = UriData.fromString(testString, base64: true);
+        UriData uriData = UriData.fromString(testString, base64: true);
         Uri uri = uriData.uri;
         final result =
             testRef.putString(uri.toString(), format: PutStringFormat.dataUrl);
@@ -270,7 +268,7 @@ Future<void> main() async {
         // confirm data_url was converted to a Base64 format
         UriData uriDataExpected = UriData.fromUri(Uri.parse(uri.toString()));
         verify(mockReference.putString(
-            uriDataExpected.contentText, PutStringFormat.base64, any));*/
+            uriDataExpected.contentText, PutStringFormat.base64, any));
       });
 
       test('throws AssertionError if data_url is not a Base64 format', () {
