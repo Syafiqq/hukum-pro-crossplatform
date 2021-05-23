@@ -1,13 +1,15 @@
 import 'package:equatable/equatable.dart';
+import 'package:hukum_pro/common/converter/json/string_to_int_type_adapter.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'law_entity.g.dart';
-part 'law_entity.json_key.dart';
 
 @JsonSerializable(anyMap: true, explicitToJson: true)
 class LawEntity extends Equatable {
   final String id;
-  @JsonKey(toJson: _yearToJson, fromJson: _yearFromJson)
+  @JsonKey(
+      toJson: StringToIntTypeAdapter.toJson,
+      fromJson: StringToIntTypeAdapter.fromJson)
   final int? year;
   final String? no;
   final String? description;
