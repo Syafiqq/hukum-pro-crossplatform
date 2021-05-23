@@ -61,7 +61,7 @@ class CacheSharedPreferences
 
   @override
   Future<void> setMenus(List<LawMenuOrderEntity> menus) async {
-    var menusMap = menus.map((menu) => menu.toJson());
+    var menusMap = menus.map((menu) => menu.toJson()).toList();
     var menusRawJson = jsonEncode(menusMap);
     await cache.setString('law_status_order', menusRawJson);
   }
