@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
@@ -15,16 +13,21 @@ import 'package:path_provider/path_provider.dart';
 
 import 'bulk_laws_repository_test.mocks.dart';
 
-@GenerateMocks([BulkLawsRemoteDatasource, BulkLawsLocalDatasource])
+@GenerateMocks([], customMocks: [
+  MockSpec<BulkLawsRemoteDatasource>(
+      as: #BaseMockBulkLawsRemoteDatasource, returnNullOnMissingStub: true),
+  MockSpec<BulkLawsLocalDatasource>(
+      as: #BaseMockBulkLawsLocalDatasource, returnNullOnMissingStub: true)
+])
 void main() {
   group('$BulkLawsRepository', () {
-    BulkLawsRemoteDatasource mockBulkLawsRemoteDatasource;
-    BulkLawsLocalDatasource mockBulkLawsLocalDatasource;
-    BulkLawsRepository repository;
+    late BaseMockBulkLawsRemoteDatasource mockBulkLawsRemoteDatasource;
+    late BaseMockBulkLawsLocalDatasource mockBulkLawsLocalDatasource;
+    late BulkLawsRepository repository;
 
     setUp(() {
-      mockBulkLawsRemoteDatasource = MockBulkLawsRemoteDatasource();
-      mockBulkLawsLocalDatasource = MockBulkLawsLocalDatasource();
+      mockBulkLawsRemoteDatasource = BaseMockBulkLawsRemoteDatasource();
+      mockBulkLawsLocalDatasource = BaseMockBulkLawsLocalDatasource();
       repository = BulkLawsRepositoryImpl(
           mockBulkLawsRemoteDatasource, mockBulkLawsLocalDatasource);
     });
