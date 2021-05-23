@@ -352,7 +352,21 @@ class MockDownloadTaskPlatform extends Mock
         // ignore: prefer_mixin, plugin_platform_interface needs to migrate to use `mixin`
         MockPlatformInterfaceMixin
     implements
-        TaskPlatform {}
+        TaskPlatform {
+  @override
+  TaskSnapshotPlatform get snapshot {
+    return super.noSuchMethod(Invocation.getter(#snapshot),
+        returnValue: MockTaskSnapshotPlatform(),
+        returnValueForMissingStub: MockTaskSnapshotPlatform());
+  }
+
+  @override
+  Future<TaskSnapshotPlatform> get onComplete {
+    return super.noSuchMethod(Invocation.getter(#onComplete),
+        returnValue: Future.value(MockTaskSnapshotPlatform()),
+        returnValueForMissingStub: Future.value(MockTaskSnapshotPlatform()));
+  }
+}
 
 // TaskSnapshotPlatform Mock
 class MockTaskSnapshotPlatform extends Mock
