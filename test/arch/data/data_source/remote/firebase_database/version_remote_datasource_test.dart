@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:async';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -47,7 +45,7 @@ void _initializeMethodChannel() {
 @GenerateMocks([FirebaseDatabase])
 void main() {
   _initializeMethodChannel();
-  FirebaseApp app;
+  late FirebaseApp app;
 
   setUpAll(() async {
     app = await Firebase.initializeApp(
@@ -69,7 +67,7 @@ void main() {
     final List<MethodCall> log = <MethodCall>[];
 
     const String databaseURL = 'https://test.com';
-    FirebaseDatabase database;
+    late FirebaseDatabase database;
 
     setUp(() async {
       database = FirebaseDatabase(app: app, databaseURL: databaseURL);
@@ -84,7 +82,7 @@ void main() {
           case 'FirebaseDatabase#setPersistenceCacheSizeBytes':
             return true;
           case 'DatabaseReference#runTransaction':
-            Map<String, dynamic> updatedValue;
+            late Map<String, dynamic> updatedValue;
             Future<void> simulateEvent(
                 int transactionKey, final MutableData mutableData) async {
               await ServicesBinding.instance?.defaultBinaryMessenger
@@ -172,7 +170,7 @@ void main() {
     }
 
     group('$FirebaseCloudDatabase', () {
-      FirebaseCloudDatabase firebaseApi;
+      late FirebaseCloudDatabase firebaseApi;
 
       setUp(() async {
         firebaseApi = FirebaseCloudDatabase(database);
@@ -184,7 +182,7 @@ void main() {
         var handleId = 87;
         mockHandleId = handleId;
 
-        VersionEntity entity;
+        late VersionEntity entity;
 
         firebaseApi.getVersion().then((result) {
           entity = result;
@@ -209,7 +207,7 @@ void main() {
         var handleId = 87;
         mockHandleId = handleId;
 
-        Exception exception;
+        late Exception exception;
 
         firebaseApi.getVersion().then((result) {}).catchError((e) {
           exception = e as Exception;
@@ -225,7 +223,7 @@ void main() {
         var handleId = 87;
         mockHandleId = handleId;
 
-        Exception exception;
+        late Exception exception;
 
         firebaseApi.getVersion().then((result) {}).catchError((e) {
           exception = e as Exception;
@@ -260,7 +258,7 @@ void main() {
         var handleId = 99;
         mockHandleId = handleId;
 
-        Exception exception;
+        late Exception exception;
 
         firebaseApi.getVersion().then((result) {}).catchError((e) {
           exception = e as Exception;
