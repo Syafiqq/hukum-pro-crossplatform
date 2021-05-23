@@ -247,10 +247,10 @@ void main() {
 
         expect(
             () async => await firebaseApi.getVersion(),
-            throwsA(isInstanceOf<DataFetchFailureException>().having(
+            throwsA(isA<DataFetchFailureException>().having(
                 (e) => e.internalException,
                 'internalException',
-                isInstanceOf<FirebaseException>()
+                isA<FirebaseException>()
                     .having((e) => e.plugin, 'plugin', '0'))));
       });
 
@@ -272,7 +272,7 @@ void main() {
             isA<DataFetchFailureException>().having(
                 (e) => e.internalException,
                 'internalException',
-                isInstanceOf<DefinedException>()
+                isA<DefinedException>()
                     .having((e) => e.message, 'message', '0')));
       });
     });

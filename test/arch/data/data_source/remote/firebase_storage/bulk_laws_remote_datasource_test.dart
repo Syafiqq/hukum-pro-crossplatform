@@ -96,10 +96,10 @@ void main() {
 
         expect(
             () async => await datasource.downloadBulkLaws('a', file),
-            throwsA(isInstanceOf<DataFetchFailureException>().having(
+            throwsA(isA<DataFetchFailureException>().having(
                 (e) => e.internalException,
                 'internalException',
-                isInstanceOf<FirebaseException>()
+                isA<FirebaseException>()
                     .having((e) => e.plugin, 'plugin', '0'))));
       });
 
@@ -114,10 +114,10 @@ void main() {
 
         expect(
             () async => await datasource.downloadBulkLaws('a', file),
-            throwsA(isInstanceOf<DataFetchFailureException>().having(
+            throwsA(isA<DataFetchFailureException>().having(
                 (e) => e.internalException,
                 'internalException',
-                isInstanceOf<FileSystemException>()
+                isA<FileSystemException>()
                     .having((e) => e.message, 'message', '0'))));
       });
     });

@@ -41,13 +41,13 @@ void main() async {
 
       var filenames = await datasource.getBulkDiskReferences(id, names);
       expect(filenames, <Matcher>[
-        isInstanceOf<File>()
+        isA<File>()
             .having((e) => e.path, 'path', contains('/1/'))
             .having((e) => e.path, 'path', contains('/1.json')),
-        isInstanceOf<File>()
+        isA<File>()
             .having((e) => e.path, 'path', contains('/1/'))
             .having((e) => e.path, 'path', contains('/2.json')),
-        isInstanceOf<File>()
+        isA<File>()
             .having((e) => e.path, 'path', contains('/1/'))
             .having((e) => e.path, 'path', contains('/3.json')),
       ]);
@@ -59,7 +59,7 @@ void main() async {
       var names = ['1.json'];
       expect(
           () async => await datasource.getBulkDiskReferences(id, names),
-          throwsA(isInstanceOf<DataLocationNotFoundException>().having(
+          throwsA(isA<DataLocationNotFoundException>().having(
               (e) => e.internalException,
               'internalException',
               isA<MissingPlatformDirectoryException>())));

@@ -43,10 +43,10 @@ void main() {
             .thenThrow(DataNotExistsException(null, null));
 
         expect(() async => await mockVersionRemoteDatasource.getVersion(),
-            throwsA(isInstanceOf<DataNotExistsException>()));
+            throwsA(isA<DataNotExistsException>()));
 
         expect(() async => await versionRepository.fetchFromRemote(),
-            throwsA(isInstanceOf<DataNotExistsException>()));
+            throwsA(isA<DataNotExistsException>()));
       });
 
       test('throw parse failed', () async {
@@ -54,10 +54,10 @@ void main() {
             .thenThrow(ParseFailedException(VersionEntity, null, null));
 
         expect(() async => await mockVersionRemoteDatasource.getVersion(),
-            throwsA(isInstanceOf<ParseFailedException>()));
+            throwsA(isA<ParseFailedException>()));
 
         expect(() async => await versionRepository.fetchFromRemote(),
-            throwsA(isInstanceOf<ParseFailedException>()));
+            throwsA(isA<ParseFailedException>()));
       });
     });
 
@@ -91,10 +91,10 @@ void main() {
             .thenThrow(ParseFailedException(VersionEntity, null, null));
 
         expect(() async => await mockVersionCacheDatasource.getVersion(),
-            throwsA(isInstanceOf<ParseFailedException>()));
+            throwsA(isA<ParseFailedException>()));
 
         expect(() async => await versionRepository.fetchFromLocal(),
-            throwsA(isInstanceOf<ParseFailedException>()));
+            throwsA(isA<ParseFailedException>()));
       });
     });
 

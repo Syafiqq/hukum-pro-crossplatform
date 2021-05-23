@@ -44,13 +44,13 @@ void main() {
         var files = await repository
             .getFileReference('1', ['1.json', '2.json', '3.json']);
         expect(files, <Matcher>[
-          isInstanceOf<File>()
+          isA<File>()
               .having((e) => e.path, 'path 1', contains('/1/'))
               .having((e) => e.path, 'path 2', contains('/1.json')),
-          isInstanceOf<File>()
+          isA<File>()
               .having((e) => e.path, 'path 1', contains('/1/'))
               .having((e) => e.path, 'path 2', contains('/2.json')),
-          isInstanceOf<File>()
+          isA<File>()
               .having((e) => e.path, 'path 1', contains('/1/'))
               .having((e) => e.path, 'path 2', contains('/3.json')),
         ]);
@@ -65,7 +65,7 @@ void main() {
             () async => await repository.getFileReference('1', [
                   '1.json',
                 ]),
-            throwsA(isInstanceOf<DataLocationNotFoundException>().having(
+            throwsA(isA<DataLocationNotFoundException>().having(
                 (e) => e.internalException,
                 'internalException',
                 isA<MissingPlatformDirectoryException>())));
@@ -85,7 +85,7 @@ void main() {
 
         expect(
             () async => await repository.downloadLaw('1.json', File('a.json')),
-            throwsA(isInstanceOf<DataFetchFailureException>().having(
+            throwsA(isA<DataFetchFailureException>().having(
                 (e) => e.internalException,
                 'internalException',
                 isA<FirebaseException>()
@@ -98,7 +98,7 @@ void main() {
 
         expect(
             () async => await repository.downloadLaw('1.json', File('a.json')),
-            throwsA(isInstanceOf<DataFetchFailureException>().having(
+            throwsA(isA<DataFetchFailureException>().having(
                 (e) => e.internalException,
                 'internalException',
                 isA<FileSystemException>()

@@ -61,7 +61,7 @@ void main() {
           await sharedPreferences.reload();
 
           expect(() async => await cache.getVersion(),
-              throwsA(isInstanceOf<ParseFailedException>()));
+              throwsA(isA<ParseFailedException>()));
         });
       });
 

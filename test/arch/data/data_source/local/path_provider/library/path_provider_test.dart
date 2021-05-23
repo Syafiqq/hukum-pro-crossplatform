@@ -97,7 +97,7 @@ void main() async {
       test('cannot create file because not exist directory', () async {
         expect(await file.exists(), false);
         expect(() async => await file.create(),
-            throwsA(isInstanceOf<FileSystemException>()));
+            throwsA(isA<FileSystemException>()));
       });
 
       test('create file because exists directory', () async {
@@ -119,7 +119,7 @@ void main() async {
           expect(await file.exists(), false);
           expect(
               () async => await readCounter(file),
-              throwsA(isInstanceOf<FileSystemException>()
+              throwsA(isA<FileSystemException>()
                   .having((e) => e.message, 'message', 'Cannot open file')));
         });
       });
