@@ -182,7 +182,7 @@ void main() {
         var handleId = 87;
         mockHandleId = handleId;
 
-        late VersionEntity entity;
+        VersionEntity? entity;
 
         firebaseApi.getVersion().then((result) {
           entity = result;
@@ -207,7 +207,7 @@ void main() {
         var handleId = 87;
         mockHandleId = handleId;
 
-        late Exception exception;
+        Exception? exception;
 
         firebaseApi.getVersion().then((result) {}).catchError((e) {
           exception = e as Exception;
@@ -223,7 +223,7 @@ void main() {
         var handleId = 87;
         mockHandleId = handleId;
 
-        late Exception exception;
+        Exception? exception;
 
         firebaseApi.getVersion().then((result) {}).catchError((e) {
           exception = e as Exception;
@@ -258,7 +258,7 @@ void main() {
         var handleId = 99;
         mockHandleId = handleId;
 
-        late Exception exception;
+        Exception? exception;
 
         firebaseApi.getVersion().then((result) {}).catchError((e) {
           exception = e as Exception;

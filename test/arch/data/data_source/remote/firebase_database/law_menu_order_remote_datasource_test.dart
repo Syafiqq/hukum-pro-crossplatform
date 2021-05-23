@@ -182,7 +182,7 @@ void main() {
         var handleId = 87;
         mockHandleId = handleId;
 
-        late List<LawMenuOrderEntity> entity;
+        List<LawMenuOrderEntity>? entity;
 
         firebaseApi.getMenus().then((result) {
           entity = result;
@@ -204,7 +204,7 @@ void main() {
         ]);
 
         expect(entity, isNotNull);
-        expect(entity.length, 5);
+        expect(entity?.length, 5);
         expect(entity, <Matcher>[
           isA<LawMenuOrderEntity>()
               .having((e) => e.order, 'order', 1)
@@ -229,15 +229,48 @@ void main() {
         ]);
       });
 
-      test('throw error if null safety, success if older', () async {
+      test('return empty if not found', () async {
         var handleId = 87;
         mockHandleId = handleId;
 
-        late List<LawMenuOrderEntity> entity;
+        List<LawMenuOrderEntity>? entity;
 
         firebaseApi.getMenus().then((result) {
           entity = result;
         }).catchError((e) {});
+
+        await Future<void>.delayed(Duration(seconds: 1));
+        await simulateEvent(handleId, '', {}, []);
+
+        expect(entity, isNotNull);
+        expect(entity?.length, 0);
+      });
+
+      test('throws not exist error', () async {
+        var handleId = 87;
+        mockHandleId = handleId;
+
+        Exception? exception;
+
+        firebaseApi.getMenus().then((result) {}).catchError((e) {
+          exception = e as Exception;
+        });
+        await Future<void>.delayed(Duration(seconds: 1));
+        await simulateEvent(handleId, 'a', {}, []);
+
+        expect(exception, isNotNull);
+        expect(exception, isA<DataNotExistsException>());
+      });
+
+      test('throw type error', () async {
+        var handleId = 87;
+        mockHandleId = handleId;
+
+        Exception? exception;
+
+        firebaseApi.getMenus().then((_) {}).catchError((e) {
+          exception = e as Exception?;
+        });
 
         await Future<void>.delayed(Duration(seconds: 1));
         await simulateEvent(handleId, 'law_status_order', {
@@ -246,40 +279,24 @@ void main() {
           '0',
         ]);
 
-        expect(entity, isNotNull);
-        expect(entity.length, 1);
-        expect(entity, <Matcher>[
-          isA<LawMenuOrderEntity>()
-              .having((e) => e.order, 'order', isNull)
-              .having((e) => e.id, 'id', isNull)
-              .having((e) => e.name, 'name', isNull),
-        ]);
-      });
-
-      test('throws not exist error', () async {
-        var handleId = 87;
-        mockHandleId = handleId;
-
-        late Exception exception;
-
-        firebaseApi.getVersion().then((result) {}).catchError((e) {
-          exception = e as Exception;
-        });
-        await Future<void>.delayed(Duration(seconds: 1));
-        await simulateEvent(handleId, '', {}, []);
-
         expect(exception, isNotNull);
-        expect(exception, isA<DataNotExistsException>());
+        expect(
+            exception,
+            isA<ParseFailedException>().having(
+                (e) => e.internalError,
+                'internalError',
+                isA<TypeError>().having((e) => e.toString(), 'toString',
+                    "type 'Null' is not a subtype of type 'String' in type cast")));
       });
 
       test('throws parse failed error', () async {
         var handleId = 87;
         mockHandleId = handleId;
 
-        late Exception exception;
+        Exception? exception;
 
-        firebaseApi.getVersion().then((result) {}).catchError((e) {
-          exception = e as Exception;
+        firebaseApi.getMenus().then((result) {}).catchError((e) {
+          exception = e as Exception?;
         });
         await Future<void>.delayed(Duration(seconds: 1));
         await simulateEvent(handleId, 'law_status_order', {
@@ -299,7 +316,7 @@ void main() {
         var firebaseApi = FirebaseCloudDatabase(firebaseDatabase);
 
         expect(
-            () async => await firebaseApi.getVersion(),
+            () async => await firebaseApi.getMenus(),
             throwsA(isInstanceOf<DataFetchFailureException>().having(
                 (e) => e.internalException,
                 'internalException',
@@ -311,9 +328,9 @@ void main() {
         var handleId = 99;
         mockHandleId = handleId;
 
-        late Exception exception;
+        Exception? exception;
 
-        firebaseApi.getVersion().then((result) {}).catchError((e) {
+        firebaseApi.getMenus().then((result) {}).catchError((e) {
           exception = e as Exception;
         });
         await Future<void>.delayed(Duration(seconds: 1));
