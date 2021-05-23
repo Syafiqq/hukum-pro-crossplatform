@@ -67,7 +67,7 @@ void main() {
         await file.deleteIfExists();
       });
 
-      test('success get file', () async {
+      test('success download file', () async {
         when(mockReference.writeToFile(file))
             .thenReturn(mockDownloadTaskPlatform);
         when(mockDownloadTaskPlatform.snapshot)
