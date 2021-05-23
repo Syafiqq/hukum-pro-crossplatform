@@ -2,8 +2,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-// @dart=2.9
-
 import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -25,9 +23,9 @@ MockTaskSnapshotPlatform mockTaskSnapshotPlatform = MockTaskSnapshotPlatform();
 
 void main() {
   setupFirebaseStorageMocks();
-  Directory directory;
+  late Directory directory;
 
-  FirebaseStorage storage;
+  late FirebaseStorage storage;
 
   setUpAll(() async {
     directory = await Directory.systemTemp.createTemp();
@@ -60,8 +58,8 @@ void main() {
     });
 
     group('$BulkLawsRemoteDatasource', () {
-      BulkLawsRemoteDatasource datasource;
-      File file;
+      late BulkLawsRemoteDatasource datasource;
+      late File file;
 
       setUp(() async {
         datasource = FirebaseCloudStorage(storage);
@@ -69,7 +67,7 @@ void main() {
         await file.deleteIfExists();
       });
 
-      test('success get file', () async {
+      test('success download file', () async {
         when(mockReference.writeToFile(file))
             .thenReturn(mockDownloadTaskPlatform);
         when(mockDownloadTaskPlatform.snapshot)
@@ -98,10 +96,10 @@ void main() {
 
         expect(
             () async => await datasource.downloadBulkLaws('a', file),
-            throwsA(isInstanceOf<DataFetchFailureException>().having(
+            throwsA(isA<DataFetchFailureException>().having(
                 (e) => e.internalException,
                 'internalException',
-                isInstanceOf<FirebaseException>()
+                isA<FirebaseException>()
                     .having((e) => e.plugin, 'plugin', '0'))));
       });
 
@@ -116,10 +114,10 @@ void main() {
 
         expect(
             () async => await datasource.downloadBulkLaws('a', file),
-            throwsA(isInstanceOf<DataFetchFailureException>().having(
+            throwsA(isA<DataFetchFailureException>().having(
                 (e) => e.internalException,
                 'internalException',
-                isInstanceOf<FileSystemException>()
+                isA<FileSystemException>()
                     .having((e) => e.message, 'message', '0'))));
       });
     });

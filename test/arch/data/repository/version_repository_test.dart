@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hukum_pro/arch/data/data_source/local/contract/version_local_datasource.dart';
 import 'package:hukum_pro/arch/data/data_source/remote/contract/version_remote_datasource.dart';
@@ -15,9 +13,9 @@ import 'version_repository_test.mocks.dart';
 @GenerateMocks([VersionRemoteDatasource, VersionLocalDatasource])
 void main() {
   group('$VersionRepository', () {
-    VersionRemoteDatasource mockVersionRemoteDatasource;
-    VersionLocalDatasource mockVersionCacheDatasource;
-    VersionRepositoryImpl versionRepository;
+    late VersionRemoteDatasource mockVersionRemoteDatasource;
+    late VersionLocalDatasource mockVersionCacheDatasource;
+    late VersionRepositoryImpl versionRepository;
 
     setUp(() {
       mockVersionRemoteDatasource = MockVersionRemoteDatasource();
@@ -45,10 +43,10 @@ void main() {
             .thenThrow(DataNotExistsException(null, null));
 
         expect(() async => await mockVersionRemoteDatasource.getVersion(),
-            throwsA(isInstanceOf<DataNotExistsException>()));
+            throwsA(isA<DataNotExistsException>()));
 
         expect(() async => await versionRepository.fetchFromRemote(),
-            throwsA(isInstanceOf<DataNotExistsException>()));
+            throwsA(isA<DataNotExistsException>()));
       });
 
       test('throw parse failed', () async {
@@ -56,10 +54,10 @@ void main() {
             .thenThrow(ParseFailedException(VersionEntity, null, null));
 
         expect(() async => await mockVersionRemoteDatasource.getVersion(),
-            throwsA(isInstanceOf<ParseFailedException>()));
+            throwsA(isA<ParseFailedException>()));
 
         expect(() async => await versionRepository.fetchFromRemote(),
-            throwsA(isInstanceOf<ParseFailedException>()));
+            throwsA(isA<ParseFailedException>()));
       });
     });
 
@@ -93,10 +91,10 @@ void main() {
             .thenThrow(ParseFailedException(VersionEntity, null, null));
 
         expect(() async => await mockVersionCacheDatasource.getVersion(),
-            throwsA(isInstanceOf<ParseFailedException>()));
+            throwsA(isA<ParseFailedException>()));
 
         expect(() async => await versionRepository.fetchFromLocal(),
-            throwsA(isInstanceOf<ParseFailedException>()));
+            throwsA(isA<ParseFailedException>()));
       });
     });
 
@@ -104,7 +102,7 @@ void main() {
       test('set version', () async {
         var entity = VersionEntity(null, null, null);
         when(mockVersionCacheDatasource.setVersion(entity))
-            .thenAnswer((_) => null);
+            .thenAnswer((_) async {});
 
         verifyNever(mockVersionCacheDatasource.setVersion(entity));
 

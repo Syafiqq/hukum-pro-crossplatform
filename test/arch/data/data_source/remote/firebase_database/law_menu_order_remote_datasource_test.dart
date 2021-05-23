@@ -6,13 +6,13 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hukum_pro/arch/data/data_source/remote/impl/firebase_cloud_database.dart';
-import 'package:hukum_pro/arch/domain/entity/misc/version_entity.dart';
+import 'package:hukum_pro/arch/domain/entity/law/law_menu_order_entity.dart';
 import 'package:hukum_pro/common/exception/built_in.dart';
 import 'package:hukum_pro/common/exception/defined_exception.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'version_remote_datasource_test.mocks.dart';
+import 'law_menu_order_remote_datasource_test.mocks.dart';
 
 void _initializeMethodChannel() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -42,7 +42,7 @@ void _initializeMethodChannel() {
   });
 }
 
-@GenerateMocks([FirebaseDatabase])
+@GenerateMocks([FirebaseDatabase, DatabaseReference, Query, DataSnapshot])
 void main() {
   _initializeMethodChannel();
   late FirebaseApp app;
@@ -178,45 +178,127 @@ void main() {
         expect(firebaseApi, isNotNull);
       });
 
-      test('return version', () async {
+      test('return law menu', () async {
         var handleId = 87;
         mockHandleId = handleId;
 
-        VersionEntity? entity;
+        List<LawMenuOrderEntity>? entity;
 
-        firebaseApi.getVersion().then((result) {
+        firebaseApi.getMenus().then((result) {
           entity = result;
         }).catchError((e) {});
 
         await Future<void>.delayed(Duration(seconds: 1));
-        await simulateEvent(handleId, 'versions_new/v1', {
-          '1': {'detail': {}, 'milis': 0, 'timestamp': ''}
+        await simulateEvent(handleId, 'law_status_order', {
+          '0': {'id': '1', 'order': 1, 'name': '1'},
+          '1': {'id': '2', 'order': 2, 'name': '2'},
+          '2': {'id': '3', 'order': 3, 'name': '3'},
+          '3': {'id': '4', 'order': 4, 'name': '4'},
+          '4': {'id': '5', 'order': 5, 'name': '5'},
         }, [
-          '1'
+          '0',
+          '1',
+          '2',
+          '3',
+          '4'
         ]);
 
         expect(entity, isNotNull);
-        expect(entity, isA<VersionEntity>());
+        expect(entity?.length, 5);
+        expect(entity, <Matcher>[
+          isA<LawMenuOrderEntity>()
+              .having((e) => e.order, 'order', 1)
+              .having((e) => e.id, 'id', '1')
+              .having((e) => e.name, 'name', '1'),
+          isA<LawMenuOrderEntity>()
+              .having((e) => e.order, 'order', 2)
+              .having((e) => e.id, 'id', '2')
+              .having((e) => e.name, 'name', '2'),
+          isA<LawMenuOrderEntity>()
+              .having((e) => e.order, 'order', 3)
+              .having((e) => e.id, 'id', '3')
+              .having((e) => e.name, 'name', '3'),
+          isA<LawMenuOrderEntity>()
+              .having((e) => e.order, 'order', 4)
+              .having((e) => e.id, 'id', '4')
+              .having((e) => e.name, 'name', '4'),
+          isA<LawMenuOrderEntity>()
+              .having((e) => e.order, 'order', 5)
+              .having((e) => e.id, 'id', '5')
+              .having((e) => e.name, 'name', '5'),
+        ]);
+      });
 
-        expect(entity?.detail, isNotNull);
-        expect(entity?.milis, 0);
-        expect(entity?.timestamp, '');
+      test('return empty if not found', () async {
+        var handleId = 87;
+        mockHandleId = handleId;
+
+        List<LawMenuOrderEntity>? entity;
+
+        firebaseApi.getMenus().then((result) {
+          entity = result;
+        }).catchError((e) {});
+
+        await Future<void>.delayed(Duration(seconds: 1));
+        await simulateEvent(handleId, '', {}, []);
+
+        expect(entity, isNotNull);
+        expect(entity?.length, 0);
       });
 
       test('throws not exist error', () async {
         var handleId = 87;
         mockHandleId = handleId;
 
+        var firebaseDatabase = MockFirebaseDatabase();
+        var databaseReference = MockDatabaseReference();
+        var databaseQuery = MockQuery();
+        var dataSnapshot = MockDataSnapshot();
+        when(firebaseDatabase.reference()).thenAnswer((_) => databaseReference);
+        when(databaseReference.child(any)).thenAnswer((_) => databaseReference);
+        when(databaseReference.orderByKey()).thenAnswer((_) => databaseQuery);
+        when(databaseQuery.once()).thenAnswer((_) async => dataSnapshot);
+        when(dataSnapshot.value).thenAnswer((_) => null);
+
+        var firebaseApi = FirebaseCloudDatabase(firebaseDatabase);
+
         Exception? exception;
 
-        firebaseApi.getVersion().then((result) {}).catchError((e) {
+        firebaseApi.getMenus().then((result) {}).catchError((e) {
           exception = e as Exception;
         });
         await Future<void>.delayed(Duration(seconds: 1));
-        await simulateEvent(handleId, '', {}, []);
+        await simulateEvent(handleId, 'a', {}, []);
 
         expect(exception, isNotNull);
         expect(exception, isA<DataNotExistsException>());
+      });
+
+      test('throw type error', () async {
+        var handleId = 87;
+        mockHandleId = handleId;
+
+        Exception? exception;
+
+        firebaseApi.getMenus().then((_) {}).catchError((e) {
+          exception = e as Exception?;
+        });
+
+        await Future<void>.delayed(Duration(seconds: 1));
+        await simulateEvent(handleId, 'law_status_order', {
+          '0': {},
+        }, [
+          '0',
+        ]);
+
+        expect(exception, isNotNull);
+        expect(
+            exception,
+            isA<ParseFailedException>().having(
+                (e) => e.internalError,
+                'internalError',
+                isA<TypeError>().having((e) => e.toString(), 'toString',
+                    "type 'Null' is not a subtype of type 'String' in type cast")));
       });
 
       test('throws parse failed error', () async {
@@ -225,14 +307,14 @@ void main() {
 
         Exception? exception;
 
-        firebaseApi.getVersion().then((result) {}).catchError((e) {
-          exception = e as Exception;
+        firebaseApi.getMenus().then((result) {}).catchError((e) {
+          exception = e as Exception?;
         });
         await Future<void>.delayed(Duration(seconds: 1));
-        await simulateEvent(handleId, 'versions_new/v1', {
-          '1': {'detail': 1, 'milis': 2, 'timestamp': 3}
+        await simulateEvent(handleId, 'law_status_order', {
+          '0': {'id': '1', 'order': '1', 'name': '1'},
         }, [
-          '1'
+          '0',
         ]);
 
         expect(exception, isNotNull);
@@ -242,11 +324,11 @@ void main() {
       test('throws fetch failed due to firebase error', () async {
         var firebaseDatabase = MockFirebaseDatabase();
         when(firebaseDatabase.reference())
-            .thenThrow(FirebaseException(plugin: "0"));
+            .thenThrow(FirebaseException(plugin: '0'));
         var firebaseApi = FirebaseCloudDatabase(firebaseDatabase);
 
         expect(
-            () async => await firebaseApi.getVersion(),
+            () async => await firebaseApi.getMenus(),
             throwsA(isA<DataFetchFailureException>().having(
                 (e) => e.internalException,
                 'internalException',
@@ -260,7 +342,7 @@ void main() {
 
         Exception? exception;
 
-        firebaseApi.getVersion().then((result) {}).catchError((e) {
+        firebaseApi.getMenus().then((result) {}).catchError((e) {
           exception = e as Exception;
         });
         await Future<void>.delayed(Duration(seconds: 1));

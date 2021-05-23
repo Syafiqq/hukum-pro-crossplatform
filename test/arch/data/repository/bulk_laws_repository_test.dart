@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
@@ -15,16 +13,21 @@ import 'package:path_provider/path_provider.dart';
 
 import 'bulk_laws_repository_test.mocks.dart';
 
-@GenerateMocks([BulkLawsRemoteDatasource, BulkLawsLocalDatasource])
+@GenerateMocks([], customMocks: [
+  MockSpec<BulkLawsRemoteDatasource>(
+      as: #BaseMockBulkLawsRemoteDatasource, returnNullOnMissingStub: true),
+  MockSpec<BulkLawsLocalDatasource>(
+      as: #BaseMockBulkLawsLocalDatasource, returnNullOnMissingStub: true)
+])
 void main() {
   group('$BulkLawsRepository', () {
-    BulkLawsRemoteDatasource mockBulkLawsRemoteDatasource;
-    BulkLawsLocalDatasource mockBulkLawsLocalDatasource;
-    BulkLawsRepository repository;
+    late BaseMockBulkLawsRemoteDatasource mockBulkLawsRemoteDatasource;
+    late BaseMockBulkLawsLocalDatasource mockBulkLawsLocalDatasource;
+    late BulkLawsRepository repository;
 
     setUp(() {
-      mockBulkLawsRemoteDatasource = MockBulkLawsRemoteDatasource();
-      mockBulkLawsLocalDatasource = MockBulkLawsLocalDatasource();
+      mockBulkLawsRemoteDatasource = BaseMockBulkLawsRemoteDatasource();
+      mockBulkLawsLocalDatasource = BaseMockBulkLawsLocalDatasource();
       repository = BulkLawsRepositoryImpl(
           mockBulkLawsRemoteDatasource, mockBulkLawsLocalDatasource);
     });
@@ -41,13 +44,13 @@ void main() {
         var files = await repository
             .getFileReference('1', ['1.json', '2.json', '3.json']);
         expect(files, <Matcher>[
-          isInstanceOf<File>()
+          isA<File>()
               .having((e) => e.path, 'path 1', contains('/1/'))
               .having((e) => e.path, 'path 2', contains('/1.json')),
-          isInstanceOf<File>()
+          isA<File>()
               .having((e) => e.path, 'path 1', contains('/1/'))
               .having((e) => e.path, 'path 2', contains('/2.json')),
-          isInstanceOf<File>()
+          isA<File>()
               .having((e) => e.path, 'path 1', contains('/1/'))
               .having((e) => e.path, 'path 2', contains('/3.json')),
         ]);
@@ -62,7 +65,7 @@ void main() {
             () async => await repository.getFileReference('1', [
                   '1.json',
                 ]),
-            throwsA(isInstanceOf<DataLocationNotFoundException>().having(
+            throwsA(isA<DataLocationNotFoundException>().having(
                 (e) => e.internalException,
                 'internalException',
                 isA<MissingPlatformDirectoryException>())));
@@ -82,7 +85,7 @@ void main() {
 
         expect(
             () async => await repository.downloadLaw('1.json', File('a.json')),
-            throwsA(isInstanceOf<DataFetchFailureException>().having(
+            throwsA(isA<DataFetchFailureException>().having(
                 (e) => e.internalException,
                 'internalException',
                 isA<FirebaseException>()
@@ -95,7 +98,7 @@ void main() {
 
         expect(
             () async => await repository.downloadLaw('1.json', File('a.json')),
-            throwsA(isInstanceOf<DataFetchFailureException>().having(
+            throwsA(isA<DataFetchFailureException>().having(
                 (e) => e.internalException,
                 'internalException',
                 isA<FileSystemException>()
