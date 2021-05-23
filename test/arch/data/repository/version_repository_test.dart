@@ -1,5 +1,3 @@
-// @dart=2.9
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hukum_pro/arch/data/data_source/local/contract/version_local_datasource.dart';
 import 'package:hukum_pro/arch/data/data_source/remote/contract/version_remote_datasource.dart';
@@ -15,9 +13,9 @@ import 'version_repository_test.mocks.dart';
 @GenerateMocks([VersionRemoteDatasource, VersionLocalDatasource])
 void main() {
   group('$VersionRepository', () {
-    VersionRemoteDatasource mockVersionRemoteDatasource;
-    VersionLocalDatasource mockVersionCacheDatasource;
-    VersionRepositoryImpl versionRepository;
+    late VersionRemoteDatasource mockVersionRemoteDatasource;
+    late VersionLocalDatasource mockVersionCacheDatasource;
+    late VersionRepositoryImpl versionRepository;
 
     setUp(() {
       mockVersionRemoteDatasource = MockVersionRemoteDatasource();
@@ -104,7 +102,7 @@ void main() {
       test('set version', () async {
         var entity = VersionEntity(null, null, null);
         when(mockVersionCacheDatasource.setVersion(entity))
-            .thenAnswer((_) => null);
+            .thenAnswer((_) async {});
 
         verifyNever(mockVersionCacheDatasource.setVersion(entity));
 
