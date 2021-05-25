@@ -17,5 +17,5 @@ class BulkLawsRepositoryImpl implements BulkLawsRepository {
 
   @override
   Future<List<File>> getFileReference(String id, List<String> names) async =>
-      await localDatasource.getBulkDiskReferences(id, names);
+      await localDatasource.getBulkLawDiskReferences(id, names);
 }

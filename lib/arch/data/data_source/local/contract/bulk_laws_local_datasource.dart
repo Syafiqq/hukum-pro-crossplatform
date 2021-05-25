@@ -1,5 +1,5 @@
 import 'dart:io';
 
 abstract class BulkLawsLocalDatasource {
-  Future<List<File>> getBulkDiskReferences(String id, List<String> names);
+  Future<List<File>> getBulkLawDiskReferences(String id, List<String> names);
 }

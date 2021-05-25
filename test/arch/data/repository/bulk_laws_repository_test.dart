@@ -34,7 +34,7 @@ void main() {
 
     group('getFileReference', () {
       test('return files', () async {
-        when(mockBulkLawsLocalDatasource.getBulkDiskReferences(any, any))
+        when(mockBulkLawsLocalDatasource.getBulkLawDiskReferences(any, any))
             .thenAnswer((e) async {
           var path = e.positionalArguments[0] as String;
           var names = e.positionalArguments[1] as List<String>;
@@ -57,7 +57,7 @@ void main() {
       });
 
       test('throws error', () async {
-        when(mockBulkLawsLocalDatasource.getBulkDiskReferences(any, any))
+        when(mockBulkLawsLocalDatasource.getBulkLawDiskReferences(any, any))
             .thenThrow(DataLocationNotFoundException(
                 MissingPlatformDirectoryException('1'), null));
 

@@ -6,7 +6,7 @@ import 'package:path_provider/path_provider.dart';
 
 class DiskPathProvider implements BulkLawsLocalDatasource {
   @override
-  Future<List<File>> getBulkDiskReferences(
+  Future<List<File>> getBulkLawDiskReferences(
       String id, List<String> names) async {
     try {
       var directory = await getApplicationSupportDirectory();

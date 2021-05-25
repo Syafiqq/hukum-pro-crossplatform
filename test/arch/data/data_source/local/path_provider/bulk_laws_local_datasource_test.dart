@@ -39,7 +39,7 @@ void main() async {
       var id = '1';
       var names = ['1.json', '2.json', '3.json'];
 
-      var filenames = await datasource.getBulkDiskReferences(id, names);
+      var filenames = await datasource.getBulkLawDiskReferences(id, names);
       expect(filenames, <Matcher>[
         isA<File>()
             .having((e) => e.path, 'path', contains('/1/'))
@@ -58,7 +58,7 @@ void main() async {
       var id = '1';
       var names = ['1.json'];
       expect(
-          () async => await datasource.getBulkDiskReferences(id, names),
+          () async => await datasource.getBulkLawDiskReferences(id, names),
           throwsA(isA<DataLocationNotFoundException>().having(
               (e) => e.internalException,
               'internalException',
