@@ -97,6 +97,13 @@ void main() async {
           isA<LawEntity>().having((e) => e.id, 'id', contains('2')),
         ]);
       });
+
+      test('throws parse error', () async {
+        await file.writeAsString('{"id": "1"}');
+
+        expect(() async => await datasource.decodeBulkLaw(file),
+            throwsA(isA<ParseFailedException>()));
+      });
     });
   });
 }
