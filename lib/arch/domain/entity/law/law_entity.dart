@@ -6,7 +6,7 @@ part 'law_entity.g.dart';
 
 @JsonSerializable(anyMap: true, explicitToJson: true)
 class LawEntity extends Equatable {
-  final String id;
+  final String remoteId;
   @JsonKey(
       toJson: StringIntToIntTypeAdapter.toJson,
       fromJson: StringIntToIntTypeAdapter.fromJson)
@@ -19,12 +19,12 @@ class LawEntity extends Equatable {
   @JsonKey(name: 'date_created')
   final DateTime? dateCreated;
 
-  LawEntity(this.id, this.year, this.no, this.description, this.status,
+  LawEntity(this.remoteId, this.year, this.no, this.description, this.status,
       this.reference, this.category, this.dateCreated);
 
   @override
   List<Object?> get props =>
-      [id, year, no, description, status, reference, category, dateCreated];
+      [remoteId, year, no, description, status, reference, category, dateCreated];
 
   factory LawEntity.fromJson(Map json) => _$LawEntityFromJson(json);
 

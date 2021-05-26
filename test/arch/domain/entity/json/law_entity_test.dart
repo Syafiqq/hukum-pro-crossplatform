@@ -12,7 +12,7 @@ void main() {
             test('success parse', () {
               var jsonMap = {'id': '1'};
               var entity = LawEntity.fromJson(jsonMap);
-              expect(entity.id, '1');
+              expect(entity.remoteId, '1');
             });
             test('throw type error invalid data type', () {
               var jsonMap = {'id': 1};
@@ -161,7 +161,7 @@ void main() {
         test('success parse only id', () {
           var jsonMap = {'id': '1'};
           var entity = LawEntity.fromJson(jsonMap);
-          expect(entity.id, '1');
+          expect(entity.remoteId, '1');
           expect(entity.no, isNull);
           expect(entity.year, isNull);
           expect(entity.description, isNull);

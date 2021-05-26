@@ -87,8 +87,8 @@ void main() async {
         var entity = await datasource.decodeBulkLaw(file);
 
         expect(entity, <Matcher>[
-          isA<LawEntity>().having((e) => e.id, 'id', contains('1')),
-          isA<LawEntity>().having((e) => e.id, 'id', contains('2')),
+          isA<LawEntity>().having((e) => e.remoteId, 'id', contains('1')),
+          isA<LawEntity>().having((e) => e.remoteId, 'id', contains('2')),
         ]);
       });
 
