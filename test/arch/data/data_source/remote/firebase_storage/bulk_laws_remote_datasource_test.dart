@@ -14,6 +14,7 @@ import 'package:hukum_pro/common/exception/built_in.dart';
 import 'package:mockito/mockito.dart';
 
 import 'library/mock.dart';
+import '../../../../../common/file+operation.dart';
 
 MockReferencePlatform mockReference = MockReferencePlatform();
 MockListResultPlatform mockListResultPlatform = MockListResultPlatform();
@@ -122,12 +123,4 @@ void main() {
       });
     });
   });
-}
-
-extension FileRemoval on File {
-  Future<void> deleteIfExists() async {
-    try {
-      await this.delete();
-    } on FileSystemException {}
-  }
 }

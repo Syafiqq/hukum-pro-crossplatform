@@ -4,8 +4,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hukum_pro/arch/data/data_source/local/contract/bulk_laws_local_datasource.dart';
 import 'package:hukum_pro/arch/data/data_source/local/impl/disk_path_provider.dart';
+import 'package:hukum_pro/arch/domain/entity/law/law_entity.dart';
 import 'package:hukum_pro/common/exception/built_in.dart';
 import 'package:path_provider/path_provider.dart';
+
+import '../../../../../common/file+operation.dart';
 
 void main() async {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -18,7 +21,7 @@ void main() async {
 
   Directory directory = await Directory.systemTemp.createTemp();
 
-  setUp(() {
+  setUpAll(() async {
     channel.setMockMethodCallHandler((MethodCall methodCall) async {
       switch (methodCall.method) {
         case 'getApplicationDocumentsDirectory':
@@ -31,6 +34,13 @@ void main() async {
           return null;
       }
     });
+
+    await (await getApplicationDocumentsDirectory()).create(recursive: true);
+    await (await getApplicationSupportDirectory()).create(recursive: true);
+    await (await getTemporaryDirectory()).create(recursive: true);
+  });
+
+  setUp(() {
     datasource = DiskPathProvider();
   });
 
@@ -59,11 +69,33 @@ void main() async {
         var id = '1';
         var names = ['1.json'];
         expect(
-                () async => await datasource.getBulkLawDiskReferences(id, names),
+            () async => await datasource.getBulkLawDiskReferences(id, names),
             throwsA(isA<DataLocationNotFoundException>().having(
-                    (e) => e.internalException,
+                (e) => e.internalException,
                 'internalException',
                 isA<MissingPlatformDirectoryException>())));
+      });
+    });
+
+    group('decodeBulkLaw', () {
+      late File file;
+
+      setUp(() async {
+        file = File('${(await getTemporaryDirectory()).path}/test.json');
+      });
+      tearDown(() async {
+        await file.deleteIfExists();
+      });
+
+      test('return laws', () async {
+        await file.writeAsString('[{"id": "1"}, {"id": "2"}]');
+
+        var entity = await datasource.decodeBulkLaw(file);
+
+        expect(entity, <Matcher>[
+          isA<LawEntity>().having((e) => e.id, 'id', contains('1')),
+          isA<LawEntity>().having((e) => e.id, 'id', contains('2')),
+        ]);
       });
     });
   });
