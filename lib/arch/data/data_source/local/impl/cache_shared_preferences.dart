@@ -51,7 +51,10 @@ class CacheSharedPreferences
     }
 
     var menus = <LawMenuOrderEntity>[];
-    for (var rawMenu in List<Map>.from(menusList)) {
+    for (var rawMenu in menusList) {
+      if (rawMenu is! Map) {
+        throw ParseFailedException(Map, null, null);
+      }
       try {
         var menu = LawMenuOrderEntity.fromJson(rawMenu);
         menus.add(menu);

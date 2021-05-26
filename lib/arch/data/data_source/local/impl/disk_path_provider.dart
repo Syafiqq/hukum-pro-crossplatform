@@ -28,7 +28,10 @@ class DiskPathProvider implements BulkLawsLocalDatasource {
     }
 
     var law = <LawEntity>[];
-    for (var rawMenu in List<Map>.from(lawsMap)) {
+    for (var rawMenu in lawsMap) {
+      if (rawMenu is! Map) {
+        throw ParseFailedException(Map, null, null);
+      }
       try {
         var menu = LawEntity.fromJson(rawMenu);
         law.add(menu);
