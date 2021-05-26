@@ -82,7 +82,7 @@ void main() async {
       });
 
       test('return laws', () async {
-        await file.writeAsString('[{"id": "1"}, {"id": "2"}]');
+        await file.writeAsString('[{"_id": 1, "id": "1"}, {"_id": 2, "id": "2"}]');
 
         var entity = await datasource.decodeBulkLaw(file);
 

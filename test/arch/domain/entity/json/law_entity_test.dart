@@ -10,12 +10,28 @@ void main() {
         group('individually', () {
           group('id', () {
             test('success parse', () {
-              var jsonMap = {'id': '1'};
+              var jsonMap = {'_id': 1, 'id': '1'};
+              var entity = LawEntity.fromJson(jsonMap);
+              expect(entity.id, 1);
+            });
+            test('throw type error invalid data type', () {
+              var jsonMap = {'_id': '1', 'id': '1'};
+              expect(
+                  () => LawEntity.fromJson(jsonMap),
+                  throwsA(isA<TypeError>().having(
+                      (e) => e.toString(),
+                      'toString',
+                      "type 'String' is not a subtype of type 'int' in type cast")));
+            });
+          });
+          group('remoteId', () {
+            test('success parse', () {
+              var jsonMap = {'_id': 1, 'id': '1'};
               var entity = LawEntity.fromJson(jsonMap);
               expect(entity.remoteId, '1');
             });
             test('throw type error invalid data type', () {
-              var jsonMap = {'id': 1};
+              var jsonMap = {'_id': 1, 'id': 1};
               expect(
                   () => LawEntity.fromJson(jsonMap),
                   throwsA(isA<TypeError>().having(
@@ -30,27 +46,27 @@ void main() {
                   throwsA(isA<TypeError>().having(
                       (e) => e.toString(),
                       'toString',
-                      "type 'Null' is not a subtype of type 'String' in type cast")));
+                      "type 'Null' is not a subtype of type 'int' in type cast")));
             });
           });
           group('year', () {
             test('success parse from string', () {
-              var jsonMap = {'id': '1', 'year': '1'};
+              var jsonMap = {'_id': 1, 'id': '1', 'year': '1'};
               var entity = LawEntity.fromJson(jsonMap);
               expect(entity.year, 1);
             });
             test('success parse from int', () {
-              var jsonMap = {'id': '1', 'year': 1};
+              var jsonMap = {'_id': 1, 'id': '1', 'year': 1};
               var entity = LawEntity.fromJson(jsonMap);
               expect(entity.year, 1);
             });
             test('success parse not exist value', () {
-              var jsonMap = {'id': '1'};
+              var jsonMap = {'_id': 1, 'id': '1'};
               var entity = LawEntity.fromJson(jsonMap);
               expect(entity.year, isNull);
             });
             test('throw type error invalid data type', () {
-              var jsonMap = {'id': '1', 'year': []};
+              var jsonMap = {'_id': 1, 'id': '1', 'year': []};
               expect(
                   () => LawEntity.fromJson(jsonMap),
                   throwsA(isA<TypeError>().having(
@@ -62,6 +78,7 @@ void main() {
           group('no, description, status, reference, category', () {
             test('success parse', () {
               var jsonMap = {
+                '_id': 1,
                 'id': '1',
                 'no': '1',
                 'description': '1',
@@ -77,7 +94,7 @@ void main() {
               expect(entity.category, '1');
             });
             test('success parse not exist value', () {
-              var jsonMap = {'id': '1'};
+              var jsonMap = {'_id': 1, 'id': '1'};
               var entity = LawEntity.fromJson(jsonMap);
               expect(entity.no, isNull);
               expect(entity.description, isNull);
@@ -87,6 +104,7 @@ void main() {
             });
             test('throw type error invalid data type', () {
               var jsonMap = {
+                '_id': 1,
                 'id': '1',
                 'no': 1,
                 'description': 1,
@@ -105,6 +123,7 @@ void main() {
           group('date_created', () {
             test('success parse', () {
               var jsonMap = {
+                '_id': 1,
                 'id': '1',
                 'date_created': '2010-10-10T10:10:10.000Z'
               };
@@ -115,6 +134,7 @@ void main() {
             });
             test('return null', () {
               var jsonMap = {
+                '_id': 1,
                 'id': '1',
                 'dateCreated': '2010-10-10T10:10:10.000Z'
               };
@@ -123,6 +143,7 @@ void main() {
             });
             test('throw type error invalid date string', () {
               var jsonMap = {
+                '_id': 1,
                 'id': '1',
                 'date_created': '2010-10-10Z10:10:10.000Z'
               };
@@ -138,6 +159,7 @@ void main() {
         });
         test('success parse', () {
           var jsonMap = {
+            '_id': 1,
             'id': '1',
             'year': '1',
             'no': '1',
@@ -158,9 +180,10 @@ void main() {
               entity.dateCreated, DateTime.utc(2010, 10, 10, 10, 10, 10, 0, 0));
         });
 
-        test('success parse only id', () {
-          var jsonMap = {'id': '1'};
+        test('success parse only id and remote id', () {
+          var jsonMap = {'_id': 1, 'id': '1'};
           var entity = LawEntity.fromJson(jsonMap);
+          expect(entity.id, 1);
           expect(entity.remoteId, '1');
           expect(entity.no, isNull);
           expect(entity.year, isNull);
@@ -176,7 +199,7 @@ void main() {
           expect(
               () => LawEntity.fromJson(jsonMap),
               throwsA(isA<TypeError>().having((e) => e.toString(), 'toString',
-                  "type 'Null' is not a subtype of type 'String' in type cast")));
+                  "type 'Null' is not a subtype of type 'int' in type cast")));
         });
 
         test('throw error empty json', () {
@@ -184,16 +207,17 @@ void main() {
           expect(
               () => LawEntity.fromJson(jsonMap),
               throwsA(isA<TypeError>().having((e) => e.toString(), 'toString',
-                  "type 'Null' is not a subtype of type 'String' in type cast")));
+                  "type 'Null' is not a subtype of type 'int' in type cast")));
         });
       });
 
       group('toJson', () {
         test('success parse', () {
-          var entity = LawEntity('1', 1, '1', '1', '1', '1', '1',
+          var entity = LawEntity(1, '1', 1, '1', '1', '1', '1', '1',
               DateTime.utc(2010, 10, 10, 10, 10, 10, 0, 0));
           var jsonMap = entity.toJson();
-          expect(jsonMap.keys.length, 8);
+          expect(jsonMap.keys.length, 9);
+          expect(jsonMap['_id'], 1);
           expect(jsonMap['id'], '1');
           expect(jsonMap['year'], '1');
           expect(jsonMap['no'], '1');
@@ -205,9 +229,11 @@ void main() {
         });
 
         test('success parse from explicit null', () {
-          var entity = LawEntity('1', null, null, null, null, null, null, null);
+          var entity =
+              LawEntity(1, '1', null, null, null, null, null, null, null);
           var jsonMap = entity.toJson();
-          expect(jsonMap.keys.length, 8);
+          expect(jsonMap.keys.length, 9);
+          expect(jsonMap['_id'], 1);
           expect(jsonMap['id'], '1');
           expect(jsonMap['year'], isNull);
           expect(jsonMap['no'], isNull);
@@ -222,20 +248,24 @@ void main() {
 
     group('$Equatable', () {
       test('compare same instance', () {
-        var entity = LawEntity('1', null, null, null, null, null, null, null);
+        var entity =
+            LawEntity(1, '1', null, null, null, null, null, null, null);
         expect(entity == entity, true);
       });
 
       test('compare different instance', () {
-        var entity = LawEntity('1', null, null, null, null, null, null, null);
+        var entity =
+            LawEntity(1, '1', null, null, null, null, null, null, null);
         expect(
-            entity == LawEntity('1', null, null, null, null, null, null, null),
+            entity ==
+                LawEntity(1, '1', null, null, null, null, null, null, null),
             true);
       });
 
       test('failed different value', () {
-        var entity = LawEntity('1', 1, null, null, null, null, null, null);
-        expect(entity == LawEntity('1', 2, null, null, null, null, null, null),
+        var entity = LawEntity(1, '1', 1, null, null, null, null, null, null);
+        expect(
+            entity == LawEntity(1, '1', 2, null, null, null, null, null, null),
             false);
       });
     });

@@ -22,8 +22,8 @@ class LawEntity extends Equatable {
   @JsonKey(name: 'date_created')
   final DateTime? dateCreated;
 
-  LawEntity(this.id, this.remoteId, this.year, this.no, this.description, this.status,
-      this.reference, this.category, this.dateCreated);
+  LawEntity(this.id, this.remoteId, this.year, this.no, this.description,
+      this.status, this.reference, this.category, this.dateCreated);
 
   @override
   List<Object?> get props => [
