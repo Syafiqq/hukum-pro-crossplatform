@@ -76,6 +76,16 @@ void main() {
                   isA<TypeError>().having((e) => e.toString(), 'toString',
                       "type 'int' is not a subtype of type 'String' in type cast"))));
         });
+
+        test('throws parse failed exception from invalid json type', () async {
+          SharedPreferences.setMockInitialValues({
+            'law_status_order': '{"id": 1}',
+          });
+          await sharedPreferences.reload();
+
+          expect(() async => await cache.getMenus(),
+              throwsA(isA<ParseFailedException>()));
+        });
       });
 
       group('setMenus', () {

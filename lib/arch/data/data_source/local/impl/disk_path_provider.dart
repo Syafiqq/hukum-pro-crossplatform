@@ -22,13 +22,13 @@ class DiskPathProvider implements BulkLawsLocalDatasource {
   @override
   Future<List<LawEntity>> decodeBulkLaw(File file) async {
     var lawsString = await file.readAsString();
-    var lawsMap = jsonDecode(lawsString) as List<Map>?;
+    var lawsMap = jsonDecode(lawsString) as Iterable?;
     if (lawsMap == null) {
       throw ParseFailedException(List, null, null);
     }
-    var law = <LawEntity>[];
 
-    for (var rawMenu in lawsMap) {
+    var law = <LawEntity>[];
+    for (var rawMenu in List<Map>.from(lawsMap)) {
       try {
         var menu = LawEntity.fromJson(rawMenu);
         law.add(menu);

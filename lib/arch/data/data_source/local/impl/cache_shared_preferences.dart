@@ -19,7 +19,12 @@ class CacheSharedPreferences
     if (versionRawJson == null) {
       return null;
     }
-    Map<String, dynamic> versionMap = jsonDecode(versionRawJson);
+    var decodedRaw = jsonDecode(versionRawJson);
+    var versionMap = decodedRaw is Map ? decodedRaw : null;
+    if (versionMap == null) {
+      throw ParseFailedException(Map, null, null);
+    }
+
     try {
       VersionEntity version = VersionEntity.fromJson(versionMap);
       return version;
@@ -41,16 +46,16 @@ class CacheSharedPreferences
     if (menusRawJson == null) {
       return <LawMenuOrderEntity>[];
     }
-    List<dynamic> menusMap = jsonDecode(menusRawJson);
-    var menus = <LawMenuOrderEntity>[];
+    var decodedRaw = jsonDecode(menusRawJson);
+    var menusList = decodedRaw is Iterable ? decodedRaw : null;
+    if (menusList == null) {
+      throw ParseFailedException(Iterable, null, null);
+    }
 
-    for (dynamic rawMenu in menusMap) {
-      var rawMapMenu = rawMenu as Map?;
-      if (rawMapMenu == null) {
-        continue;
-      }
+    var menus = <LawMenuOrderEntity>[];
+    for (var rawMenu in List<Map>.from(menusList)) {
       try {
-        var menu = LawMenuOrderEntity.fromJson(rawMapMenu);
+        var menu = LawMenuOrderEntity.fromJson(rawMenu);
         menus.add(menu);
       } on TypeError catch (e) {
         throw ParseFailedException(VersionEntity, null, e);
