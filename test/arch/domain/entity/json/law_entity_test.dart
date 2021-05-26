@@ -56,7 +56,7 @@ void main() {
                   throwsA(isA<TypeError>().having(
                       (e) => e.toString(),
                       'toString',
-                      "type 'List<dynamic>' is not a subtype of type 'String' in type cast")));
+                      "type 'List<dynamic>' is not a subtype of type 'String'")));
             });
           });
           group('no, description, status, reference, category', () {

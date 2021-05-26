@@ -4,13 +4,11 @@ class StringIntToIntTypeAdapter {
   }
 
   static int? fromJson(dynamic value) {
-    if (value is num) {
-      return value.toInt();
-    } else if (value is String) {
-      return int.parse(value);
-    } else if (value == null) {
+    if (value == null) {
       return null;
+    } else if (value is num) {
+      return value.toInt();
     }
-    return int.parse(value as String);
+    return int.parse(value);
   }
 }
