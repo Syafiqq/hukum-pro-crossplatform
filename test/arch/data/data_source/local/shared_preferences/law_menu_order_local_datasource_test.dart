@@ -27,7 +27,7 @@ void main() {
         cache = CacheSharedPreferences(sharedPreferences);
       });
 
-      group('getMenus', () {
+      group('getMenusOrEmpty', () {
         test('return empty', () async {
           SharedPreferences.setMockInitialValues({});
           await sharedPreferences.reload();
@@ -61,7 +61,7 @@ void main() {
           ]);
         });
 
-        test('throws parse failed exception from invalid content type',
+        test('throws parse failed exception from invalid law id type',
             () async {
           SharedPreferences.setMockInitialValues({
             'law_status_order': '[{"id": 1},{"id": 2}]',
@@ -77,9 +77,19 @@ void main() {
                       "type 'int' is not a subtype of type 'String' in type cast"))));
         });
 
-        test('throws parse failed exception from invalid json type', () async {
+        test('throws parse failed exception from invalid list', () async {
           SharedPreferences.setMockInitialValues({
             'law_status_order': '{"id": 1}',
+          });
+          await sharedPreferences.reload();
+
+          expect(() async => await cache.getMenusOrEmpty(),
+              throwsA(isA<ParseFailedException>()));
+        });
+
+        test('throws parse failed exception from invalid list item', () async {
+          SharedPreferences.setMockInitialValues({
+            'law_status_order': '[[1]]',
           });
           await sharedPreferences.reload();
 

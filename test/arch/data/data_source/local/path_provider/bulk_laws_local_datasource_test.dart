@@ -107,14 +107,14 @@ void main() async {
             throwsA(isA<ParseFailedException>()));
       });
 
-      test('throws parse error invalid map', () async {
+      test('throws parse error invalid list item', () async {
         await file.writeAsString('[[1]]');
 
         expect(() async => await datasource.decodeBulkLaw(file),
             throwsA(isA<ParseFailedException>()));
       });
 
-      test('throws parse error invalid law content', () async {
+      test('throws parse error no id present', () async {
         await file.writeAsString('[{}]');
 
         expect(() async => await datasource.decodeBulkLaw(file),
