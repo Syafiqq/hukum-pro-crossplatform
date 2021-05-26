@@ -68,7 +68,7 @@ class FirebaseCloudDatabase
           var menu = LawMenuOrderEntity.fromJson(rawMenu);
           menus.add(menu);
         } on TypeError catch (e) {
-          throw ParseFailedException(VersionEntity, null, e);
+          throw ParseFailedException(LawMenuOrderEntity, null, e);
         }
       }
       return menus;

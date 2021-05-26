@@ -24,7 +24,7 @@ class DiskPathProvider implements BulkLawsLocalDatasource {
     var lawsString = await file.readAsString();
     var lawsMap = jsonDecode(lawsString);
     if (lawsMap is! Iterable) {
-      throw ParseFailedException(List, null, null);
+      throw ParseFailedException(Iterable, null, null);
     }
 
     var law = <LawEntity>[];
