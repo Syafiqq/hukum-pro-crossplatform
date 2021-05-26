@@ -19,9 +19,8 @@ class CacheSharedPreferences
     if (versionRawJson == null) {
       return null;
     }
-    var decodedRaw = jsonDecode(versionRawJson);
-    var versionMap = decodedRaw is Map ? decodedRaw : null;
-    if (versionMap == null) {
+    var versionMap = jsonDecode(versionRawJson);
+    if (versionMap is! Map) {
       throw ParseFailedException(Map, null, null);
     }
 
@@ -46,9 +45,8 @@ class CacheSharedPreferences
     if (menusRawJson == null) {
       return <LawMenuOrderEntity>[];
     }
-    var decodedRaw = jsonDecode(menusRawJson);
-    var menusList = decodedRaw is Iterable ? decodedRaw : null;
-    if (menusList == null) {
+    var menusList = jsonDecode(menusRawJson);
+    if (menusList is! Iterable) {
       throw ParseFailedException(Iterable, null, null);
     }
 
