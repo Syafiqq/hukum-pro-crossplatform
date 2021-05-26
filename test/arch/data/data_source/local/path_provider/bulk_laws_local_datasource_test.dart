@@ -100,8 +100,15 @@ void main() async {
         expect(entity, []);
       });
 
-      test('throws parse error', () async {
+      test('throws parse error invalid list', () async {
         await file.writeAsString('{"id": "1"}');
+
+        expect(() async => await datasource.decodeBulkLaw(file),
+            throwsA(isA<ParseFailedException>()));
+      });
+
+      test('throws parse error invalid map', () async {
+        await file.writeAsString('[[1]]');
 
         expect(() async => await datasource.decodeBulkLaw(file),
             throwsA(isA<ParseFailedException>()));
