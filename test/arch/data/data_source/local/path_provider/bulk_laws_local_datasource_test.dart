@@ -21,7 +21,7 @@ void main() async {
 
   Directory directory = await Directory.systemTemp.createTemp();
 
-  setUpAll(() async {
+  setUp(() {
     channel.setMockMethodCallHandler((MethodCall methodCall) async {
       switch (methodCall.method) {
         case 'getApplicationDocumentsDirectory':
@@ -34,13 +34,6 @@ void main() async {
           return null;
       }
     });
-
-    await (await getApplicationDocumentsDirectory()).create(recursive: true);
-    await (await getApplicationSupportDirectory()).create(recursive: true);
-    await (await getTemporaryDirectory()).create(recursive: true);
-  });
-
-  setUp(() {
     datasource = DiskPathProvider();
   });
 
@@ -81,6 +74,7 @@ void main() async {
       late File file;
 
       setUp(() async {
+        await (await getTemporaryDirectory()).create(recursive: true);
         file = File('${(await getTemporaryDirectory()).path}/test.json');
       });
       tearDown(() async {
@@ -96,6 +90,14 @@ void main() async {
           isA<LawEntity>().having((e) => e.id, 'id', contains('1')),
           isA<LawEntity>().having((e) => e.id, 'id', contains('2')),
         ]);
+      });
+
+      test('return empty', () async {
+        await file.writeAsString('[]');
+
+        var entity = await datasource.decodeBulkLaw(file);
+
+        expect(entity, []);
       });
 
       test('throws parse error', () async {
