@@ -32,7 +32,7 @@ void main() {
           SharedPreferences.setMockInitialValues({});
           await sharedPreferences.reload();
 
-          var entity = await cache.getMenus();
+          var entity = await cache.getMenusOrEmpty();
 
           expect(entity, isEmpty);
         });
@@ -43,7 +43,7 @@ void main() {
           });
           await sharedPreferences.reload();
 
-          var entity = await cache.getMenus();
+          var entity = await cache.getMenusOrEmpty();
 
           expect(entity, isNotNull);
           expect(entity, isNotEmpty);
@@ -69,7 +69,7 @@ void main() {
           await sharedPreferences.reload();
 
           expect(
-              () async => await cache.getMenus(),
+              () async => await cache.getMenusOrEmpty(),
               throwsA(isA<ParseFailedException>().having(
                   (e) => e.internalError,
                   'internalError',
@@ -83,20 +83,20 @@ void main() {
           });
           await sharedPreferences.reload();
 
-          expect(() async => await cache.getMenus(),
+          expect(() async => await cache.getMenusOrEmpty(),
               throwsA(isA<ParseFailedException>()));
         });
       });
 
       group('setMenus', () {
         test('success set', () async {
-          var entityBefore = await cache.getMenus();
+          var entityBefore = await cache.getMenusOrEmpty();
           expect(entityBefore, isEmpty);
 
           var entityNow = LawMenuOrderEntity('1', '1', 1);
           await cache.setMenus([entityNow]);
 
-          var entityAfter = await cache.getMenus();
+          var entityAfter = await cache.getMenusOrEmpty();
           expect(entityAfter, isNotEmpty);
           expect(entityAfter.first, entityNow);
           expect(entityAfter.length, 1);

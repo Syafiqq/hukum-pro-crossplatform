@@ -40,7 +40,7 @@ class CacheSharedPreferences
   }
 
   @override
-  Future<List<LawMenuOrderEntity>> getMenus() async {
+  Future<List<LawMenuOrderEntity>> getMenusOrEmpty() async {
     var menusRawJson = cache.getString('law_status_order');
     if (menusRawJson == null) {
       return <LawMenuOrderEntity>[];
