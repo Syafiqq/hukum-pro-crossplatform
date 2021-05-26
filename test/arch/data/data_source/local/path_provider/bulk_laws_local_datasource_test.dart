@@ -113,6 +113,13 @@ void main() async {
         expect(() async => await datasource.decodeBulkLaw(file),
             throwsA(isA<ParseFailedException>()));
       });
+
+      test('throws parse error invalid law content', () async {
+        await file.writeAsString('[{}]');
+
+        expect(() async => await datasource.decodeBulkLaw(file),
+            throwsA(isA<ParseFailedException>()));
+      });
     });
   });
 }
