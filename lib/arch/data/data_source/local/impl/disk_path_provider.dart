@@ -22,7 +22,8 @@ class DiskPathProvider implements BulkLawsLocalDatasource {
   @override
   Future<List<LawEntity>> decodeBulkLaw(File file) async {
     var lawsString = await file.readAsString();
-    var lawsMap = jsonDecode(lawsString) as Iterable?;
+    var decodedRaw = jsonDecode(lawsString);
+    var lawsMap = decodedRaw is Iterable ? decodedRaw : null;
     if (lawsMap == null) {
       throw ParseFailedException(List, null, null);
     }
