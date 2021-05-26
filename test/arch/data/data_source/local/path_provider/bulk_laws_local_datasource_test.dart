@@ -35,34 +35,36 @@ void main() async {
   });
 
   group('$BulkLawsLocalDatasource', () {
-    test('return files', () async {
-      var id = '1';
-      var names = ['1.json', '2.json', '3.json'];
+    group('getBulkLawDiskReferences', () {
+      test('return files', () async {
+        var id = '1';
+        var names = ['1.json', '2.json', '3.json'];
 
-      var filenames = await datasource.getBulkLawDiskReferences(id, names);
-      expect(filenames, <Matcher>[
-        isA<File>()
-            .having((e) => e.path, 'path', contains('/1/'))
-            .having((e) => e.path, 'path', contains('/1.json')),
-        isA<File>()
-            .having((e) => e.path, 'path', contains('/1/'))
-            .having((e) => e.path, 'path', contains('/2.json')),
-        isA<File>()
-            .having((e) => e.path, 'path', contains('/1/'))
-            .having((e) => e.path, 'path', contains('/3.json')),
-      ]);
-    });
+        var filenames = await datasource.getBulkLawDiskReferences(id, names);
+        expect(filenames, <Matcher>[
+          isA<File>()
+              .having((e) => e.path, 'path', contains('/1/'))
+              .having((e) => e.path, 'path', contains('/1.json')),
+          isA<File>()
+              .having((e) => e.path, 'path', contains('/1/'))
+              .having((e) => e.path, 'path', contains('/2.json')),
+          isA<File>()
+              .having((e) => e.path, 'path', contains('/1/'))
+              .having((e) => e.path, 'path', contains('/3.json')),
+        ]);
+      });
 
-    test('throws error', () async {
-      channel.setMockMethodCallHandler((MethodCall methodCall) async => null);
-      var id = '1';
-      var names = ['1.json'];
-      expect(
-          () async => await datasource.getBulkLawDiskReferences(id, names),
-          throwsA(isA<DataLocationNotFoundException>().having(
-              (e) => e.internalException,
-              'internalException',
-              isA<MissingPlatformDirectoryException>())));
+      test('throws error', () async {
+        channel.setMockMethodCallHandler((MethodCall methodCall) async => null);
+        var id = '1';
+        var names = ['1.json'];
+        expect(
+                () async => await datasource.getBulkLawDiskReferences(id, names),
+            throwsA(isA<DataLocationNotFoundException>().having(
+                    (e) => e.internalException,
+                'internalException',
+                isA<MissingPlatformDirectoryException>())));
+      });
     });
   });
 }
