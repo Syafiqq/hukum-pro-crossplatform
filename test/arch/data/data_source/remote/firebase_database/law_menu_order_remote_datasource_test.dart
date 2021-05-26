@@ -271,7 +271,7 @@ void main() {
         await simulateEvent(handleId, 'a', {}, []);
 
         expect(exception, isNotNull);
-        expect(exception, isA<DataNotExistsException>());
+        expect(exception, isA<ParseFailedException>());
       });
 
       test('throw type error', () async {

@@ -27,7 +27,7 @@ class FirebaseCloudDatabase
       var rawVersion =
           rawVersions is Map ? rawVersions.values.firstOrNull : null;
       if (rawVersion is! Map) {
-        throw DataNotExistsException(null, null);
+        throw ParseFailedException(Map, null, null);
       }
       try {
         VersionEntity version = VersionEntity.fromJson(rawVersion);
@@ -55,7 +55,7 @@ class FirebaseCloudDatabase
       var rawMenus = rawMenusSnapshot is Map ? rawMenusSnapshot.values : null;
 
       if (rawMenus is! Iterable) {
-        throw DataNotExistsException(null, null);
+        throw ParseFailedException(Iterable, null, null);
       }
 
       var menus = <LawMenuOrderEntity>[];

@@ -216,7 +216,7 @@ void main() {
         await simulateEvent(handleId, '', {}, []);
 
         expect(exception, isNotNull);
-        expect(exception, isA<DataNotExistsException>());
+        expect(exception, isA<ParseFailedException>());
       });
 
       test('throws parse failed error', () async {
