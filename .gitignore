@@ -52,3 +52,4 @@ app.*.map.json
 /coverage
 **/test/**/*.mocks.dart
 **/entity/**/*.g.dart
+**/objectbox.g.dart
