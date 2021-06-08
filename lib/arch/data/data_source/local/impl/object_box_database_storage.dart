@@ -9,8 +9,10 @@ class ObjectBoxDatabaseStorage implements LawLocalDatasource {
   ObjectBoxDatabaseStorage() {}
 
   @override
-  Future<void> addLaws(List<LawEntity> laws) async {
-
+  Future<void> addLaws(List<ObjectBoxLawEntity> laws) async {
+    var lawBox = store.box<ObjectBoxLawEntity>();
+    lawBox.putMany(laws);
+    store.close();
   }
 
   @override
