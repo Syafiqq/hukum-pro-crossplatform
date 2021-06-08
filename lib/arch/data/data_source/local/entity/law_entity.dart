@@ -1,8 +1,12 @@
 import 'package:equatable/equatable.dart';
+import 'package:objectbox/objectbox.dart';
 
+@Entity()
 // ignore: must_be_immutable
-abstract class LawEntity {
+class LawEntity extends Equatable {
+  @Id(assignable: false)
   late int id;
+  @Index()
   late String remoteId;
   int? year;
   String? no;
