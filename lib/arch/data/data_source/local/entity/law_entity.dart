@@ -16,6 +16,9 @@ class LawEntity extends Equatable {
   String? category;
   DateTime? dateCreated;
 
+  LawEntity(this.id, this.remoteId, this.year, this.no, this.description,
+      this.status, this.reference, this.category, this.dateCreated);
+
   @override
   List<Object?> get props => [
         id,
