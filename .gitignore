@@ -53,3 +53,5 @@ app.*.map.json
 **/test/**/*.mocks.dart
 **/entity/**/*.g.dart
 **/objectbox.g.dart
+objectbox/data.mdb
+objectbox/lock.mdb
