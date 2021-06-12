@@ -5,7 +5,7 @@ import 'package:objectbox/objectbox.dart';
 class ObjectBoxDatabaseStorage implements LawLocalDatasource {
   late Store store;
 
-  ObjectBoxDatabaseStorage() {}
+  ObjectBoxDatabaseStorage(this.store);
 
   @override
   Future<void> addLaws(List<LawEntity> laws) async {
