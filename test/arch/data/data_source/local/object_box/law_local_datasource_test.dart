@@ -35,5 +35,19 @@ void main() async {
       expect(box.getAll().length, 2);
       expect(box.count(), 2);
     });
+
+    test('it should clear laws', () async {
+      var entities =
+          [1, 2].map((id) => LawEntity()..remoteId = id.toString()).toList();
+      var box = store.box<LawEntity>();
+      box.putMany(entities);
+      expect(box.getAll().length, 2);
+      expect(box.count(), 2);
+
+      await datasource.clear();
+
+      expect(box.getAll().length, 0);
+      expect(box.count(), 0);
+    });
   });
 }
