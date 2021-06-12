@@ -5,7 +5,7 @@ import 'package:objectbox/objectbox.dart';
 // ignore: must_be_immutable
 class LawEntity extends Equatable {
   @Id(assignable: false)
-  late int id;
+  int id = 0;
   @Index()
   late String remoteId;
   int? year;
@@ -15,9 +15,6 @@ class LawEntity extends Equatable {
   String? reference;
   String? category;
   DateTime? dateCreated;
-
-  LawEntity(this.id, this.remoteId, this.year, this.no, this.description,
-      this.status, this.reference, this.category, this.dateCreated);
 
   @override
   List<Object?> get props => [
