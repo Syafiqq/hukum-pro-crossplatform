@@ -1,10 +1,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hukum_pro/arch/domain/entity/law/law_entity.dart';
-import 'package:hukum_pro/arch/domain/entity/law/law_menu_order_entity.dart';
 
 void main() {
-  group('$LawMenuOrderEntity', () {
+  group('$LawEntity', () {
     group('parse', () {
       group('fromJson', () {
         group('individually', () {
