@@ -28,6 +28,8 @@ void main() async {
   });
 
   tearDown(() {
+    var box = store.box<LawEntity>();
+    box.removeAll();
     env.close();
   });
 
