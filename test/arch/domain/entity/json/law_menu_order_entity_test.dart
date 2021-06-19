@@ -81,7 +81,7 @@ void main() {
 
       test('failed different value', () {
         var entity = LawMenuOrderEntity('1', '1', null);
-        expect(entity == LawMenuOrderEntity('1', '2', null), false);
+        expect(entity == LawMenuOrderEntity('2', '1', null), false);
       });
     });
   });

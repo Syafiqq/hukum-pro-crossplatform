@@ -264,7 +264,7 @@ void main() {
       test('failed different value', () {
         var entity = LawEntity(1, '1', 1, null, null, null, null, null, null);
         expect(
-            entity == LawEntity(1, '1', 2, null, null, null, null, null, null),
+            entity == LawEntity(1, '2', 1, null, null, null, null, null, null),
             false);
       });
     });

@@ -12,7 +12,7 @@ class VersionEntity extends Equatable {
   VersionEntity(this.detail, this.milis, this.timestamp);
 
   @override
-  List<Object?> get props => [detail, milis, timestamp];
+  List<Object?> get props => [detail, milis];
 
   factory VersionEntity.fromJson(Map json) => _$VersionEntityFromJson(json);
 

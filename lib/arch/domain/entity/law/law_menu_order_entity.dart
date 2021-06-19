@@ -12,7 +12,7 @@ class LawMenuOrderEntity extends Equatable {
   LawMenuOrderEntity(this.id, this.name, this.order);
 
   @override
-  List<Object?> get props => [id, name, order];
+  List<Object?> get props => [id];
 
   factory LawMenuOrderEntity.fromJson(Map json) =>
       _$LawMenuOrderEntityFromJson(json);

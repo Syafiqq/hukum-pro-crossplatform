@@ -20,12 +20,5 @@ class LawEntity extends Equatable {
   List<Object?> get props => [
         id,
         remoteId,
-        year,
-        no,
-        description,
-        status,
-        reference,
-        category,
-        dateCreated
       ];
 }

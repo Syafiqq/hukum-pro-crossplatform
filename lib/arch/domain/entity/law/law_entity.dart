@@ -29,13 +29,6 @@ class LawEntity extends Equatable {
   List<Object?> get props => [
         id,
         remoteId,
-        year,
-        no,
-        description,
-        status,
-        reference,
-        category,
-        dateCreated
       ];
 
   factory LawEntity.fromJson(Map json) => _$LawEntityFromJson(json);
