@@ -81,6 +81,55 @@ void main() async {
       });
     });
 
+    group('getLawsByYearWithPagination', () {
+      test('it should get 1 laws', () async {
+        var entities = [1, 2]
+            .map((id) => LawEntity()
+              ..remoteId = id.toString()
+              ..year = 1)
+            .toList();
+
+        var box = store.box<LawEntity>();
+        box.putMany(entities);
+
+        var laws = await datasource.getLawsByYearWithPagination(1, 1, 1);
+
+        expect(laws.length, 1);
+        expect(laws.first.id, 1);
+      });
+
+      test('it should get 2 laws', () async {
+        var entities = [1, 2]
+            .map((id) => LawEntity()
+              ..remoteId = id.toString()
+              ..year = 1)
+            .toList();
+
+        var box = store.box<LawEntity>();
+        box.putMany(entities);
+
+        var laws = await datasource.getLawsByYearWithPagination(1, 1, 2);
+
+        expect(laws.length, 1);
+        expect(laws.first.id, 2);
+      });
+
+      test('it should get empty laws', () async {
+        var entities = [1, 2]
+            .map((id) => LawEntity()
+              ..remoteId = id.toString()
+              ..year = 1)
+            .toList();
+
+        var box = store.box<LawEntity>();
+        box.putMany(entities);
+
+        var laws = await datasource.getLawsByYearWithPagination(1, 1, 10);
+
+        expect(laws.length, 0);
+      });
+    });
+
     group('getLawById', () {
       test('it should get the law', () async {
         var entities = [1]
