@@ -61,8 +61,8 @@ void main() async {
         channel.setMockMethodCallHandler((MethodCall methodCall) async => null);
         var id = '1';
         var names = ['1.json'];
-        expect(
-            () async => await datasource.getBulkLawDiskReferences(id, names),
+        await expectLater(
+            datasource.getBulkLawDiskReferences(id, names),
             throwsA(isA<DataLocationNotFoundException>().having(
                 (e) => e.internalException,
                 'internalException',
@@ -82,7 +82,8 @@ void main() async {
       });
 
       test('return laws', () async {
-        await file.writeAsString('[{"_id": 1, "id": "1"}, {"_id": 2, "id": "2"}]');
+        await file
+            .writeAsString('[{"_id": 1, "id": "1"}, {"_id": 2, "id": "2"}]');
 
         var entity = await datasource.decodeBulkLaw(file);
 
@@ -103,21 +104,21 @@ void main() async {
       test('throws parse error invalid list', () async {
         await file.writeAsString('{"id": "1"}');
 
-        expect(() async => await datasource.decodeBulkLaw(file),
+        await expectLater(datasource.decodeBulkLaw(file),
             throwsA(isA<ParseFailedException>()));
       });
 
       test('throws parse error invalid list item', () async {
         await file.writeAsString('[[1]]');
 
-        expect(() async => await datasource.decodeBulkLaw(file),
+        await expectLater(datasource.decodeBulkLaw(file),
             throwsA(isA<ParseFailedException>()));
       });
 
       test('throws parse error no id present', () async {
         await file.writeAsString('[{}]');
 
-        expect(() async => await datasource.decodeBulkLaw(file),
+        await expectLater(datasource.decodeBulkLaw(file),
             throwsA(isA<ParseFailedException>()));
       });
     });

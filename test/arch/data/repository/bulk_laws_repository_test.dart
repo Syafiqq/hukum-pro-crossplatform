@@ -61,10 +61,10 @@ void main() {
             .thenThrow(DataLocationNotFoundException(
                 MissingPlatformDirectoryException('1'), null));
 
-        expect(
-            () async => await repository.getFileReference('1', [
-                  '1.json',
-                ]),
+        await expectLater(
+            repository.getFileReference('1', [
+              '1.json',
+            ]),
             throwsA(isA<DataLocationNotFoundException>().having(
                 (e) => e.internalException,
                 'internalException',
@@ -83,8 +83,8 @@ void main() {
         when(mockBulkLawsRemoteDatasource.downloadBulkLaws(any, any)).thenThrow(
             DataFetchFailureException(FirebaseException(plugin: '1'), null));
 
-        expect(
-            () async => await repository.downloadLaw('1.json', File('a.json')),
+        await expectLater(
+            repository.downloadLaw('1.json', File('a.json')),
             throwsA(isA<DataFetchFailureException>().having(
                 (e) => e.internalException,
                 'internalException',
@@ -96,8 +96,8 @@ void main() {
         when(mockBulkLawsRemoteDatasource.downloadBulkLaws(any, any)).thenThrow(
             DataFetchFailureException(FileSystemException('1'), null));
 
-        expect(
-            () async => await repository.downloadLaw('1.json', File('a.json')),
+        await expectLater(
+            repository.downloadLaw('1.json', File('a.json')),
             throwsA(isA<DataFetchFailureException>().having(
                 (e) => e.internalException,
                 'internalException',

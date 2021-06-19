@@ -68,8 +68,8 @@ void main() {
           });
           await sharedPreferences.reload();
 
-          expect(
-              () async => await cache.getMenusOrEmpty(),
+          await expectLater(
+              cache.getMenusOrEmpty(),
               throwsA(isA<ParseFailedException>().having(
                   (e) => e.internalError,
                   'internalError',
@@ -83,8 +83,8 @@ void main() {
           });
           await sharedPreferences.reload();
 
-          expect(() async => await cache.getMenusOrEmpty(),
-              throwsA(isA<ParseFailedException>()));
+          await expectLater(
+              cache.getMenusOrEmpty(), throwsA(isA<ParseFailedException>()));
         });
 
         test('throws parse failed exception from invalid list item', () async {
@@ -93,8 +93,8 @@ void main() {
           });
           await sharedPreferences.reload();
 
-          expect(() async => await cache.getMenusOrEmpty(),
-              throwsA(isA<ParseFailedException>()));
+          await expectLater(
+              cache.getMenusOrEmpty(), throwsA(isA<ParseFailedException>()));
         });
       });
 

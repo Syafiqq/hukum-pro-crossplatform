@@ -71,8 +71,8 @@ void main() {
       when(mockVersionRepository.fetchFromLocal())
           .thenThrow(DefinedException(null, null, '1', '2'));
 
-      expect(
-          () async => await useCase.execute(),
+      await expectLater(
+          useCase.execute(),
           throwsA(isA<DefinedException>()
               .having((e) => e.code, 'code', '1')
               .having((e) => e.message, 'message', '2')));

@@ -42,10 +42,14 @@ void main() {
         when(mockVersionRemoteDatasource.getVersion())
             .thenThrow(DataNotExistsException(null, null));
 
-        expect(() async => await mockVersionRemoteDatasource.getVersion(),
-            throwsA(isA<DataNotExistsException>()));
+        try {
+          await mockVersionRemoteDatasource.getVersion();
+          fail('must not be executed');
+        } catch (e) {
+          expect(e, isA<DataNotExistsException>());
+        }
 
-        expect(() async => await repository.fetchFromRemote(),
+        await expectLater(repository.fetchFromRemote(),
             throwsA(isA<DataNotExistsException>()));
       });
 
@@ -53,11 +57,15 @@ void main() {
         when(mockVersionRemoteDatasource.getVersion())
             .thenThrow(ParseFailedException(VersionEntity, null, null));
 
-        expect(() async => await mockVersionRemoteDatasource.getVersion(),
-            throwsA(isA<ParseFailedException>()));
+        try {
+          await mockVersionRemoteDatasource.getVersion();
+          fail('must not be executed');
+        } catch (e) {
+          expect(e, isA<ParseFailedException>());
+        }
 
-        expect(() async => await repository.fetchFromRemote(),
-            throwsA(isA<ParseFailedException>()));
+        await expectLater(
+            repository.fetchFromRemote(), throwsA(isA<ParseFailedException>()));
       });
     });
 
@@ -76,8 +84,7 @@ void main() {
         when(mockVersionCacheDatasource.getVersion())
             .thenAnswer((_) async => VersionEntity(null, null, null));
 
-        expect(() async => await mockVersionCacheDatasource.getVersion(),
-            isNotNull);
+        await expectLater(mockVersionCacheDatasource.getVersion(), isNotNull);
 
         var version = await repository.fetchFromLocal();
         expect(version, isNotNull);
@@ -90,11 +97,15 @@ void main() {
         when(mockVersionCacheDatasource.getVersion())
             .thenThrow(ParseFailedException(VersionEntity, null, null));
 
-        expect(() async => await mockVersionCacheDatasource.getVersion(),
-            throwsA(isA<ParseFailedException>()));
+        try {
+          await mockVersionCacheDatasource.getVersion();
+          fail('must not be executed');
+        } catch (e) {
+          expect(e, isA<ParseFailedException>());
+        }
 
-        expect(() async => await repository.fetchFromLocal(),
-            throwsA(isA<ParseFailedException>()));
+        await expectLater(
+            repository.fetchFromLocal(), throwsA(isA<ParseFailedException>()));
       });
     });
 

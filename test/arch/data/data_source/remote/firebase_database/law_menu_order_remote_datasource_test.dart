@@ -327,8 +327,8 @@ void main() {
             .thenThrow(FirebaseException(plugin: '0'));
         var firebaseApi = FirebaseCloudDatabase(firebaseDatabase);
 
-        expect(
-            () async => await firebaseApi.getMenus(),
+        await expectLater(
+            firebaseApi.getMenus(),
             throwsA(isA<DataFetchFailureException>().having(
                 (e) => e.internalException,
                 'internalException',

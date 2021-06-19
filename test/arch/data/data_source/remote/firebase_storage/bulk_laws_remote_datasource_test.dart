@@ -95,8 +95,8 @@ void main() {
           throw FirebaseException(plugin: '0');
         });
 
-        expect(
-            () async => await datasource.downloadBulkLaws('a', file),
+        await expectLater(
+            datasource.downloadBulkLaws('a', file),
             throwsA(isA<DataFetchFailureException>().having(
                 (e) => e.internalException,
                 'internalException',
@@ -113,8 +113,8 @@ void main() {
           throw FileSystemException('0');
         });
 
-        expect(
-            () async => await datasource.downloadBulkLaws('a', file),
+        await expectLater(
+            datasource.downloadBulkLaws('a', file),
             throwsA(isA<DataFetchFailureException>().having(
                 (e) => e.internalException,
                 'internalException',
