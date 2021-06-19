@@ -26,7 +26,7 @@ class LawRepositoryImpl implements LawRepository {
 
   @override
   Future<List<LawEntity>> getByYear(int year, int limit, int page) async {
-    var laws =
+    final laws =
         await localDatasource.getLawsByYearWithPagination(year, limit, page);
     return laws.map((e) => e.toDomain()).toList();
   }

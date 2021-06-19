@@ -15,11 +15,11 @@ class CacheSharedPreferences
 
   @override
   Future<VersionEntity?> getVersion() async {
-    var versionRawJson = cache.getString('version');
+    final versionRawJson = cache.getString('version');
     if (versionRawJson == null) {
       return null;
     }
-    var versionMap = jsonDecode(versionRawJson);
+    final versionMap = jsonDecode(versionRawJson);
     if (versionMap is! Map) {
       throw ParseFailedException(Map, null, null);
     }
@@ -34,29 +34,29 @@ class CacheSharedPreferences
 
   @override
   Future<void> setVersion(VersionEntity version) async {
-    var versionMap = version.toJson();
-    var versionRawJson = jsonEncode(versionMap);
+    final versionMap = version.toJson();
+    final versionRawJson = jsonEncode(versionMap);
     await cache.setString('version', versionRawJson);
   }
 
   @override
   Future<List<LawMenuOrderEntity>> getMenusOrEmpty() async {
-    var menusRawJson = cache.getString('law_status_order');
+    final menusRawJson = cache.getString('law_status_order');
     if (menusRawJson == null) {
       return <LawMenuOrderEntity>[];
     }
-    var menusList = jsonDecode(menusRawJson);
+    final menusList = jsonDecode(menusRawJson);
     if (menusList is! Iterable) {
       throw ParseFailedException(Iterable, null, null);
     }
 
-    var menus = <LawMenuOrderEntity>[];
-    for (var rawMenu in menusList) {
+    final menus = <LawMenuOrderEntity>[];
+    for (final rawMenu in menusList) {
       if (rawMenu is! Map) {
         throw ParseFailedException(Map, null, null);
       }
       try {
-        var menu = LawMenuOrderEntity.fromJson(rawMenu);
+        final menu = LawMenuOrderEntity.fromJson(rawMenu);
         menus.add(menu);
       } on TypeError catch (e) {
         throw ParseFailedException(LawMenuOrderEntity, null, e);
@@ -67,8 +67,8 @@ class CacheSharedPreferences
 
   @override
   Future<void> setMenus(List<LawMenuOrderEntity> menus) async {
-    var menusMap = menus.map((menu) => menu.toJson()).toList(growable: false);
-    var menusRawJson = jsonEncode(menusMap);
+    final menusMap = menus.map((menu) => menu.toJson()).toList(growable: false);
+    final menusRawJson = jsonEncode(menusMap);
     await cache.setString('law_status_order', menusRawJson);
   }
 }

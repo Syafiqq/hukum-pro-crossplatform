@@ -22,7 +22,7 @@ class LawYearRepositoryImpl implements LawYearRepository {
 
   @override
   Future<List<LawYearEntity>> get(int limit, int page) async {
-    var laws = await localDatasource.getLawYearsWithPagination(limit, page);
+    final laws = await localDatasource.getLawYearsWithPagination(limit, page);
     return laws.map((e) => e.toDomain()).toList();
   }
 }

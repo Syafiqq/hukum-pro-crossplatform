@@ -17,14 +17,14 @@ class FirebaseCloudDatabase
   @override
   Future<VersionEntity> getVersion() async {
     try {
-      var snapshot = await _database
+      final snapshot = await _database
           .reference()
           .child('versions_new/v1')
           .orderByKey()
           .limitToLast(1)
           .once();
-      var rawVersions = snapshot.value;
-      var rawVersion =
+      final rawVersions = snapshot.value;
+      final rawVersion =
           rawVersions is Map ? rawVersions.values.firstOrNull : null;
       if (rawVersion is! Map) {
         throw ParseFailedException(Map, null, null);
@@ -46,26 +46,26 @@ class FirebaseCloudDatabase
   @override
   Future<List<LawMenuOrderEntity>> getMenus() async {
     try {
-      var snapshot = await _database
+      final snapshot = await _database
           .reference()
           .child('law_status_order')
           .orderByKey()
           .once();
-      var rawMenusSnapshot = snapshot.value;
-      var rawMenus = rawMenusSnapshot is Map ? rawMenusSnapshot.values : null;
+      final rawMenusSnapshot = snapshot.value;
+      final rawMenus = rawMenusSnapshot is Map ? rawMenusSnapshot.values : null;
 
       if (rawMenus is! Iterable) {
         throw ParseFailedException(Iterable, null, null);
       }
 
-      var menus = <LawMenuOrderEntity>[];
+      final menus = <LawMenuOrderEntity>[];
 
       for (dynamic rawMenu in rawMenus) {
         if (rawMenu is! Map) {
           continue;
         }
         try {
-          var menu = LawMenuOrderEntity.fromJson(rawMenu);
+          final menu = LawMenuOrderEntity.fromJson(rawMenu);
           menus.add(menu);
         } on TypeError catch (e) {
           throw ParseFailedException(LawMenuOrderEntity, null, e);

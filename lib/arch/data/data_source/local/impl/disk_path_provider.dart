@@ -11,8 +11,8 @@ class DiskPathProvider implements BulkLawsLocalDatasource {
   Future<List<File>> getBulkLawDiskReferences(
       String id, List<String> names) async {
     try {
-      var directory = await getApplicationSupportDirectory();
-      var path = '${directory.path}/dump/bulk-laws/$id';
+      final directory = await getApplicationSupportDirectory();
+      final path = '${directory.path}/dump/bulk-laws/$id';
       return names.map((p) => File('$path/$p')).toList();
     } on MissingPlatformDirectoryException catch (e) {
       throw DataLocationNotFoundException(e, null);
@@ -21,19 +21,19 @@ class DiskPathProvider implements BulkLawsLocalDatasource {
 
   @override
   Future<List<LawEntity>> decodeBulkLaw(File file) async {
-    var lawsString = await file.readAsString();
-    var lawsMap = jsonDecode(lawsString);
+    final lawsString = await file.readAsString();
+    final lawsMap = jsonDecode(lawsString);
     if (lawsMap is! Iterable) {
       throw ParseFailedException(Iterable, null, null);
     }
 
-    var law = <LawEntity>[];
-    for (var rawMenu in lawsMap) {
+    final law = <LawEntity>[];
+    for (final rawMenu in lawsMap) {
       if (rawMenu is! Map) {
         throw ParseFailedException(Map, null, null);
       }
       try {
-        var menu = LawEntity.fromJson(rawMenu);
+        final menu = LawEntity.fromJson(rawMenu);
         law.add(menu);
       } on TypeError catch (e) {
         throw ParseFailedException(LawEntity, null, e);
