@@ -206,7 +206,7 @@ void main() async {
         expect(box.getAll().length, 2);
         expect(box.count(), 2);
 
-        await datasource.clear();
+        await datasource.deleteAllLaw();
 
         expect(box.getAll().length, 0);
         expect(box.count(), 0);

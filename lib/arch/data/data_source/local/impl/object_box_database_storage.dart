@@ -52,7 +52,7 @@ class ObjectBoxDatabaseStorage implements LawLocalDatasource {
   }
 
   @override
-  Future<void> clear() async {
+  Future<void> deleteAllLaw() async {
     final store = storeProvider.store;
     var lawBox = store.box<LawEntity>();
     lawBox.removeAll();
