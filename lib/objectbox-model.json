@@ -4,64 +4,92 @@
   "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
   "entities": [
     {
-      "id": "1:1603523657178173950",
-      "lastPropertyId": "9:8832257719766781829",
+      "id": "1:3947310817830782247",
+      "lastPropertyId": "9:5525855814039374399",
       "name": "LawEntity",
       "properties": [
         {
-          "id": "1:4150874469500674871",
+          "id": "1:6052627041382560078",
           "name": "id",
           "type": 6,
           "flags": 1
         },
         {
-          "id": "2:6773044139969033633",
+          "id": "2:7596652900677367140",
           "name": "remoteId",
           "type": 9,
           "flags": 2048,
-          "indexId": "1:2767590020606525293"
+          "indexId": "1:6119061479483318510"
         },
         {
-          "id": "3:2744443701929865206",
+          "id": "3:2910193514456000497",
           "name": "year",
-          "type": 6
+          "type": 6,
+          "flags": 8,
+          "indexId": "2:3504158428514057736"
         },
         {
-          "id": "4:1689609977640169583",
+          "id": "4:828253664547528284",
           "name": "no",
           "type": 9
         },
         {
-          "id": "5:694642253621778286",
+          "id": "5:6077880093399316754",
           "name": "description",
           "type": 9
         },
         {
-          "id": "6:3316461236043069517",
+          "id": "6:6837764626714638074",
           "name": "status",
           "type": 9
         },
         {
-          "id": "7:363511709034567352",
+          "id": "7:7053640811899834098",
           "name": "reference",
           "type": 9
         },
         {
-          "id": "8:5449295206600429570",
+          "id": "8:6453183956639016650",
           "name": "category",
           "type": 9
         },
         {
-          "id": "9:8832257719766781829",
+          "id": "9:5525855814039374399",
           "name": "dateCreated",
           "type": 10
         }
       ],
       "relations": []
+    },
+    {
+      "id": "2:4608631878622724996",
+      "lastPropertyId": "3:8605044649442273114",
+      "name": "LawYearEntity",
+      "properties": [
+        {
+          "id": "1:3663093909048379853",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:7445263921727376675",
+          "name": "year",
+          "type": 6,
+          "flags": 8,
+          "indexId": "3:6593493272592799177"
+        },
+        {
+          "id": "3:8605044649442273114",
+          "name": "count",
+          "type": 6
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "1:1603523657178173950",
-  "lastIndexId": "1:2767590020606525293",
+  "lastEntityId": "2:4608631878622724996",
+  "lastIndexId": "3:6593493272592799177",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",
   "modelVersion": 5,

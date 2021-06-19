@@ -8,7 +8,8 @@ class LawEntity extends Equatable {
   int id = 0;
   @Index()
   late String remoteId;
-  int? year;
+  @Index()
+  late int year;
   String? no;
   String? description;
   String? status;

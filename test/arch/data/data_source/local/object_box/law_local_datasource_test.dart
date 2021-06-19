@@ -34,7 +34,10 @@ void main() async {
   group('$LawLocalDatasource', () {
     test('it should store add laws', () async {
       var entities =
-          [1, 2].map((id) => LawEntity()..remoteId = id.toString()).toList();
+          [1, 2].map((id) => LawEntity()
+            ..remoteId = id.toString()
+            ..year = id
+          ).toList();
       var box = store.box<LawEntity>();
       expect(box.count(), 0);
 
@@ -46,7 +49,10 @@ void main() async {
 
     test('it should clear laws', () async {
       var entities =
-          [1, 2].map((id) => LawEntity()..remoteId = id.toString()).toList();
+          [1, 2].map((id) => LawEntity()
+            ..remoteId = id.toString()
+            ..year = id
+          ).toList();
       var box = store.box<LawEntity>();
       box.putMany(entities);
       expect(box.getAll().length, 2);
