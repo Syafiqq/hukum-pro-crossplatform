@@ -32,36 +32,72 @@ void main() async {
   });
 
   group('$LawLocalDatasource', () {
-    test('it should store add laws', () async {
-      var entities =
-          [1, 2].map((id) => LawEntity()
-            ..remoteId = id.toString()
-            ..year = id
-          ).toList();
-      var box = store.box<LawEntity>();
-      expect(box.count(), 0);
+    group('addLaws', () {
+      test('it should store add laws', () async {
+        var entities = [1, 2]
+            .map((id) => LawEntity()
+              ..remoteId = id.toString()
+              ..year = id)
+            .toList();
+        var box = store.box<LawEntity>();
+        expect(box.count(), 0);
 
-      await datasource.addLaws(entities);
+        await datasource.addLaws(entities);
 
-      expect(box.getAll().length, 2);
-      expect(box.count(), 2);
+        expect(box.getAll().length, 2);
+        expect(box.count(), 2);
+      });
     });
 
-    test('it should clear laws', () async {
-      var entities =
-          [1, 2].map((id) => LawEntity()
-            ..remoteId = id.toString()
-            ..year = id
-          ).toList();
-      var box = store.box<LawEntity>();
-      box.putMany(entities);
-      expect(box.getAll().length, 2);
-      expect(box.count(), 2);
+    group('getLawsByYear', () {
+      test('it should get some laws', () async {
+        var entities = [1, 2]
+            .map((id) => LawEntity()
+              ..remoteId = id.toString()
+              ..year = id)
+            .toList();
 
-      await datasource.clear();
+        var box = store.box<LawEntity>();
+        box.putMany(entities);
 
-      expect(box.getAll().length, 0);
-      expect(box.count(), 0);
+        var laws = await datasource.getLawsByYear(1);
+
+        expect(laws.length, 1);
+      });
+
+      test('it should get empty laws', () async {
+        var entities = [1, 2]
+            .map((id) => LawEntity()
+              ..remoteId = id.toString()
+              ..year = id)
+            .toList();
+
+        var box = store.box<LawEntity>();
+        box.putMany(entities);
+
+        var laws = await datasource.getLawsByYear(3);
+
+        expect(laws.length, 0);
+      });
+    });
+
+    group('clear', () {
+      test('it should clear laws', () async {
+        var entities = [1, 2]
+            .map((id) => LawEntity()
+              ..remoteId = id.toString()
+              ..year = id)
+            .toList();
+        var box = store.box<LawEntity>();
+        box.putMany(entities);
+        expect(box.getAll().length, 2);
+        expect(box.count(), 2);
+
+        await datasource.clear();
+
+        expect(box.getAll().length, 0);
+        expect(box.count(), 0);
+      });
     });
   });
 }
