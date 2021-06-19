@@ -20,7 +20,7 @@ void main() async {
   late MockStoreProvider storeProvider;
 
   setUp(() {
-    env = TestEnv('box');
+    env = TestEnv('law-year-entity');
     store = env.store;
     storeProvider = MockStoreProvider();
     when(storeProvider.store).thenReturn(store);
