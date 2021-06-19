@@ -15,12 +15,12 @@ void main() {
   group('$VersionRepository', () {
     late VersionRemoteDatasource mockVersionRemoteDatasource;
     late VersionLocalDatasource mockVersionCacheDatasource;
-    late VersionRepositoryImpl versionRepository;
+    late VersionRepositoryImpl repository;
 
     setUp(() {
       mockVersionRemoteDatasource = MockVersionRemoteDatasource();
       mockVersionCacheDatasource = MockVersionLocalDatasource();
-      versionRepository = VersionRepositoryImpl(
+      repository = VersionRepositoryImpl(
           mockVersionRemoteDatasource, mockVersionCacheDatasource);
     });
 
@@ -31,7 +31,7 @@ void main() {
 
         expect(await mockVersionRemoteDatasource.getVersion(), isNotNull);
 
-        var version = await versionRepository.fetchFromRemote();
+        var version = await repository.fetchFromRemote();
         expect(version, isNotNull);
         expect(version.detail, isNull);
         expect(version.milis, isNull);
@@ -45,7 +45,7 @@ void main() {
         expect(() async => await mockVersionRemoteDatasource.getVersion(),
             throwsA(isA<DataNotExistsException>()));
 
-        expect(() async => await versionRepository.fetchFromRemote(),
+        expect(() async => await repository.fetchFromRemote(),
             throwsA(isA<DataNotExistsException>()));
       });
 
@@ -56,7 +56,7 @@ void main() {
         expect(() async => await mockVersionRemoteDatasource.getVersion(),
             throwsA(isA<ParseFailedException>()));
 
-        expect(() async => await versionRepository.fetchFromRemote(),
+        expect(() async => await repository.fetchFromRemote(),
             throwsA(isA<ParseFailedException>()));
       });
     });
@@ -68,7 +68,7 @@ void main() {
 
         expect(await mockVersionCacheDatasource.getVersion(), isNull);
 
-        var version = await versionRepository.fetchFromLocal();
+        var version = await repository.fetchFromLocal();
         expect(version, isNull);
       });
 
@@ -79,7 +79,7 @@ void main() {
         expect(() async => await mockVersionCacheDatasource.getVersion(),
             isNotNull);
 
-        var version = await versionRepository.fetchFromLocal();
+        var version = await repository.fetchFromLocal();
         expect(version, isNotNull);
         expect(version?.detail, isNull);
         expect(version?.milis, isNull);
@@ -93,7 +93,7 @@ void main() {
         expect(() async => await mockVersionCacheDatasource.getVersion(),
             throwsA(isA<ParseFailedException>()));
 
-        expect(() async => await versionRepository.fetchFromLocal(),
+        expect(() async => await repository.fetchFromLocal(),
             throwsA(isA<ParseFailedException>()));
       });
     });
@@ -106,7 +106,7 @@ void main() {
 
         verifyNever(mockVersionCacheDatasource.setVersion(entity));
 
-        await versionRepository.saveToLocal(entity);
+        await repository.saveToLocal(entity);
 
         verify(mockVersionCacheDatasource.setVersion(entity)).called(1);
       });
