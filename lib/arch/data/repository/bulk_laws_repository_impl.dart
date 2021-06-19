@@ -11,9 +11,8 @@ class BulkLawsRepositoryImpl implements BulkLawsRepository {
   BulkLawsRepositoryImpl(this.remoteDatasource, this.localDatasource);
 
   @override
-  Future<void> downloadLaw(String name, File destination) async {
-    await remoteDatasource.downloadBulkLaws(name, destination);
-  }
+  Future<void> downloadLaw(String name, File destination) async =>
+      await remoteDatasource.downloadBulkLaws(name, destination);
 
   @override
   Future<List<File>> getFileReference(String id, List<String> names) async =>

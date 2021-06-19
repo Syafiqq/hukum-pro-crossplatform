@@ -10,24 +10,19 @@ class LawRepositoryImpl implements LawRepository {
   LawRepositoryImpl(this.localDatasource);
 
   @override
-  Future<void> addAll(List<LawEntity> laws) async {
-    await localDatasource.addLaws(laws.map((e) => e.toData()).toList(growable: false));
-  }
+  Future<void> addAll(List<LawEntity> laws) async => await localDatasource
+      .addLaws(laws.map((e) => e.toData()).toList(growable: false));
 
   @override
-  Future<void> deleteAll() async {
-    await localDatasource.deleteAllLaw();
-  }
+  Future<void> deleteAll() async => await localDatasource.deleteAllLaw();
 
   @override
-  Future<LawEntity?> getById(int id) async {
-    (await localDatasource.getLawById(id))?.toDomain();
-  }
+  Future<LawEntity?> getById(int id) async =>
+      (await localDatasource.getLawById(id))?.toDomain();
 
   @override
-  Future<LawEntity?> getByRemoteId(String remoteId) async {
-    (await localDatasource.getLawByRemoteId(remoteId))?.toDomain();
-  }
+  Future<LawEntity?> getByRemoteId(String remoteId) async =>
+      (await localDatasource.getLawByRemoteId(remoteId))?.toDomain();
 
   @override
   Future<List<LawEntity>> getByYear(int year, int limit, int page) async {
