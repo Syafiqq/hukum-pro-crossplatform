@@ -81,6 +81,38 @@ void main() async {
       });
     });
 
+    group('getLawById', () {
+      test('it should get the law', () async {
+        var entities = [1]
+            .map((id) => LawEntity()
+              ..remoteId = id.toString()
+              ..year = id)
+            .toList();
+
+        var box = store.box<LawEntity>();
+        box.putMany(entities);
+
+        var law = await datasource.getLawById(1);
+
+        expect(law, isNotNull);
+      });
+
+      test('it should get null', () async {
+        var entities = [1]
+            .map((id) => LawEntity()
+              ..remoteId = id.toString()
+              ..year = id)
+            .toList();
+
+        var box = store.box<LawEntity>();
+        box.putMany(entities);
+
+        var law = await datasource.getLawById(2);
+
+        expect(law, isNull);
+      });
+    });
+
     group('clear', () {
       test('it should clear laws', () async {
         var entities = [1, 2]

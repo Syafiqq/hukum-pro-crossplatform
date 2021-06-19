@@ -4,4 +4,5 @@ abstract class LawLocalDatasource {
   Future<void> clear();
   Future<void> addLaws(List<LawEntity> laws);
   Future<List<LawEntity>> getLawsByYear(int year);
+  Future<LawEntity?> getLawById(int id);
 }

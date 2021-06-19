@@ -24,6 +24,14 @@ class ObjectBoxDatabaseStorage implements LawLocalDatasource {
   }
 
   @override
+  Future<LawEntity?> getLawById(int id) {
+    final store = storeProvider.store;
+    var lawBox = store.box<LawEntity>();
+    Query<LawEntity> query = lawBox.query(LawEntity_.id.equals(id)).build();
+    return Future.value(query.findFirst());
+  }
+
+  @override
   Future<void> clear() async {
     final store = storeProvider.store;
     var lawBox = store.box<LawEntity>();
