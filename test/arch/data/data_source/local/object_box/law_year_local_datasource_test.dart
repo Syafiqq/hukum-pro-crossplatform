@@ -57,7 +57,6 @@ void main() async {
         var laws = await datasource.getLawYearsWithPagination(1, 1);
 
         expect(laws.length, 1);
-        expect(laws.first.id, 1);
         expect(laws.first.year, 1);
       });
 
@@ -70,7 +69,6 @@ void main() async {
         var laws = await datasource.getLawYearsWithPagination(1, 2);
 
         expect(laws.length, 1);
-        expect(laws.first.id, 2);
         expect(laws.first.year, 1);
       });
 

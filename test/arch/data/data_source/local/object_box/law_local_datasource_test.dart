@@ -97,7 +97,7 @@ void main() async {
         var laws = await datasource.getLawsByYearWithPagination(1, 1, 1);
 
         expect(laws.length, 1);
-        expect(laws.first.id, 1);
+        expect(laws.first.remoteId, '1');
       });
 
       test('it should get 2 laws', () async {
@@ -113,7 +113,7 @@ void main() async {
         var laws = await datasource.getLawsByYearWithPagination(1, 1, 2);
 
         expect(laws.length, 1);
-        expect(laws.first.id, 2);
+        expect(laws.first.remoteId, '2');
       });
 
       test('it should get empty laws', () async {
