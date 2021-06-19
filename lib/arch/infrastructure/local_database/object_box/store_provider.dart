@@ -1,4 +1,4 @@
-import 'package:hukum_pro/objectbox.g.dart';
+import 'package:objectbox/objectbox.dart';
 
 abstract class StoreProvider {
   Store get store;
