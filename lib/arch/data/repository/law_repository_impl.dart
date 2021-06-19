@@ -11,12 +11,12 @@ class LawRepositoryImpl implements LawRepository {
 
   @override
   Future<void> addAll(List<LawEntity> laws) async {
-    localDatasource.addLaws(laws.map((e) => e.toData()).toList(growable: false));
+    await localDatasource.addLaws(laws.map((e) => e.toData()).toList(growable: false));
   }
 
   @override
   Future<void> deleteAll() async {
-    localDatasource.deleteAllLaw();
+    await localDatasource.deleteAllLaw();
   }
 
   @override
