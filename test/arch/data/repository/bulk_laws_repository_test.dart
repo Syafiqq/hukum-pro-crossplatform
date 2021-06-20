@@ -5,8 +5,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hukum_pro/arch/data/data_source/local/contract/bulk_laws_local_datasource.dart';
 import 'package:hukum_pro/arch/data/data_source/remote/contract/bulk_laws_remote_datasource.dart';
 import 'package:hukum_pro/arch/data/repository/bulk_laws_repository_impl.dart';
+import 'package:hukum_pro/arch/domain/entity/law/law_entity.dart';
 import 'package:hukum_pro/arch/domain/repository/bulk_laws_repository.dart';
 import 'package:hukum_pro/common/exception/built_in.dart';
+import 'package:hukum_pro/common/exception/defined_exception.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:path_provider/path_provider.dart';
@@ -103,6 +105,41 @@ void main() {
                 'internalException',
                 isA<FileSystemException>()
                     .having((e) => e.message, 'message', '1'))));
+      });
+    });
+
+    group('decodeFile', () {
+      test('success decode', () async {
+        when(mockBulkLawsLocalDatasource.decodeBulkLaw(any)).thenAnswer((_) =>
+            Future.value([0, 1]
+                .map((e) => LawEntity(
+                    e, e.toString(), e, null, null, null, null, null, null))
+                .toList()));
+
+        final file = File('');
+        final response = await repository.decodeFile(file);
+
+        verify(mockBulkLawsLocalDatasource.decodeBulkLaw(file)).called(1);
+
+        expect(response.length, 2);
+        expect(response.first.id, 0);
+        expect(response.first.remoteId, '0');
+        expect(response.first.year, 0);
+      });
+
+      test('throws error', () async {
+        when(mockBulkLawsLocalDatasource.decodeBulkLaw(any)).thenAnswer(
+            (realInvocation) =>
+                Future.error(DefinedException(null, null, '1', '2')));
+
+        final file = File('');
+        await expectLater(
+            repository.decodeFile(file),
+            throwsA(isA<DefinedException>()
+                .having((e) => e.code, 'code', '1')
+                .having((e) => e.message, 'message', '2')));
+
+        verify(mockBulkLawsLocalDatasource.decodeBulkLaw(file)).called(1);
       });
     });
   });
