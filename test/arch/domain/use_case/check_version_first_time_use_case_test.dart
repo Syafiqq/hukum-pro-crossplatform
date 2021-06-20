@@ -68,8 +68,8 @@ void main() {
     });
 
     test('it should throw an error from local fetch', () async {
-      when(mockVersionRepository.fetchFromLocal())
-          .thenThrow(DefinedException(null, null, '1', '2'));
+      when(mockVersionRepository.fetchFromLocal()).thenAnswer(
+          (_) => Future.error(DefinedException(null, null, '1', '2')));
 
       await expectLater(
           useCase.execute(),
@@ -84,8 +84,8 @@ void main() {
     test('it should throw an error from remote fetch', () async {
       when(mockVersionRepository.fetchFromLocal())
           .thenAnswer((_) => Future.value(null));
-      when(mockVersionRepository.fetchFromRemote())
-          .thenThrow(DefinedException(null, null, '1', '2'));
+      when(mockVersionRepository.fetchFromRemote()).thenAnswer(
+          (_) => Future.error(DefinedException(null, null, '1', '2')));
 
       await expectLater(
           useCase.execute(),

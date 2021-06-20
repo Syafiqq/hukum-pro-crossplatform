@@ -39,8 +39,8 @@ void main() {
       });
 
       test('throw data not exists', () async {
-        when(mockVersionRemoteDatasource.getVersion())
-            .thenThrow(DataNotExistsException(null, null));
+        when(mockVersionRemoteDatasource.getVersion()).thenAnswer(
+            (_) => Future.error(DataNotExistsException(null, null)));
 
         try {
           await mockVersionRemoteDatasource.getVersion();
@@ -54,8 +54,8 @@ void main() {
       });
 
       test('throw parse failed', () async {
-        when(mockVersionRemoteDatasource.getVersion())
-            .thenThrow(ParseFailedException(VersionEntity, null, null));
+        when(mockVersionRemoteDatasource.getVersion()).thenAnswer((_) =>
+            Future.error(ParseFailedException(VersionEntity, null, null)));
 
         try {
           await mockVersionRemoteDatasource.getVersion();
@@ -94,8 +94,8 @@ void main() {
       });
 
       test('throw parse failed', () async {
-        when(mockVersionCacheDatasource.getVersion())
-            .thenThrow(ParseFailedException(VersionEntity, null, null));
+        when(mockVersionCacheDatasource.getVersion()).thenAnswer((_) =>
+            Future.error(ParseFailedException(VersionEntity, null, null)));
 
         try {
           await mockVersionCacheDatasource.getVersion();

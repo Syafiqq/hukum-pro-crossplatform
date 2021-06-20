@@ -60,8 +60,8 @@ void main() {
 
       test('throws error', () async {
         when(mockBulkLawsLocalDatasource.getBulkLawDiskReferences(any, any))
-            .thenThrow(DataLocationNotFoundException(
-                MissingPlatformDirectoryException('1'), null));
+            .thenAnswer((_) => Future.error(DataLocationNotFoundException(
+                MissingPlatformDirectoryException('1'), null)));
 
         await expectLater(
             repository.getFileReference('1', [
@@ -82,8 +82,9 @@ void main() {
       });
 
       test('throws error from firebase', () async {
-        when(mockBulkLawsRemoteDatasource.downloadBulkLaws(any, any)).thenThrow(
-            DataFetchFailureException(FirebaseException(plugin: '1'), null));
+        when(mockBulkLawsRemoteDatasource.downloadBulkLaws(any, any))
+            .thenAnswer((_) => Future.error(DataFetchFailureException(
+                FirebaseException(plugin: '1'), null)));
 
         await expectLater(
             repository.downloadLaw('1.json', File('a.json')),
@@ -95,8 +96,9 @@ void main() {
       });
 
       test('throws error from filesystem', () async {
-        when(mockBulkLawsRemoteDatasource.downloadBulkLaws(any, any)).thenThrow(
-            DataFetchFailureException(FileSystemException('1'), null));
+        when(mockBulkLawsRemoteDatasource.downloadBulkLaws(any, any))
+            .thenAnswer((_) => Future.error(
+                DataFetchFailureException(FileSystemException('1'), null)));
 
         await expectLater(
             repository.downloadLaw('1.json', File('a.json')),
