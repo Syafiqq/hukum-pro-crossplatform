@@ -27,12 +27,12 @@ void main() {
         cache = CacheSharedPreferences(sharedPreferences);
       });
 
-      group('getMenus', () {
+      group('getMenusOrEmpty', () {
         test('return empty', () async {
           SharedPreferences.setMockInitialValues({});
           await sharedPreferences.reload();
 
-          var entity = await cache.getMenus();
+          var entity = await cache.getMenusOrEmpty();
 
           expect(entity, isEmpty);
         });
@@ -43,7 +43,7 @@ void main() {
           });
           await sharedPreferences.reload();
 
-          var entity = await cache.getMenus();
+          var entity = await cache.getMenusOrEmpty();
 
           expect(entity, isNotNull);
           expect(entity, isNotEmpty);
@@ -61,32 +61,52 @@ void main() {
           ]);
         });
 
-        test('throws parse failed exception from invalid content type',
+        test('throws parse failed exception from invalid law id type',
             () async {
           SharedPreferences.setMockInitialValues({
             'law_status_order': '[{"id": 1},{"id": 2}]',
           });
           await sharedPreferences.reload();
 
-          expect(
-              () async => await cache.getMenus(),
+          await expectLater(
+              cache.getMenusOrEmpty(),
               throwsA(isA<ParseFailedException>().having(
                   (e) => e.internalError,
                   'internalError',
                   isA<TypeError>().having((e) => e.toString(), 'toString',
                       "type 'int' is not a subtype of type 'String' in type cast"))));
         });
+
+        test('throws parse failed exception from invalid list', () async {
+          SharedPreferences.setMockInitialValues({
+            'law_status_order': '{"id": 1}',
+          });
+          await sharedPreferences.reload();
+
+          await expectLater(
+              cache.getMenusOrEmpty(), throwsA(isA<ParseFailedException>()));
+        });
+
+        test('throws parse failed exception from invalid list item', () async {
+          SharedPreferences.setMockInitialValues({
+            'law_status_order': '[[1]]',
+          });
+          await sharedPreferences.reload();
+
+          await expectLater(
+              cache.getMenusOrEmpty(), throwsA(isA<ParseFailedException>()));
+        });
       });
 
       group('setMenus', () {
         test('success set', () async {
-          var entityBefore = await cache.getMenus();
+          var entityBefore = await cache.getMenusOrEmpty();
           expect(entityBefore, isEmpty);
 
           var entityNow = LawMenuOrderEntity('1', '1', 1);
           await cache.setMenus([entityNow]);
 
-          var entityAfter = await cache.getMenus();
+          var entityAfter = await cache.getMenusOrEmpty();
           expect(entityAfter, isNotEmpty);
           expect(entityAfter.first, entityNow);
           expect(entityAfter.length, 1);

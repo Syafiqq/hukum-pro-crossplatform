@@ -15,11 +15,15 @@ class CacheSharedPreferences
 
   @override
   Future<VersionEntity?> getVersion() async {
-    var versionRawJson = cache.getString('version');
+    final versionRawJson = cache.getString('version');
     if (versionRawJson == null) {
       return null;
     }
-    Map<String, dynamic> versionMap = jsonDecode(versionRawJson);
+    final versionMap = jsonDecode(versionRawJson);
+    if (versionMap is! Map) {
+      throw ParseFailedException(Map, null, null);
+    }
+
     try {
       VersionEntity version = VersionEntity.fromJson(versionMap);
       return version;
@@ -30,30 +34,32 @@ class CacheSharedPreferences
 
   @override
   Future<void> setVersion(VersionEntity version) async {
-    var versionMap = version.toJson();
-    var versionRawJson = jsonEncode(versionMap);
+    final versionMap = version.toJson();
+    final versionRawJson = jsonEncode(versionMap);
     await cache.setString('version', versionRawJson);
   }
 
   @override
-  Future<List<LawMenuOrderEntity>> getMenus() async {
-    var menusRawJson = cache.getString('law_status_order');
+  Future<List<LawMenuOrderEntity>> getMenusOrEmpty() async {
+    final menusRawJson = cache.getString('law_status_order');
     if (menusRawJson == null) {
       return <LawMenuOrderEntity>[];
     }
-    List<dynamic> menusMap = jsonDecode(menusRawJson);
-    var menus = <LawMenuOrderEntity>[];
+    final menusList = jsonDecode(menusRawJson);
+    if (menusList is! Iterable) {
+      throw ParseFailedException(Iterable, null, null);
+    }
 
-    for (dynamic rawMenu in menusMap) {
-      var rawMapMenu = rawMenu as Map?;
-      if (rawMapMenu == null) {
-        continue;
+    final menus = <LawMenuOrderEntity>[];
+    for (final rawMenu in menusList) {
+      if (rawMenu is! Map) {
+        throw ParseFailedException(Map, null, null);
       }
       try {
-        var menu = LawMenuOrderEntity.fromJson(rawMapMenu);
+        final menu = LawMenuOrderEntity.fromJson(rawMenu);
         menus.add(menu);
       } on TypeError catch (e) {
-        throw ParseFailedException(VersionEntity, null, e);
+        throw ParseFailedException(LawMenuOrderEntity, null, e);
       }
     }
     return menus;
@@ -61,8 +67,8 @@ class CacheSharedPreferences
 
   @override
   Future<void> setMenus(List<LawMenuOrderEntity> menus) async {
-    var menusMap = menus.map((menu) => menu.toJson()).toList();
-    var menusRawJson = jsonEncode(menusMap);
+    final menusMap = menus.map((menu) => menu.toJson()).toList(growable: false);
+    final menusRawJson = jsonEncode(menusMap);
     await cache.setString('law_status_order', menusRawJson);
   }
 }

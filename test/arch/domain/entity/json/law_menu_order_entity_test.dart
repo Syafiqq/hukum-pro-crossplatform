@@ -70,18 +70,18 @@ void main() {
 
     group('$Equatable', () {
       test('compare same instance', () {
-        var version = LawMenuOrderEntity('1', null, null);
-        expect(version == version, true);
+        var entity = LawMenuOrderEntity('1', null, null);
+        expect(entity == entity, true);
       });
 
       test('compare different instance', () {
-        var version = LawMenuOrderEntity('1', null, null);
-        expect(version == LawMenuOrderEntity('1', null, null), true);
+        var entity = LawMenuOrderEntity('1', null, null);
+        expect(entity == LawMenuOrderEntity('1', null, null), true);
       });
 
       test('failed different value', () {
-        var version = LawMenuOrderEntity('1', '1', null);
-        expect(version == LawMenuOrderEntity('1', '2', null), false);
+        var entity = LawMenuOrderEntity('1', '1', null);
+        expect(entity == LawMenuOrderEntity('2', '1', null), false);
       });
     });
   });

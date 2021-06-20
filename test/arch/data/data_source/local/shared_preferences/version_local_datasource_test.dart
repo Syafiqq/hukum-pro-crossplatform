@@ -60,8 +60,18 @@ void main() {
           });
           await sharedPreferences.reload();
 
-          expect(() async => await cache.getVersion(),
-              throwsA(isA<ParseFailedException>()));
+          await expectLater(
+              cache.getVersion(), throwsA(isA<ParseFailedException>()));
+        });
+
+        test('throws parse failed exception from invalid json type', () async {
+          SharedPreferences.setMockInitialValues({
+            'version': '[1]',
+          });
+          await sharedPreferences.reload();
+
+          await expectLater(
+              cache.getVersion(), throwsA(isA<ParseFailedException>()));
         });
       });
 

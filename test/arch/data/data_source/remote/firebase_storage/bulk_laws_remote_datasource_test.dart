@@ -14,6 +14,7 @@ import 'package:hukum_pro/common/exception/built_in.dart';
 import 'package:mockito/mockito.dart';
 
 import 'library/mock.dart';
+import '../../../../../helper/file+operation.dart';
 
 MockReferencePlatform mockReference = MockReferencePlatform();
 MockListResultPlatform mockListResultPlatform = MockListResultPlatform();
@@ -94,8 +95,8 @@ void main() {
           throw FirebaseException(plugin: '0');
         });
 
-        expect(
-            () async => await datasource.downloadBulkLaws('a', file),
+        await expectLater(
+            datasource.downloadBulkLaws('a', file),
             throwsA(isA<DataFetchFailureException>().having(
                 (e) => e.internalException,
                 'internalException',
@@ -112,8 +113,8 @@ void main() {
           throw FileSystemException('0');
         });
 
-        expect(
-            () async => await datasource.downloadBulkLaws('a', file),
+        await expectLater(
+            datasource.downloadBulkLaws('a', file),
             throwsA(isA<DataFetchFailureException>().having(
                 (e) => e.internalException,
                 'internalException',
@@ -122,12 +123,4 @@ void main() {
       });
     });
   });
-}
-
-extension FileRemoval on File {
-  Future<void> deleteIfExists() async {
-    try {
-      await this.delete();
-    } on FileSystemException {}
-  }
 }

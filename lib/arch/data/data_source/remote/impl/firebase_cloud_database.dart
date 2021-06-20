@@ -17,15 +17,18 @@ class FirebaseCloudDatabase
   @override
   Future<VersionEntity> getVersion() async {
     try {
-      var snapshot = await _database
+      final snapshot = await _database
           .reference()
           .child('versions_new/v1')
           .orderByKey()
           .limitToLast(1)
           .once();
-      var versions = snapshot.value?.values as Iterable?;
-      var rawVersion = versions?.firstOrNull as Map?;
-      if (rawVersion == null) throw DataNotExistsException(null, null);
+      final rawVersions = snapshot.value;
+      final rawVersion =
+          rawVersions is Map ? rawVersions.values.firstOrNull : null;
+      if (rawVersion is! Map) {
+        throw ParseFailedException(Map, null, null);
+      }
       try {
         VersionEntity version = VersionEntity.fromJson(rawVersion);
         return version;
@@ -43,27 +46,29 @@ class FirebaseCloudDatabase
   @override
   Future<List<LawMenuOrderEntity>> getMenus() async {
     try {
-      var snapshot = await _database
+      final snapshot = await _database
           .reference()
           .child('law_status_order')
           .orderByKey()
           .once();
-      var rawMenus = snapshot.value?.values as Iterable?;
+      final rawMenusSnapshot = snapshot.value;
+      final rawMenus = rawMenusSnapshot is Map ? rawMenusSnapshot.values : null;
 
-      if (rawMenus == null) throw DataNotExistsException(null, null);
+      if (rawMenus is! Iterable) {
+        throw ParseFailedException(Iterable, null, null);
+      }
 
-      var menus = <LawMenuOrderEntity>[];
+      final menus = <LawMenuOrderEntity>[];
 
       for (dynamic rawMenu in rawMenus) {
-        var rawMapMenu = rawMenu as Map?;
-        if (rawMapMenu == null) {
+        if (rawMenu is! Map) {
           continue;
         }
         try {
-          var menu = LawMenuOrderEntity.fromJson(rawMapMenu);
+          final menu = LawMenuOrderEntity.fromJson(rawMenu);
           menus.add(menu);
         } on TypeError catch (e) {
-          throw ParseFailedException(VersionEntity, null, e);
+          throw ParseFailedException(LawMenuOrderEntity, null, e);
         }
       }
       return menus;

@@ -96,8 +96,7 @@ void main() async {
 
       test('cannot create file because not exist directory', () async {
         expect(await file.exists(), false);
-        expect(() async => await file.create(),
-            throwsA(isA<FileSystemException>()));
+        await expectLater(file.create(), throwsA(isA<FileSystemException>()));
       });
 
       test('create file because exists directory', () async {
@@ -117,8 +116,8 @@ void main() async {
 
         test('cannot create file automatically while read', () async {
           expect(await file.exists(), false);
-          expect(
-              () async => await readCounter(file),
+          await expectLater(
+              readCounter(file),
               throwsA(isA<FileSystemException>()
                   .having((e) => e.message, 'message', 'Cannot open file')));
         });

@@ -52,3 +52,7 @@ app.*.map.json
 /coverage
 **/test/**/*.mocks.dart
 **/entity/**/*.g.dart
+**/entity/**/*.freezed.dart
+**/objectbox.g.dart
+**/data.mdb
+**/lock.mdb

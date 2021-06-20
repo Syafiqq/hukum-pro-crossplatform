@@ -81,18 +81,18 @@ void main() {
 
     group('$Equatable', () {
       test('compare same instance', () {
-        var version = VersionEntity(null, null, null);
-        expect(version == version, true);
+        var entity = VersionEntity(null, null, null);
+        expect(entity == entity, true);
       });
 
       test('compare different instance', () {
-        var version = VersionEntity(null, null, null);
-        expect(version == VersionEntity(null, null, null), true);
+        var entity = VersionEntity(null, null, null);
+        expect(entity == VersionEntity(null, null, null), true);
       });
 
       test('failed different value', () {
-        var version = VersionEntity(null, 1, null);
-        expect(version == VersionEntity(null, 2, null), false);
+        var entity = VersionEntity(null, 1, null);
+        expect(entity == VersionEntity(null, 2, null), false);
       });
     });
   });
@@ -151,18 +151,18 @@ void main() {
 
     group('$Equatable', () {
       test('compare same instance', () {
-        var version = VersionDetailEntity(null);
-        expect(version == version, true);
+        var entity = VersionDetailEntity(null);
+        expect(entity == entity, true);
       });
 
       test('compare different instance', () {
-        var version = VersionDetailEntity(null);
-        expect(version == VersionDetailEntity(null), true);
+        var entity = VersionDetailEntity(null);
+        expect(entity == VersionDetailEntity(null), true);
       });
 
       test('failed different value', () {
-        var version = VersionDetailEntity(['1']);
-        expect(version == VersionDetailEntity(['2']), false);
+        var entity = VersionDetailEntity(['1']);
+        expect(entity == VersionDetailEntity(['2']), false);
       });
     });
   });

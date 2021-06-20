@@ -24,22 +24,21 @@ flutter-json:
   enable: true
 
 dependencies:
+  equatable: "2.0.3"
+  freezed_annotation: "0.14.2"
+  firebase_core: "1.3.0"
+  firebase_database: "7.1.1"
+  firebase_storage: "8.1.3"
+  flinq: "2.0.2"
   flutter:
     sdk: flutter
-  equatable: 2.0.2
-  firebase_core: 1.2.0
-  firebase_database: 7.0.0-dev.3
-  firebase_storage: 8.1.0
-
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: 1.0.3
-  json_serializable: 4.1.2
-  build_runner: 2.0.3
-  flinq: 2.0.2
-  shared_preferences: 2.0.5
-  path_provider: 2.0.1
+  hive: "2.0.4"
+  hive_flutter: "1.0.0"
+  json_serializable: "4.1.3"
+  objectbox: "1.0.0"
+  objectbox_flutter_libs: any
+  path_provider: "2.0.2"
+  shared_preferences: "2.0.6"
 
 dev_dependencies:
   flutter_test:
@@ -49,7 +48,11 @@ dev_dependencies:
   flutter_driver:
     sdk: flutter
   test: any
-  mockito: 5.0.8
+  build_runner: "2.0.4"
+  freezed: "0.14.2"
+  hive_generator: "1.1.0"
+  mockito: "5.0.10"
+  objectbox_generator: any
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
