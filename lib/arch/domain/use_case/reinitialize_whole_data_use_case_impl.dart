@@ -45,10 +45,8 @@ class ReinitializeWholeDataUseCaseImpl implements ReinitializeWholeDataUseCase {
       final file = files[i];
       final filename = filenames[i];
       await bulkLawsRepository.downloadLaw(filename, file);
-    }
 
-    // Parse that file and insert into law and law year
-    for (var file in files) {
+      // Parse that file and insert into law and law year
       final bulkLaws = await bulkLawsRepository.decodeFile(file);
       extractYear(bulkLaws);
 
