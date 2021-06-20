@@ -6,4 +6,8 @@ class RootInjector {
   }
 
   RootInjector._internal();
+
+  void build() {
+
+  }
 }
