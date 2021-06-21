@@ -1,9 +1,11 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 // Import the firebase_core plugin
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hukum_pro/di/root_injector.dart';
+import 'package:kiwi/kiwi.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,6 +52,9 @@ class _AppState extends State<App> {
           print("hasData = ${snapshot.hasData}");
           print(snapshot.data);
           print(Firebase.app());
+          KiwiContainer container = KiwiContainer();
+          print(container.resolve<FirebaseDatabase>());
+          print(container.resolve<FirebaseStorage>());
         }
 
         // Otherwise, show something whilst waiting for initialization to complete
