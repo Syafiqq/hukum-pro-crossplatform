@@ -14,19 +14,20 @@ class FirebaseModule {
 
   void build() {
     KiwiContainer container = KiwiContainer();
+    // Firebase App
+    container.registerSingleton((c) => Firebase.app());
 
     // FirebaseDatabase
     container.registerSingleton((c) {
-      final app = Firebase.app();
       return FirebaseDatabase(
-          app: app, databaseURL: 'https://hukumpro-serverproxy.firebaseio.com');
+          app: c<FirebaseApp>(),
+          databaseURL: 'https://hukumpro-serverproxy.firebaseio.com');
     });
 
     // FirebaseCloudStorage
     container.registerSingleton((c) {
-      final app = Firebase.app();
       return FirebaseStorage.instanceFor(
-          app: app, bucket: 'hukumpro-serverproxy.appspot.com');
+          app: c<FirebaseApp>(), bucket: 'hukumpro-serverproxy.appspot.com');
     });
   }
 }
