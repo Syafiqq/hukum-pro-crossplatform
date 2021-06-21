@@ -1,7 +1,9 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 // Import the firebase_core plugin
 import 'package:firebase_core/firebase_core.dart';
+import 'package:hukum_pro/di/root_injector.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,7 +26,11 @@ class _AppState extends State<App> {
   /// directly inside [build].
 
   Future<void> _initializeApp() async {
+    // Firebase
     await Firebase.initializeApp();
+
+    // DI
+    RootInjector().build();
   }
 
   @override
