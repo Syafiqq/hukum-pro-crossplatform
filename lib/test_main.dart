@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 // Import the firebase_core plugin
 import 'package:firebase_core/firebase_core.dart';
+import 'package:hukum_pro/arch/data/data_source/remote/impl/firebase_cloud_database.dart';
 import 'package:hukum_pro/di/root_injector.dart';
 import 'package:kiwi/kiwi.dart';
 
@@ -55,6 +56,7 @@ class _AppState extends State<App> {
           KiwiContainer container = KiwiContainer();
           print(container.resolve<FirebaseDatabase>());
           print(container.resolve<FirebaseStorage>());
+          print(container.resolve<FirebaseCloudDatabase>());
         }
 
         // Otherwise, show something whilst waiting for initialization to complete

@@ -1,3 +1,4 @@
+import 'package:hukum_pro/di/module/data_source/remote_datasource_module.dart';
 import 'package:hukum_pro/di/module/infrastructure/firebase_module.dart';
 
 class RootInjector {
@@ -11,5 +12,6 @@ class RootInjector {
 
   void build() {
     FirebaseModule().build();
+    RemoteDatasourceModule().build();
   }
 }
