@@ -22,13 +22,16 @@ class App extends StatefulWidget {
 class _AppState extends State<App> {
   /// The future is part of the state of our widget. We should not call `initializeApp`
   /// directly inside [build].
-  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+
+  Future<void> _initializeApp() async {
+    await Firebase.initializeApp();
+  }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
       // Initialize FlutterFire:
-      future: _initialization,
+      future: _initializeApp(),
       builder: (context, snapshot) {
         // Check for errors
         if (snapshot.hasError) {
@@ -40,6 +43,7 @@ class _AppState extends State<App> {
         if (snapshot.connectionState == ConnectionState.done) {
           print("hasData = ${snapshot.hasData}");
           print(snapshot.data);
+          print(Firebase.app());
         }
 
         // Otherwise, show something whilst waiting for initialization to complete
