@@ -1,3 +1,5 @@
+import 'package:hukum_pro/di/module/infrastructure/firebase_module.dart';
+
 class RootInjector {
   static final RootInjector _singleton = RootInjector._internal();
 
@@ -8,6 +10,6 @@ class RootInjector {
   RootInjector._internal();
 
   void build() {
-
+    FirebaseModule().build();
   }
 }
