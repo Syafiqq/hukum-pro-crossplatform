@@ -24,7 +24,7 @@ void main() {
       late CacheSharedPreferences cache;
 
       setUp(() async {
-        cache = CacheSharedPreferences(sharedPreferences);
+        cache = CacheSharedPreferences(Future.value(sharedPreferences));
       });
 
       group('getVersion', () {
