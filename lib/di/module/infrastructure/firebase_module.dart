@@ -15,17 +15,17 @@ class FirebaseModule {
   void build() {
     KiwiContainer container = KiwiContainer();
     // Firebase App
-    container.registerSingleton((c) => Firebase.app());
+    container.registerFactory((_) => Firebase.app());
 
     // FirebaseDatabase
-    container.registerSingleton((c) {
+    container.registerFactory((c) {
       return FirebaseDatabase(
           app: c<FirebaseApp>(),
           databaseURL: 'https://hukumpro-serverproxy.firebaseio.com');
     });
 
     // FirebaseCloudStorage
-    container.registerSingleton((c) {
+    container.registerFactory((c) {
       return FirebaseStorage.instanceFor(
           app: c<FirebaseApp>(), bucket: 'hukumpro-serverproxy.appspot.com');
     });
