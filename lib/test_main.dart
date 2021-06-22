@@ -19,6 +19,7 @@ import 'package:hukum_pro/arch/infrastructure/local_database/object_box/store_pr
 import 'package:hukum_pro/di/contract/object_resolver.dart';
 import 'package:hukum_pro/di/root_injector.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:objectbox/objectbox.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -118,6 +119,8 @@ class _AppState extends State<App> {
     checkObject(container.resolve<VersionLocalDatasource>());
     checkObject(container.resolve<LawMenuOrderLocalDatasource>());
     checkObject(container.resolve<LawMenuOrderLocalDatasource>());
+    checkObject(container.resolve<Store>());
+    checkObject(container.resolve<Store>());
     checkObject(container.resolve<ObjectResolver>());
     checkObject(container.resolve<ObjectResolver>());
     checkObject(container.resolve<StoreProvider>());
