@@ -11,6 +11,7 @@ import 'package:hukum_pro/arch/data/data_source/remote/impl/firebase_cloud_datab
 import 'package:hukum_pro/arch/data/data_source/remote/impl/firebase_cloud_storage.dart';
 import 'package:hukum_pro/di/root_injector.dart';
 import 'package:kiwi/kiwi.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -101,6 +102,8 @@ class _AppState extends State<App> {
     checkObject(container.resolve<FirebaseCloudStorage>());
     checkObject(container.resolve<BulkLawsRemoteDatasource>());
     checkObject(container.resolve<BulkLawsRemoteDatasource>());
+    checkObject(container.resolve<SharedPreferences>());
+    checkObject(container.resolve<SharedPreferences>());
   }
 
   void checkObject(Object x) {
