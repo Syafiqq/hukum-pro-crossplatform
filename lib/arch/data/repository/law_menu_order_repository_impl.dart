@@ -14,10 +14,10 @@ class LawMenuOrderRepositoryImpl implements LawMenuOrderRepository {
       localDatasource.getMenusOrEmpty();
 
   @override
-  Future<List<LawMenuOrderEntity>> fetchFromServer() async =>
+  Future<List<LawMenuOrderEntity>> fetchFromRemote() async =>
       remoteDatasource.getMenus();
 
   @override
-  Future<void> save(List<LawMenuOrderEntity> menus) async =>
+  Future<void> saveToLocal(List<LawMenuOrderEntity> menus) async =>
       localDatasource.setMenus(menus);
 }
