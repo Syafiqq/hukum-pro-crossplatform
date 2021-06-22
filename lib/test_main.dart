@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 
 // Import the firebase_core plugin
 import 'package:firebase_core/firebase_core.dart';
+import 'package:hukum_pro/arch/data/data_source/local/contract/law_menu_order_local_datasource.dart';
+import 'package:hukum_pro/arch/data/data_source/local/contract/version_local_datasource.dart';
+import 'package:hukum_pro/arch/data/data_source/local/impl/cache_shared_preferences.dart';
 import 'package:hukum_pro/arch/data/data_source/remote/contract/bulk_laws_remote_datasource.dart';
 import 'package:hukum_pro/arch/data/data_source/remote/contract/law_menu_order_remote_datasource.dart';
 import 'package:hukum_pro/arch/data/data_source/remote/contract/version_remote_datasource.dart';
@@ -102,8 +105,14 @@ class _AppState extends State<App> {
     checkObject(container.resolve<FirebaseCloudStorage>());
     checkObject(container.resolve<BulkLawsRemoteDatasource>());
     checkObject(container.resolve<BulkLawsRemoteDatasource>());
-    checkObject(container.resolve<SharedPreferences>());
-    checkObject(container.resolve<SharedPreferences>());
+    checkObject(container.resolve<Future<SharedPreferences>>());
+    checkObject(container.resolve<Future<SharedPreferences>>());
+    checkObject(container.resolve<CacheSharedPreferences>());
+    checkObject(container.resolve<CacheSharedPreferences>());
+    checkObject(container.resolve<VersionLocalDatasource>());
+    checkObject(container.resolve<VersionLocalDatasource>());
+    checkObject(container.resolve<LawMenuOrderLocalDatasource>());
+    checkObject(container.resolve<LawMenuOrderLocalDatasource>());
   }
 
   void checkObject(Object x) {
