@@ -4,14 +4,19 @@ import 'package:flutter/material.dart';
 
 // Import the firebase_core plugin
 import 'package:firebase_core/firebase_core.dart';
+import 'package:hukum_pro/arch/data/data_source/local/contract/law_local_datasource.dart';
 import 'package:hukum_pro/arch/data/data_source/local/contract/law_menu_order_local_datasource.dart';
+import 'package:hukum_pro/arch/data/data_source/local/contract/law_year_local_datasource.dart';
 import 'package:hukum_pro/arch/data/data_source/local/contract/version_local_datasource.dart';
 import 'package:hukum_pro/arch/data/data_source/local/impl/cache_shared_preferences.dart';
+import 'package:hukum_pro/arch/data/data_source/local/impl/object_box_database_storage.dart';
 import 'package:hukum_pro/arch/data/data_source/remote/contract/bulk_laws_remote_datasource.dart';
 import 'package:hukum_pro/arch/data/data_source/remote/contract/law_menu_order_remote_datasource.dart';
 import 'package:hukum_pro/arch/data/data_source/remote/contract/version_remote_datasource.dart';
 import 'package:hukum_pro/arch/data/data_source/remote/impl/firebase_cloud_database.dart';
 import 'package:hukum_pro/arch/data/data_source/remote/impl/firebase_cloud_storage.dart';
+import 'package:hukum_pro/arch/infrastructure/local_database/object_box/store_provider.dart';
+import 'package:hukum_pro/di/contract/object_resolver.dart';
 import 'package:hukum_pro/di/root_injector.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -113,6 +118,16 @@ class _AppState extends State<App> {
     checkObject(container.resolve<VersionLocalDatasource>());
     checkObject(container.resolve<LawMenuOrderLocalDatasource>());
     checkObject(container.resolve<LawMenuOrderLocalDatasource>());
+    checkObject(container.resolve<ObjectResolver>());
+    checkObject(container.resolve<ObjectResolver>());
+    checkObject(container.resolve<StoreProvider>());
+    checkObject(container.resolve<StoreProvider>());
+    checkObject(container.resolve<ObjectBoxDatabaseStorage>());
+    checkObject(container.resolve<ObjectBoxDatabaseStorage>());
+    checkObject(container.resolve<LawLocalDatasource>());
+    checkObject(container.resolve<LawLocalDatasource>());
+    checkObject(container.resolve<LawYearLocalDatasource>());
+    checkObject(container.resolve<LawYearLocalDatasource>());
   }
 
   void checkObject(Object x) {
