@@ -16,7 +16,12 @@ class ObjectBoxModule {
 
   void build() {
     KiwiContainer container = KiwiContainer();
-    container.registerFactory<Store>((c) => Store(getObjectBoxModel()));
+    container.registerFactory<Store>((c) {
+
+
+
+      return Store(getObjectBoxModel());
+    });
     container.registerSingleton<StoreProvider>(
         (c) => StoreProviderImpl(c<ObjectResolver>()));
   }
