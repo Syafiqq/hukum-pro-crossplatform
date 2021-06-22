@@ -1,10 +1,8 @@
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:hukum_pro/arch/data/data_source/remote/contract/law_menu_order_remote_datasource.dart';
+import 'package:hukum_pro/arch/data/data_source/remote/contract/version_remote_datasource.dart';
 import 'package:hukum_pro/arch/data/data_source/remote/impl/firebase_cloud_database.dart';
-import 'package:hukum_pro/arch/data/data_source/remote/impl/firebase_cloud_storage.dart';
 import 'package:kiwi/kiwi.dart';
-
-part 'remote_datasource_module.g.dart';
 
 class RemoteDatasourceModule {
   static final RemoteDatasourceModule _singleton =
@@ -17,12 +15,16 @@ class RemoteDatasourceModule {
   RemoteDatasourceModule._internal();
 
   void build() {
-    _$RemoteDatasourceInjectorModule().build();
+    final KiwiContainer container = KiwiContainer();
+    container
+        .registerSingleton((c) => FirebaseCloudDatabase(c<FirebaseDatabase>()));
+    container.registerSingleton<VersionRemoteDatasource>(
+        (c) => c<FirebaseCloudDatabase>());
+    container.registerSingleton<LawMenuOrderRemoteDatasource>(
+        (c) => c<FirebaseCloudDatabase>());
   }
 }
 
 abstract class RemoteDatasourceInjectorModule {
-  @Register.singleton(FirebaseCloudDatabase)
-  @Register.singleton(FirebaseCloudStorage)
   void build();
 }
