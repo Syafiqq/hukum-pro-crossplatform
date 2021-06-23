@@ -4,5 +4,5 @@ import 'package:objectbox/objectbox.dart';
 
 class KiwiObjectResolver implements ObjectResolver {
   @override
-  Store getStore() => KiwiContainer().resolve<Store>();
+  Future<Store> getStore() => KiwiContainer().resolve<Future<Store>>();
 }

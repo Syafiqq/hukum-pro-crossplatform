@@ -1,5 +1,5 @@
 import 'package:objectbox/objectbox.dart';
 
 abstract class StoreProvider {
-  Store get store;
+  Future<Store> get store;
 }

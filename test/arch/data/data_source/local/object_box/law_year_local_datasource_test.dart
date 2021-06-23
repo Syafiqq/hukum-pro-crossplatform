@@ -23,7 +23,7 @@ void main() async {
     env = TestEnv('law-year-entity');
     store = env.store;
     storeProvider = MockStoreProvider();
-    when(storeProvider.store).thenReturn(store);
+    when(storeProvider.store).thenAnswer((_) => Future.value(store));
     datasource = ObjectBoxDatabaseStorage(storeProvider);
   });
 

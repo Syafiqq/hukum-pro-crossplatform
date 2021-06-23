@@ -8,5 +8,5 @@ class StoreProviderImpl implements StoreProvider {
   StoreProviderImpl(this.resolver);
 
   @override
-  Store get store => resolver.getStore();
+  Future<Store> get store => resolver.getStore();
 }
