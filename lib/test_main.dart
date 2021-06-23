@@ -15,6 +15,7 @@ import 'package:hukum_pro/arch/data/data_source/remote/contract/law_menu_order_r
 import 'package:hukum_pro/arch/data/data_source/remote/contract/version_remote_datasource.dart';
 import 'package:hukum_pro/arch/data/data_source/remote/impl/firebase_cloud_database.dart';
 import 'package:hukum_pro/arch/data/data_source/remote/impl/firebase_cloud_storage.dart';
+import 'package:hukum_pro/arch/infrastructure/app/platform_identifier.dart';
 import 'package:hukum_pro/arch/infrastructure/local_database/object_box/store_provider.dart';
 import 'package:hukum_pro/di/contract/object_resolver.dart';
 import 'package:hukum_pro/di/root_injector.dart';
@@ -119,6 +120,8 @@ class _AppState extends State<App> {
     checkObject(container.resolve<VersionLocalDatasource>());
     checkObject(container.resolve<LawMenuOrderLocalDatasource>());
     checkObject(container.resolve<LawMenuOrderLocalDatasource>());
+    checkObject(container.resolve<PlatformIdentifier>());
+    checkObject(container.resolve<PlatformIdentifier>());
     checkObject(container.resolve<Future<Store>>());
     checkObject(container.resolve<Future<Store>>());
     checkObject(container.resolve<ObjectResolver>());
