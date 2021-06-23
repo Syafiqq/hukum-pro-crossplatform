@@ -24,6 +24,12 @@ class ReinitializeWholeDataUseCaseImpl implements ReinitializeWholeDataUseCase {
 
   @override
   Future<void> execute(VersionEntity version) async {
+    // Download the files
+    final id = version.milis;
+    if (id == null) {
+      throw DataFetchFailureException(null, null);
+    }
+
     // Clear the database
     await lawRepository.deleteAll();
     await lawYearRepository.deleteAll();
@@ -32,11 +38,6 @@ class ReinitializeWholeDataUseCaseImpl implements ReinitializeWholeDataUseCase {
     final lawOrder = await lawMenuOrderRepository.fetchFromRemote();
     await lawMenuOrderRepository.saveToLocal(lawOrder);
 
-    // Download the files
-    final id = version.milis;
-    if (id == null) {
-      throw DataFetchFailureException(null, null);
-    }
 
     var filenames = version.detail?.filenames ?? [];
     var files =
