@@ -21,6 +21,7 @@ import 'package:hukum_pro/di/contract/object_resolver.dart';
 import 'package:hukum_pro/di/root_injector.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:objectbox/objectbox.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -46,6 +47,9 @@ class _AppState extends State<App> {
   Future<void> _initializeApp() async {
     // Firebase
     await Firebase.initializeApp();
+
+    final dir = await getApplicationSupportDirectory();
+    print(dir.path);
 
     // DI
     RootInjector().build();
