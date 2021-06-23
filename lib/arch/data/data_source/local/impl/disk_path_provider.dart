@@ -3,15 +3,20 @@ import 'dart:io';
 
 import 'package:hukum_pro/arch/data/data_source/local/contract/bulk_laws_local_datasource.dart';
 import 'package:hukum_pro/arch/domain/entity/law/law_entity.dart';
+import 'package:hukum_pro/arch/infrastructure/app/platform_identifier.dart';
 import 'package:hukum_pro/common/exception/built_in.dart';
 import 'package:path_provider/path_provider.dart';
 
 class DiskPathProvider implements BulkLawsLocalDatasource {
+  PlatformIdentifier platformIdentifier;
+
+  DiskPathProvider(this.platformIdentifier);
+
   @override
   Future<List<File>> getBulkLawDiskReferences(
       String id, List<String> names) async {
     try {
-      final directory = await getApplicationSupportDirectory();
+      final directory = await getTemporaryDirectory();
       final path = '${directory.path}/dump/bulk-laws/$id';
       return names.map((p) => File('$path/$p')).toList();
     } on MissingPlatformDirectoryException catch (e) {
