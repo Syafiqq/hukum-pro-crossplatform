@@ -54,5 +54,54 @@ void main() {
     expect(container.resolve<ObjectBoxDatabaseStorage>(), isNotNull);
     expect(container.resolve<LawLocalDatasource>(), isNotNull);
     expect(container.resolve<LawYearLocalDatasource>(), isNotNull);
+    checkKiwi();
   });
+}
+
+void checkKiwi() {
+  KiwiContainer container = KiwiContainer();
+  print('checkKiwi');
+  checkObject(Firebase.app());
+  checkObject(container.resolve<FirebaseApp>());
+  checkObject(container.resolve<FirebaseApp>());
+  checkObject(container.resolve<FirebaseDatabase>());
+  checkObject(container.resolve<FirebaseDatabase>());
+  checkObject(container.resolve<FirebaseStorage>());
+  checkObject(container.resolve<FirebaseStorage>());
+  checkObject(container.resolve<FirebaseCloudDatabase>());
+  checkObject(container.resolve<FirebaseCloudDatabase>());
+  checkObject(container.resolve<VersionRemoteDatasource>());
+  checkObject(container.resolve<VersionRemoteDatasource>());
+  checkObject(container.resolve<LawMenuOrderRemoteDatasource>());
+  checkObject(container.resolve<LawMenuOrderRemoteDatasource>());
+  checkObject(container.resolve<FirebaseCloudStorage>());
+  checkObject(container.resolve<FirebaseCloudStorage>());
+  checkObject(container.resolve<BulkLawsRemoteDatasource>());
+  checkObject(container.resolve<BulkLawsRemoteDatasource>());
+  checkObject(container.resolve<Future<SharedPreferences>>());
+  checkObject(container.resolve<Future<SharedPreferences>>());
+  checkObject(container.resolve<CacheSharedPreferences>());
+  checkObject(container.resolve<CacheSharedPreferences>());
+  checkObject(container.resolve<VersionLocalDatasource>());
+  checkObject(container.resolve<VersionLocalDatasource>());
+  checkObject(container.resolve<LawMenuOrderLocalDatasource>());
+  checkObject(container.resolve<LawMenuOrderLocalDatasource>());
+  checkObject(container.resolve<PlatformIdentifier>());
+  checkObject(container.resolve<PlatformIdentifier>());
+  checkObject(container.resolve<Future<Store>>());
+  checkObject(container.resolve<Future<Store>>());
+  checkObject(container.resolve<ObjectResolver>());
+  checkObject(container.resolve<ObjectResolver>());
+  checkObject(container.resolve<StoreProvider>());
+  checkObject(container.resolve<StoreProvider>());
+  checkObject(container.resolve<ObjectBoxDatabaseStorage>());
+  checkObject(container.resolve<ObjectBoxDatabaseStorage>());
+  checkObject(container.resolve<LawLocalDatasource>());
+  checkObject(container.resolve<LawLocalDatasource>());
+  checkObject(container.resolve<LawYearLocalDatasource>());
+  checkObject(container.resolve<LawYearLocalDatasource>());
+}
+
+void checkObject(Object x) {
+  print("${x.hashCode} - $x");
 }
