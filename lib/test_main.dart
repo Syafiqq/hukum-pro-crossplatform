@@ -119,8 +119,8 @@ class _AppState extends State<App> {
     checkObject(container.resolve<VersionLocalDatasource>());
     checkObject(container.resolve<LawMenuOrderLocalDatasource>());
     checkObject(container.resolve<LawMenuOrderLocalDatasource>());
-    checkObject(container.resolve<Store>());
-    checkObject(container.resolve<Store>());
+    checkObject(container.resolve<Future<Store>>());
+    checkObject(container.resolve<Future<Store>>());
     checkObject(container.resolve<ObjectResolver>());
     checkObject(container.resolve<ObjectResolver>());
     checkObject(container.resolve<StoreProvider>());
