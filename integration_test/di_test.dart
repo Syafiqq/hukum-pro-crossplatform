@@ -2,17 +2,24 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hukum_pro/arch/data/data_source/local/contract/bulk_laws_local_datasource.dart';
 import 'package:hukum_pro/arch/data/data_source/local/contract/law_local_datasource.dart';
 import 'package:hukum_pro/arch/data/data_source/local/contract/law_menu_order_local_datasource.dart';
 import 'package:hukum_pro/arch/data/data_source/local/contract/law_year_local_datasource.dart';
 import 'package:hukum_pro/arch/data/data_source/local/contract/version_local_datasource.dart';
 import 'package:hukum_pro/arch/data/data_source/local/impl/cache_shared_preferences.dart';
+import 'package:hukum_pro/arch/data/data_source/local/impl/disk_path_provider.dart';
 import 'package:hukum_pro/arch/data/data_source/local/impl/object_box_database_storage.dart';
 import 'package:hukum_pro/arch/data/data_source/remote/contract/bulk_laws_remote_datasource.dart';
 import 'package:hukum_pro/arch/data/data_source/remote/contract/law_menu_order_remote_datasource.dart';
 import 'package:hukum_pro/arch/data/data_source/remote/contract/version_remote_datasource.dart';
 import 'package:hukum_pro/arch/data/data_source/remote/impl/firebase_cloud_database.dart';
 import 'package:hukum_pro/arch/data/data_source/remote/impl/firebase_cloud_storage.dart';
+import 'package:hukum_pro/arch/domain/repository/bulk_laws_repository.dart';
+import 'package:hukum_pro/arch/domain/repository/law_menu_order_repository.dart';
+import 'package:hukum_pro/arch/domain/repository/law_repository.dart';
+import 'package:hukum_pro/arch/domain/repository/law_year_repository.dart';
+import 'package:hukum_pro/arch/domain/repository/version_repository.dart';
 import 'package:hukum_pro/arch/infrastructure/app/platform_identifier.dart';
 import 'package:hukum_pro/arch/infrastructure/local_database/object_box/store_provider.dart';
 import 'package:hukum_pro/di/contract/object_resolver.dart';
@@ -54,6 +61,13 @@ void main() {
     expect(container.resolve<ObjectBoxDatabaseStorage>(), isNotNull);
     expect(container.resolve<LawLocalDatasource>(), isNotNull);
     expect(container.resolve<LawYearLocalDatasource>(), isNotNull);
+    expect(container.resolve<DiskPathProvider>(), isNotNull);
+    expect(container.resolve<BulkLawsLocalDatasource>(), isNotNull);
+    expect(container.resolve<BulkLawsRepository>(), isNotNull);
+    expect(container.resolve<LawMenuOrderRepository>(), isNotNull);
+    expect(container.resolve<LawRepository>(), isNotNull);
+    expect(container.resolve<LawYearRepository>(), isNotNull);
+    expect(container.resolve<VersionRepository>(), isNotNull);
     checkKiwi();
   });
 }
@@ -100,6 +114,20 @@ void checkKiwi() {
   checkObject(container.resolve<LawLocalDatasource>());
   checkObject(container.resolve<LawYearLocalDatasource>());
   checkObject(container.resolve<LawYearLocalDatasource>());
+  checkObject(container.resolve<DiskPathProvider>());
+  checkObject(container.resolve<DiskPathProvider>());
+  checkObject(container.resolve<BulkLawsLocalDatasource>());
+  checkObject(container.resolve<BulkLawsLocalDatasource>());
+  checkObject(container.resolve<BulkLawsRepository>());
+  checkObject(container.resolve<BulkLawsRepository>());
+  checkObject(container.resolve<LawMenuOrderRepository>());
+  checkObject(container.resolve<LawMenuOrderRepository>());
+  checkObject(container.resolve<LawRepository>());
+  checkObject(container.resolve<LawRepository>());
+  checkObject(container.resolve<LawYearRepository>());
+  checkObject(container.resolve<LawYearRepository>());
+  checkObject(container.resolve<VersionRepository>());
+  checkObject(container.resolve<VersionRepository>());
 }
 
 void checkObject(Object x) {
