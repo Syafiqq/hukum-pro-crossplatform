@@ -1,7 +1,4 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:hukum_pro/arch/domain/entity/law/law_entity.dart';
-import 'package:hukum_pro/arch/domain/entity/law/law_menu_order_entity.dart';
 import 'package:hukum_pro/common/converter/json/string_int_to_int_type_adapter.dart';
 
 void main() {

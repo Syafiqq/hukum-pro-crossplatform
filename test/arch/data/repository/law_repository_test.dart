@@ -1,9 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hukum_pro/arch/data/data_source/local/contract/law_local_datasource.dart';
+import 'package:hukum_pro/arch/data/data_source/local/entity/law_entity.dart'
+as DataLawEntity;
 import 'package:hukum_pro/arch/data/repository/law_repository_impl.dart';
 import 'package:hukum_pro/arch/domain/entity/law/law_entity.dart';
-import 'package:hukum_pro/arch/data/data_source/local/entity/law_entity.dart'
-    as DataLawEntity;
 import 'package:hukum_pro/arch/domain/repository/law_repository.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';

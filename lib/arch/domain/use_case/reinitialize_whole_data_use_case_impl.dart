@@ -38,7 +38,6 @@ class ReinitializeWholeDataUseCaseImpl implements ReinitializeWholeDataUseCase {
     final lawOrder = await lawMenuOrderRepository.fetchFromRemote();
     await lawMenuOrderRepository.saveToLocal(lawOrder);
 
-
     var filenames = version.detail?.filenames ?? [];
     var files =
         await bulkLawsRepository.getFileReference(id.toString(), filenames);

@@ -13,9 +13,9 @@ class LawYearEntity extends Equatable {
 
   @override
   List<Object?> get props => [
-    id,
-    year,
-  ];
+        id,
+        year,
+      ];
 
   factory LawYearEntity.fromJson(Map json) => _$LawYearEntityFromJson(json);
 

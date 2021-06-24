@@ -1,8 +1,8 @@
 import 'package:collection/collection.dart';
 import 'package:test/test.dart';
 
-import 'entity.dart';
 import '../../../../../../objectbox.g.dart';
+import 'entity.dart';
 import 'test_env.dart';
 
 // We want to have types explicit - verifying the return types of functions.

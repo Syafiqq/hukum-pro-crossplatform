@@ -7,8 +7,8 @@ import 'package:hukum_pro/objectbox.g.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'test_env.dart';
 import 'law_year_local_datasource_test.mocks.dart';
+import 'test_env.dart';
 
 @GenerateMocks([StoreProvider])
 void main() async {
