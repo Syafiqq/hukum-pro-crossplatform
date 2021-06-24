@@ -4,8 +4,8 @@ import 'package:objectbox/internal.dart';
 import 'package:objectbox/objectbox.dart';
 import 'package:test/test.dart';
 
-import 'entity.dart';
 import '../../../../../../objectbox.g.dart';
+import 'entity.dart';
 import 'test_env.dart';
 
 void main() {

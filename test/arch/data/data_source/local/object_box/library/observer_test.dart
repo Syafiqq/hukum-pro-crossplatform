@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:test/test.dart';
 
+import '../../../../../../objectbox.g.dart';
 import 'entity.dart';
 import 'entity2.dart';
-import '../../../../../../objectbox.g.dart';
 import 'test_env.dart';
 
 void main() async {

@@ -1,8 +1,7 @@
 import 'dart:io';
 
-import 'package:test/test.dart';
-
 import 'package:hukum_pro/objectbox.g.dart';
+import 'package:test/test.dart';
 
 class TestEnv {
   final Directory dir;

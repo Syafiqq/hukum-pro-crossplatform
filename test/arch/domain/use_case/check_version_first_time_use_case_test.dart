@@ -5,7 +5,6 @@ import 'package:hukum_pro/arch/domain/repository/version_repository.dart';
 import 'package:hukum_pro/arch/domain/use_case/check_version_first_time_use_case.dart';
 import 'package:hukum_pro/arch/domain/use_case/check_version_first_time_use_case_impl.dart';
 import 'package:hukum_pro/common/exception/defined_exception.dart';
-
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
