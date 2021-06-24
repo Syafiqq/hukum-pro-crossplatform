@@ -5,6 +5,7 @@ import 'package:hukum_pro/arch/domain/entity/law/law_entity.dart';
 import 'package:hukum_pro/arch/domain/entity/law/law_year_entity.dart';
 import 'package:hukum_pro/arch/domain/entity/misc/version_entity.dart';
 import 'package:hukum_pro/arch/domain/repository/bulk_laws_repository.dart';
+import 'package:hukum_pro/arch/domain/repository/law_menu_order_repository.dart';
 import 'package:hukum_pro/arch/domain/repository/law_repository.dart';
 import 'package:hukum_pro/arch/domain/repository/law_year_repository.dart';
 import 'package:hukum_pro/arch/domain/use_case/reinitialize_whole_data_use_case.dart';
@@ -14,24 +15,28 @@ class ReinitializeWholeDataUseCaseImpl implements ReinitializeWholeDataUseCase {
   BulkLawsRepository bulkLawsRepository;
   LawRepository lawRepository;
   LawYearRepository lawYearRepository;
+  LawMenuOrderRepository lawMenuOrderRepository;
 
   var lawYearsRaw = LinkedHashMap<int, int>();
 
-  ReinitializeWholeDataUseCaseImpl(
-      this.bulkLawsRepository, this.lawRepository, this.lawYearRepository);
+  ReinitializeWholeDataUseCaseImpl(this.bulkLawsRepository, this.lawRepository,
+      this.lawYearRepository, this.lawMenuOrderRepository);
 
   @override
   Future<void> execute(VersionEntity version) async {
-    // Clear the database
-    await lawRepository.deleteAll();
-    await lawYearRepository.deleteAll();
-    lawYearsRaw.clear();
-
     // Download the files
     final id = version.milis;
     if (id == null) {
       throw DataFetchFailureException(null, null);
     }
+
+    // Clear the database
+    await lawRepository.deleteAll();
+    await lawYearRepository.deleteAll();
+    lawYearsRaw.clear();
+
+    final lawOrder = await lawMenuOrderRepository.fetchFromRemote();
+    await lawMenuOrderRepository.saveToLocal(lawOrder);
 
     var filenames = version.detail?.filenames ?? [];
     var files =

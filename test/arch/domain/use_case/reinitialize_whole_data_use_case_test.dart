@@ -2,9 +2,11 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hukum_pro/arch/domain/entity/law/law_entity.dart';
+import 'package:hukum_pro/arch/domain/entity/law/law_menu_order_entity.dart';
 import 'package:hukum_pro/arch/domain/entity/law/law_year_entity.dart';
 import 'package:hukum_pro/arch/domain/entity/misc/version_entity.dart';
 import 'package:hukum_pro/arch/domain/repository/bulk_laws_repository.dart';
+import 'package:hukum_pro/arch/domain/repository/law_menu_order_repository.dart';
 import 'package:hukum_pro/arch/domain/repository/law_repository.dart';
 import 'package:hukum_pro/arch/domain/repository/law_year_repository.dart';
 import 'package:hukum_pro/arch/domain/use_case/reinitialize_whole_data_use_case.dart';
@@ -23,23 +25,34 @@ import 'reinitialize_whole_data_use_case_test.mocks.dart';
       as: #BaseMockLawYearRepository, returnNullOnMissingStub: true),
   MockSpec<BulkLawsRepository>(
       as: #BaseMockBulkLawsRepository, returnNullOnMissingStub: true),
+  MockSpec<LawMenuOrderRepository>(
+      as: #BaseMockLawMenuOrderRepository, returnNullOnMissingStub: true),
 ])
 void main() {
   group('$ReinitializeWholeDataUseCase', () {
     late BaseMockLawRepository mockLawRepository;
     late BaseMockLawYearRepository mockLawYearRepository;
     late BaseMockBulkLawsRepository mockBulkLawsRepository;
+    late BaseMockLawMenuOrderRepository mockLawMenuOrderRepository;
     late ReinitializeWholeDataUseCase useCase;
 
     setUp(() {
       mockBulkLawsRepository = BaseMockBulkLawsRepository();
       mockLawRepository = BaseMockLawRepository();
       mockLawYearRepository = BaseMockLawYearRepository();
-      useCase = ReinitializeWholeDataUseCaseImpl(
-          mockBulkLawsRepository, mockLawRepository, mockLawYearRepository);
+      mockLawMenuOrderRepository = BaseMockLawMenuOrderRepository();
+      useCase = ReinitializeWholeDataUseCaseImpl(mockBulkLawsRepository,
+          mockLawRepository, mockLawYearRepository, mockLawMenuOrderRepository);
     });
 
     test('should execute the use case', () async {
+      when(mockLawRepository.deleteAll()).thenAnswer((_) => Future.value(null));
+      when(mockLawYearRepository.deleteAll())
+          .thenAnswer((_) => Future.value(null));
+      when(mockLawMenuOrderRepository.fetchFromRemote())
+          .thenAnswer((_) => Future.value([LawMenuOrderEntity('1', '1', 1)]));
+      when(mockLawMenuOrderRepository.saveToLocal(any))
+          .thenAnswer((_) => Future.value(null));
       when(mockBulkLawsRepository.getFileReference(any, any))
           .thenAnswer((_) => Future.value([File('1'), File('2')]));
       when(mockBulkLawsRepository.downloadLaw(any, any))
@@ -52,10 +65,7 @@ void main() {
               argThat(isA<File>().having((e) => e.path, 'path', '2'))))
           .thenAnswer((_) => Future.value(
               [LawEntity(2, '2', 2, null, null, null, null, null, null)]));
-      when(mockLawRepository.deleteAll()).thenAnswer((_) => Future.value(null));
       when(mockLawRepository.addAll(any)).thenAnswer((_) => Future.value(null));
-      when(mockLawYearRepository.deleteAll())
-          .thenAnswer((_) => Future.value(null));
       when(mockLawYearRepository.addAll(any))
           .thenAnswer((_) => Future.value(null));
 
@@ -65,6 +75,16 @@ void main() {
       verify(mockLawRepository.deleteAll()).called(1);
       verify(mockLawYearRepository.deleteAll()).called(1);
 
+      verify(mockLawMenuOrderRepository.fetchFromRemote()).called(1);
+      expect(
+          verify(mockLawMenuOrderRepository.saveToLocal(captureAny)).captured, [
+        [
+          isA<LawMenuOrderEntity>()
+              .having((e) => e.id, 'id', '1')
+              .having((e) => e.name, 'name', '1')
+              .having((e) => e.order, 'order', 1)
+        ]
+      ]);
       expect(
           verify(mockBulkLawsRepository.getFileReference(
                   captureAny, captureAny))
@@ -119,6 +139,13 @@ void main() {
     });
 
     test('should execute the use case with minimum file execution', () async {
+      when(mockLawRepository.deleteAll()).thenAnswer((_) => Future.value(null));
+      when(mockLawYearRepository.deleteAll())
+          .thenAnswer((_) => Future.value(null));
+      when(mockLawMenuOrderRepository.fetchFromRemote())
+          .thenAnswer((_) => Future.value([LawMenuOrderEntity('1', '1', 1)]));
+      when(mockLawMenuOrderRepository.saveToLocal(any))
+          .thenAnswer((_) => Future.value(null));
       when(mockBulkLawsRepository.getFileReference(any, any))
           .thenAnswer((_) => Future.value([File('1'), File('2')]));
       when(mockBulkLawsRepository.downloadLaw(any, any))
@@ -131,10 +158,7 @@ void main() {
               argThat(isA<File>().having((e) => e.path, 'path', '2'))))
           .thenAnswer((_) => Future.value(
               [LawEntity(2, '2', 2, null, null, null, null, null, null)]));
-      when(mockLawRepository.deleteAll()).thenAnswer((_) => Future.value(null));
       when(mockLawRepository.addAll(any)).thenAnswer((_) => Future.value(null));
-      when(mockLawYearRepository.deleteAll())
-          .thenAnswer((_) => Future.value(null));
       when(mockLawYearRepository.addAll(any))
           .thenAnswer((_) => Future.value(null));
 
@@ -144,6 +168,16 @@ void main() {
       verify(mockLawRepository.deleteAll()).called(1);
       verify(mockLawYearRepository.deleteAll()).called(1);
 
+      verify(mockLawMenuOrderRepository.fetchFromRemote()).called(1);
+      expect(
+          verify(mockLawMenuOrderRepository.saveToLocal(captureAny)).captured, [
+        [
+          isA<LawMenuOrderEntity>()
+              .having((e) => e.id, 'id', '1')
+              .having((e) => e.name, 'name', '1')
+              .having((e) => e.order, 'order', 1)
+        ]
+      ]);
       expect(
           verify(mockBulkLawsRepository.getFileReference(
                   captureAny, captureAny))
@@ -199,6 +233,13 @@ void main() {
 
     test('should execute the use case with minimum filename execution',
         () async {
+      when(mockLawRepository.deleteAll()).thenAnswer((_) => Future.value(null));
+      when(mockLawYearRepository.deleteAll())
+          .thenAnswer((_) => Future.value(null));
+      when(mockLawMenuOrderRepository.fetchFromRemote())
+          .thenAnswer((_) => Future.value([LawMenuOrderEntity('1', '1', 1)]));
+      when(mockLawMenuOrderRepository.saveToLocal(any))
+          .thenAnswer((_) => Future.value(null));
       when(mockBulkLawsRepository.getFileReference(any, any)).thenAnswer((_) =>
           Future.value(
               [File('2'), File('1'), File('3'), File('4'), File('5')]));
@@ -212,10 +253,7 @@ void main() {
               argThat(isA<File>().having((e) => e.path, 'path', '2'))))
           .thenAnswer((_) => Future.value(
               [LawEntity(2, '2', 2, null, null, null, null, null, null)]));
-      when(mockLawRepository.deleteAll()).thenAnswer((_) => Future.value(null));
       when(mockLawRepository.addAll(any)).thenAnswer((_) => Future.value(null));
-      when(mockLawYearRepository.deleteAll())
-          .thenAnswer((_) => Future.value(null));
       when(mockLawYearRepository.addAll(any))
           .thenAnswer((_) => Future.value(null));
 
@@ -225,6 +263,16 @@ void main() {
       verify(mockLawRepository.deleteAll()).called(1);
       verify(mockLawYearRepository.deleteAll()).called(1);
 
+      verify(mockLawMenuOrderRepository.fetchFromRemote()).called(1);
+      expect(
+          verify(mockLawMenuOrderRepository.saveToLocal(captureAny)).captured, [
+        [
+          isA<LawMenuOrderEntity>()
+              .having((e) => e.id, 'id', '1')
+              .having((e) => e.name, 'name', '1')
+              .having((e) => e.order, 'order', 1)
+        ]
+      ]);
       expect(
           verify(mockBulkLawsRepository.getFileReference(
                   captureAny, captureAny))
@@ -279,16 +327,13 @@ void main() {
     });
 
     test('thrown an error if milis is null', () async {
-      when(mockLawRepository.deleteAll()).thenAnswer((_) => Future.value(null));
-      when(mockLawYearRepository.deleteAll())
-          .thenAnswer((_) => Future.value(null));
-
       await expectLater(useCase.execute(VersionEntity(null, null, null)),
           throwsA(isA<DataFetchFailureException>()));
 
-      verify(mockLawRepository.deleteAll()).called(1);
-      verify(mockLawYearRepository.deleteAll()).called(1);
-
+      verifyNever(mockLawRepository.deleteAll());
+      verifyNever(mockLawYearRepository.deleteAll());
+      verifyNever(mockLawMenuOrderRepository.fetchFromRemote());
+      verifyNever(mockLawMenuOrderRepository.saveToLocal(any));
       verifyNever(mockBulkLawsRepository.getFileReference(any, any));
       verifyNever(mockBulkLawsRepository.downloadLaw(any, any));
       verifyNever(mockBulkLawsRepository.decodeFile(any));
@@ -301,7 +346,8 @@ void main() {
           (_) => Future.error(DefinedException(null, null, '1', '2')));
 
       await expectLater(
-          useCase.execute(VersionEntity(null, null, null)),
+          useCase
+              .execute(VersionEntity(VersionDetailEntity(['1', '2']), 2, '3')),
           throwsA(isA<DefinedException>()
               .having((e) => e.code, 'code', '1')
               .having((e) => e.message, 'message', '2')));
@@ -309,6 +355,8 @@ void main() {
       verify(mockLawRepository.deleteAll()).called(1);
 
       verifyNever(mockLawYearRepository.deleteAll());
+      verifyNever(mockLawMenuOrderRepository.fetchFromRemote());
+      verifyNever(mockLawMenuOrderRepository.saveToLocal(any));
       verifyNever(mockBulkLawsRepository.getFileReference(any, any));
       verifyNever(mockBulkLawsRepository.downloadLaw(any, any));
       verifyNever(mockBulkLawsRepository.decodeFile(any));
@@ -322,13 +370,70 @@ void main() {
           (_) => Future.error(DefinedException(null, null, '1', '2')));
 
       await expectLater(
-          useCase.execute(VersionEntity(null, null, null)),
+          useCase
+              .execute(VersionEntity(VersionDetailEntity(['1', '2']), 2, '3')),
           throwsA(isA<DefinedException>()
               .having((e) => e.code, 'code', '1')
               .having((e) => e.message, 'message', '2')));
 
       verify(mockLawRepository.deleteAll()).called(1);
       verify(mockLawYearRepository.deleteAll()).called(1);
+
+      verifyNever(mockLawMenuOrderRepository.fetchFromRemote());
+      verifyNever(mockLawMenuOrderRepository.saveToLocal(any));
+      verifyNever(mockBulkLawsRepository.getFileReference(any, any));
+      verifyNever(mockBulkLawsRepository.downloadLaw(any, any));
+      verifyNever(mockBulkLawsRepository.decodeFile(any));
+      verifyNever(mockLawRepository.addAll(any));
+      verifyNever(mockLawYearRepository.addAll(any));
+    });
+
+    test('thrown an error from fetch law order from remote', () async {
+      when(mockLawRepository.deleteAll()).thenAnswer((_) => Future.value(null));
+      when(mockLawYearRepository.deleteAll())
+          .thenAnswer((_) => Future.value(null));
+      when(mockLawMenuOrderRepository.fetchFromRemote()).thenAnswer(
+          (_) => Future.error(DefinedException(null, null, '1', '2')));
+
+      await expectLater(
+          useCase
+              .execute(VersionEntity(VersionDetailEntity(['1', '2']), 2, '3')),
+          throwsA(isA<DefinedException>()
+              .having((e) => e.code, 'code', '1')
+              .having((e) => e.message, 'message', '2')));
+
+      verify(mockLawRepository.deleteAll()).called(1);
+      verify(mockLawYearRepository.deleteAll()).called(1);
+      verify(mockLawMenuOrderRepository.fetchFromRemote()).called(1);
+
+      verifyNever(mockLawMenuOrderRepository.saveToLocal(any));
+      verifyNever(mockBulkLawsRepository.getFileReference(any, any));
+      verifyNever(mockBulkLawsRepository.downloadLaw(any, any));
+      verifyNever(mockBulkLawsRepository.decodeFile(any));
+      verifyNever(mockLawRepository.addAll(any));
+      verifyNever(mockLawYearRepository.addAll(any));
+    });
+
+    test('thrown an error from save law order', () async {
+      when(mockLawRepository.deleteAll()).thenAnswer((_) => Future.value(null));
+      when(mockLawYearRepository.deleteAll())
+          .thenAnswer((_) => Future.value(null));
+      when(mockLawMenuOrderRepository.fetchFromRemote())
+          .thenAnswer((_) => Future.value([LawMenuOrderEntity('1', '1', 1)]));
+      when(mockLawMenuOrderRepository.saveToLocal(any)).thenAnswer(
+          (_) => Future.error(DefinedException(null, null, '1', '2')));
+
+      await expectLater(
+          useCase
+              .execute(VersionEntity(VersionDetailEntity(['1', '2']), 2, '3')),
+          throwsA(isA<DefinedException>()
+              .having((e) => e.code, 'code', '1')
+              .having((e) => e.message, 'message', '2')));
+
+      verify(mockLawRepository.deleteAll()).called(1);
+      verify(mockLawYearRepository.deleteAll()).called(1);
+      verify(mockLawMenuOrderRepository.fetchFromRemote()).called(1);
+      verify(mockLawMenuOrderRepository.saveToLocal(any)).called(1);
 
       verifyNever(mockBulkLawsRepository.getFileReference(any, any));
       verifyNever(mockBulkLawsRepository.downloadLaw(any, any));
@@ -340,6 +445,10 @@ void main() {
     test('thrown an error from get file reference', () async {
       when(mockLawRepository.deleteAll()).thenAnswer((_) => Future.value(null));
       when(mockLawYearRepository.deleteAll())
+          .thenAnswer((_) => Future.value(null));
+      when(mockLawMenuOrderRepository.fetchFromRemote())
+          .thenAnswer((_) => Future.value([LawMenuOrderEntity('1', '1', 1)]));
+      when(mockLawMenuOrderRepository.saveToLocal(any))
           .thenAnswer((_) => Future.value(null));
       when(mockBulkLawsRepository.getFileReference(any, any)).thenAnswer(
           (_) => Future.error(DefinedException(null, null, '1', '2')));
@@ -353,6 +462,8 @@ void main() {
 
       verify(mockLawRepository.deleteAll()).called(1);
       verify(mockLawYearRepository.deleteAll()).called(1);
+      verify(mockLawMenuOrderRepository.fetchFromRemote()).called(1);
+      verify(mockLawMenuOrderRepository.saveToLocal(any)).called(1);
       verify(mockBulkLawsRepository.getFileReference(any, any)).called(1);
 
       verifyNever(mockBulkLawsRepository.downloadLaw(any, any));
@@ -364,6 +475,10 @@ void main() {
     test('thrown an error from download law', () async {
       when(mockLawRepository.deleteAll()).thenAnswer((_) => Future.value(null));
       when(mockLawYearRepository.deleteAll())
+          .thenAnswer((_) => Future.value(null));
+      when(mockLawMenuOrderRepository.fetchFromRemote())
+          .thenAnswer((_) => Future.value([LawMenuOrderEntity('1', '1', 1)]));
+      when(mockLawMenuOrderRepository.saveToLocal(any))
           .thenAnswer((_) => Future.value(null));
       when(mockBulkLawsRepository.getFileReference(any, any))
           .thenAnswer((_) => Future.value([File('1'), File('2')]));
@@ -379,6 +494,8 @@ void main() {
 
       verify(mockLawRepository.deleteAll()).called(1);
       verify(mockLawYearRepository.deleteAll()).called(1);
+      verify(mockLawMenuOrderRepository.fetchFromRemote()).called(1);
+      verify(mockLawMenuOrderRepository.saveToLocal(any)).called(1);
       verify(mockBulkLawsRepository.getFileReference(any, any)).called(1);
       verify(mockBulkLawsRepository.downloadLaw(any, any)).called(1);
 
@@ -390,6 +507,10 @@ void main() {
     test('thrown an error from decode law', () async {
       when(mockLawRepository.deleteAll()).thenAnswer((_) => Future.value(null));
       when(mockLawYearRepository.deleteAll())
+          .thenAnswer((_) => Future.value(null));
+      when(mockLawMenuOrderRepository.fetchFromRemote())
+          .thenAnswer((_) => Future.value([LawMenuOrderEntity('1', '1', 1)]));
+      when(mockLawMenuOrderRepository.saveToLocal(any))
           .thenAnswer((_) => Future.value(null));
       when(mockBulkLawsRepository.getFileReference(any, any))
           .thenAnswer((_) => Future.value([File('1'), File('2')]));
@@ -407,6 +528,8 @@ void main() {
 
       verify(mockLawRepository.deleteAll()).called(1);
       verify(mockLawYearRepository.deleteAll()).called(1);
+      verify(mockLawMenuOrderRepository.fetchFromRemote()).called(1);
+      verify(mockLawMenuOrderRepository.saveToLocal(any)).called(1);
       verify(mockBulkLawsRepository.getFileReference(any, any)).called(1);
       verify(mockBulkLawsRepository.downloadLaw(any, any)).called(1);
       verify(mockBulkLawsRepository.decodeFile(any)).called(1);
@@ -418,6 +541,10 @@ void main() {
     test('thrown an error from add law', () async {
       when(mockLawRepository.deleteAll()).thenAnswer((_) => Future.value(null));
       when(mockLawYearRepository.deleteAll())
+          .thenAnswer((_) => Future.value(null));
+      when(mockLawMenuOrderRepository.fetchFromRemote())
+          .thenAnswer((_) => Future.value([LawMenuOrderEntity('1', '1', 1)]));
+      when(mockLawMenuOrderRepository.saveToLocal(any))
           .thenAnswer((_) => Future.value(null));
       when(mockBulkLawsRepository.getFileReference(any, any))
           .thenAnswer((_) => Future.value([File('1'), File('2')]));
@@ -443,6 +570,8 @@ void main() {
 
       verify(mockLawRepository.deleteAll()).called(1);
       verify(mockLawYearRepository.deleteAll()).called(1);
+      verify(mockLawMenuOrderRepository.fetchFromRemote()).called(1);
+      verify(mockLawMenuOrderRepository.saveToLocal(any)).called(1);
       verify(mockBulkLawsRepository.getFileReference(any, any)).called(1);
       verify(mockBulkLawsRepository.downloadLaw(any, any)).called(1);
       verify(mockBulkLawsRepository.decodeFile(any)).called(1);
@@ -454,6 +583,10 @@ void main() {
     test('thrown an error from add law year', () async {
       when(mockLawRepository.deleteAll()).thenAnswer((_) => Future.value(null));
       when(mockLawYearRepository.deleteAll())
+          .thenAnswer((_) => Future.value(null));
+      when(mockLawMenuOrderRepository.fetchFromRemote())
+          .thenAnswer((_) => Future.value([LawMenuOrderEntity('1', '1', 1)]));
+      when(mockLawMenuOrderRepository.saveToLocal(any))
           .thenAnswer((_) => Future.value(null));
       when(mockBulkLawsRepository.getFileReference(any, any))
           .thenAnswer((_) => Future.value([File('1'), File('2')]));
@@ -480,6 +613,8 @@ void main() {
 
       verify(mockLawRepository.deleteAll()).called(1);
       verify(mockLawYearRepository.deleteAll()).called(1);
+      verify(mockLawMenuOrderRepository.fetchFromRemote()).called(1);
+      verify(mockLawMenuOrderRepository.saveToLocal(any)).called(1);
       verify(mockBulkLawsRepository.getFileReference(any, any)).called(1);
       verify(mockBulkLawsRepository.downloadLaw(any, any)).called(2);
       verify(mockBulkLawsRepository.decodeFile(any)).called(2);

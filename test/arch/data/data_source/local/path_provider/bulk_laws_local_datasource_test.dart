@@ -5,15 +5,20 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hukum_pro/arch/data/data_source/local/contract/bulk_laws_local_datasource.dart';
 import 'package:hukum_pro/arch/data/data_source/local/impl/disk_path_provider.dart';
 import 'package:hukum_pro/arch/domain/entity/law/law_entity.dart';
+import 'package:hukum_pro/arch/infrastructure/app/platform_identifier.dart';
 import 'package:hukum_pro/common/exception/built_in.dart';
+import 'package:mockito/annotations.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../../../../helper/file+operation.dart';
+import 'bulk_laws_local_datasource_test.mocks.dart';
 
+@GenerateMocks([PlatformIdentifier])
 void main() async {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   late BulkLawsLocalDatasource datasource;
+  late MockPlatformIdentifier mockPlatformIdentifier;
 
   const MethodChannel channel = MethodChannel(
     'plugins.flutter.io/path_provider',
@@ -34,7 +39,8 @@ void main() async {
           return null;
       }
     });
-    datasource = DiskPathProvider();
+    mockPlatformIdentifier = MockPlatformIdentifier();
+    datasource = DiskPathProvider(mockPlatformIdentifier);
   });
 
   group('$BulkLawsLocalDatasource', () {

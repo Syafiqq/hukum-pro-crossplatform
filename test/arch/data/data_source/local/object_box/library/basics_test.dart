@@ -1,5 +1,4 @@
 import 'dart:ffi' as ffi;
-import 'dart:io';
 
 import 'package:objectbox/internal.dart';
 import 'package:objectbox/src/native/bindings/bindings.dart';
@@ -7,8 +6,8 @@ import 'package:objectbox/src/native/bindings/helpers.dart';
 import 'package:objectbox/src/store.dart';
 import 'package:test/test.dart';
 
-import 'entity.dart';
 import '../../../../../../objectbox.g.dart';
+import 'entity.dart';
 import 'test_env.dart';
 
 void main() {

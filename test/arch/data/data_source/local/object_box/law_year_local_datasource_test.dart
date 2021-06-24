@@ -7,8 +7,8 @@ import 'package:hukum_pro/objectbox.g.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'test_env.dart';
 import 'law_year_local_datasource_test.mocks.dart';
+import 'test_env.dart';
 
 @GenerateMocks([StoreProvider])
 void main() async {
@@ -23,7 +23,7 @@ void main() async {
     env = TestEnv('law-year-entity');
     store = env.store;
     storeProvider = MockStoreProvider();
-    when(storeProvider.store).thenReturn(store);
+    when(storeProvider.store).thenAnswer((_) => Future.value(store));
     datasource = ObjectBoxDatabaseStorage(storeProvider);
   });
 

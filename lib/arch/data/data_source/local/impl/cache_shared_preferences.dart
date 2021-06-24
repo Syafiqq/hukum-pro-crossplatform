@@ -9,12 +9,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class CacheSharedPreferences
     implements VersionLocalDatasource, LawMenuOrderLocalDatasource {
-  SharedPreferences cache;
+  Future<SharedPreferences> cache;
 
   CacheSharedPreferences(this.cache);
 
   @override
   Future<VersionEntity?> getVersion() async {
+    final cache = await this.cache;
     final versionRawJson = cache.getString('version');
     if (versionRawJson == null) {
       return null;
@@ -34,6 +35,7 @@ class CacheSharedPreferences
 
   @override
   Future<void> setVersion(VersionEntity version) async {
+    final cache = await this.cache;
     final versionMap = version.toJson();
     final versionRawJson = jsonEncode(versionMap);
     await cache.setString('version', versionRawJson);
@@ -41,6 +43,7 @@ class CacheSharedPreferences
 
   @override
   Future<List<LawMenuOrderEntity>> getMenusOrEmpty() async {
+    final cache = await this.cache;
     final menusRawJson = cache.getString('law_status_order');
     if (menusRawJson == null) {
       return <LawMenuOrderEntity>[];
@@ -67,6 +70,7 @@ class CacheSharedPreferences
 
   @override
   Future<void> setMenus(List<LawMenuOrderEntity> menus) async {
+    final cache = await this.cache;
     final menusMap = menus.map((menu) => menu.toJson()).toList(growable: false);
     final menusRawJson = jsonEncode(menusMap);
     await cache.setString('law_status_order', menusRawJson);

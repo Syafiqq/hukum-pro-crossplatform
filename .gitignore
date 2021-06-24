@@ -53,6 +53,7 @@ app.*.map.json
 **/test/**/*.mocks.dart
 **/entity/**/*.g.dart
 **/entity/**/*.freezed.dart
+**/di/**/*.g.dart
 **/objectbox.g.dart
 **/data.mdb
 **/lock.mdb
