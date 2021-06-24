@@ -20,6 +20,8 @@ import 'package:hukum_pro/arch/domain/repository/law_menu_order_repository.dart'
 import 'package:hukum_pro/arch/domain/repository/law_repository.dart';
 import 'package:hukum_pro/arch/domain/repository/law_year_repository.dart';
 import 'package:hukum_pro/arch/domain/repository/version_repository.dart';
+import 'package:hukum_pro/arch/domain/use_case/check_version_first_time_use_case.dart';
+import 'package:hukum_pro/arch/domain/use_case/reinitialize_whole_data_use_case.dart';
 import 'package:hukum_pro/arch/infrastructure/app/platform_identifier.dart';
 import 'package:hukum_pro/arch/infrastructure/local_database/object_box/store_provider.dart';
 import 'package:hukum_pro/di/contract/object_resolver.dart';
@@ -68,6 +70,8 @@ void main() {
     expect(container.resolve<LawRepository>(), isNotNull);
     expect(container.resolve<LawYearRepository>(), isNotNull);
     expect(container.resolve<VersionRepository>(), isNotNull);
+    expect(container.resolve<CheckVersionFirstTimeUseCase>(), isNotNull);
+    expect(container.resolve<ReinitializeWholeDataUseCase>(), isNotNull);
     checkKiwi();
   });
 }
@@ -128,6 +132,10 @@ void checkKiwi() {
   checkObject(container.resolve<LawYearRepository>());
   checkObject(container.resolve<VersionRepository>());
   checkObject(container.resolve<VersionRepository>());
+  checkObject(container.resolve<CheckVersionFirstTimeUseCase>());
+  checkObject(container.resolve<CheckVersionFirstTimeUseCase>());
+  checkObject(container.resolve<ReinitializeWholeDataUseCase>());
+  checkObject(container.resolve<ReinitializeWholeDataUseCase>());
 }
 
 void checkObject(Object x) {
