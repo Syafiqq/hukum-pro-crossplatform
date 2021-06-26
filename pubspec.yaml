@@ -96,7 +96,54 @@ flutter:
   #       - asset: fonts/TrajanPro.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
-  #
+  fonts:
+    - family: Montserrat
+      fonts:
+        - asset: res/fonts/Montserrat-Black.ttf
+          weight: 900
+        - asset: res/fonts/Montserrat-BlackItalic.ttf
+          weight: 900
+          style: italic
+        - asset: res/fonts/Montserrat-Bold.ttf
+          weight: 700
+        - asset: res/fonts/Montserrat-BoldItalic.ttf
+          weight: 700
+          style: italic
+        - asset: res/fonts/Montserrat-ExtraBold.ttf
+          weight: 800
+        - asset: res/fonts/Montserrat-ExtraBoldItalic.ttf
+          weight: 800
+          style: italic
+        - asset: res/fonts/Montserrat-ExtraLight.ttf
+          weight: 200
+        - asset: res/fonts/Montserrat-ExtraLightItalic.ttf
+          weight: 200
+          style: italic
+        - asset: res/fonts/Montserrat-Italic.ttf
+          weight: 400
+          style: italic
+        - asset: res/fonts/Montserrat-Light.ttf
+          weight: 300
+        - asset: res/fonts/Montserrat-LightItalic.ttf
+          weight: 300
+          style: italic
+        - asset: res/fonts/Montserrat-Medium.ttf
+          weight: 500
+        - asset: res/fonts/Montserrat-MediumItalic.ttf
+          weight: 500
+          style: italic
+        - asset: res/fonts/Montserrat-Regular.ttf
+          weight: 400
+        - asset: res/fonts/Montserrat-SemiBold.ttf
+          weight: 600
+        - asset: res/fonts/Montserrat-SemiBoldItalic.ttf
+          weight: 600
+          style: italic
+        - asset: res/fonts/Montserrat-Thin.ttf
+          weight: 200
+        - asset: res/fonts/Montserrat-ThinItalic.ttf
+          weight: 200
+          style: italic
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
 targets:
