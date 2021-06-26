@@ -57,3 +57,4 @@ app.*.map.json
 **/objectbox.g.dart
 **/data.mdb
 **/lock.mdb
+lib/ui_design
