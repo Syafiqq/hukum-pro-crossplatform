@@ -162,6 +162,16 @@ flutter:
           weight: 600
         - asset: res/fonts/Catamaran-Thin.ttf
           weight: 100
+        - asset: res/fonts/Khula-Bold.ttf
+          weight: 700
+        - asset: res/fonts/Khula-ExtraBold.ttf
+          weight: 800
+        - asset: res/fonts/Khula-Light.ttf
+          weight: 300
+        - asset: res/fonts/Khula-Regular.ttf
+          weight: 400
+        - asset: res/fonts/Khula-SemiBold.ttf
+          weight: 600
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
 targets:
