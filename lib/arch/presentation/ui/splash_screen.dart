@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hukum_pro/arch/presentation/view_model/cubit/check_local_version_cubit.dart';
+import 'package:hukum_pro/arch/presentation/view_model/state/check_local_version_ui_state.dart';
 import 'package:hukum_pro/di/impl/kiwi_object_resolver.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -41,35 +43,47 @@ class SplashScreen extends StatelessWidget {
             ),
           ),
           Container(
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(8, 16, 8, 8),
-              child: Column(
-                children: [
-                  SizedBox(
-                    width: 120,
-                    child: LinearProgressIndicator(),
-                  ),
-                  Visibility(
-                    visible: false,
-                    maintainState: true,
-                    maintainAnimation: true,
-                    maintainSize: true,
-                    child: Text(
-                      'Check Version',
-                      style: TextStyle(
-                        fontFamily: 'Khula',
-                        fontWeight: FontWeight.w600,
-                        fontSize: 10,
-                        color: Color(0xFF313131),
-                      ),
-                    ),
-                  )
-                ],
-              ),
+            height: 36,
+            child:
+                BlocBuilder<CheckLocalVersionCubit, CheckLocalVersionUiState>(
+              builder: (context, state) {
+                switch (state.status) {
+                  case CheckLocalVersionUiStatus.initial:
+                    return SizedBox.shrink();
+                  case CheckLocalVersionUiStatus.loading:
+                    return buildProgress(context, 'Check Version');
+                  case CheckLocalVersionUiStatus.success:
+                    return SizedBox.shrink();
+                  case CheckLocalVersionUiStatus.failure:
+                    return SizedBox.shrink();
+                }
+              },
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget buildProgress(BuildContext context, [String text = '']) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        SizedBox(
+          width: 120,
+          child: LinearProgressIndicator(),
+        ),
+        Text(
+          text,
+          style: TextStyle(
+            fontFamily: 'Khula',
+            fontWeight: FontWeight.w600,
+            fontSize: 10,
+            color: Color(0xFF313131),
+          ),
+        ),
+      ],
     );
   }
 }
