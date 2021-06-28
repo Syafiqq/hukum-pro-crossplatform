@@ -15,7 +15,7 @@ class CoreModule {
 
   void build() {
     KiwiContainer container = KiwiContainer();
-    container.registerSingleton<ObjectResolver>((_) => KiwiObjectResolver());
+    container.registerSingleton<ObjectResolver>((_) => KiwiObjectResolver.getInstance());
     container.registerSingleton<PlatformIdentifier>(
         (_) => FlutterPlatformIdentifier());
   }
