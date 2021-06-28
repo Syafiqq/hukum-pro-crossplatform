@@ -14,6 +14,6 @@ class KiwiObjectResolver implements ObjectResolver {
   Future<Store> getStore() => KiwiContainer().resolve<Future<Store>>();
 
   @override
-  getCheckLocalVersionCubit() =>
+  CheckLocalVersionCubit getCheckLocalVersionCubit() =>
       KiwiContainer().resolve<CheckLocalVersionCubit>();
 }
