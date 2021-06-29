@@ -14,32 +14,25 @@ class SplashScreen extends StatelessWidget {
       child: Column(
         children: [
           Expanded(
-            child: Stack(
-              children: [
-                Align(
-                  alignment: Alignment.lerp(
-                          Alignment.topCenter, Alignment.bottomCenter, 0.4) ??
-                      Alignment.center,
-                  child: Image(
-                    image: AssetImage('res/images/ic_hukum_pro_logo_2_192.png'),
-                    color: Color(0xFF313131),
-                    width: 128,
-                    height: 128,
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Text(
-                    'Hukum Pro',
-                    style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontWeight: FontWeight.w800,
-                      fontSize: 28,
-                      color: Color(0xFF313131),
-                    ),
-                  ),
-                )
-              ],
+            child: Align(
+              alignment: Alignment.lerp(
+                      Alignment.topCenter, Alignment.bottomCenter, 0.4) ??
+                  Alignment.center,
+              child: Image(
+                image: AssetImage('res/images/ic_hukum_pro_logo_2_192.png'),
+                color: Color(0xFF313131),
+                width: 128,
+                height: 128,
+              ),
+            ),
+          ),
+          Text(
+            'Hukum Pro',
+            style: TextStyle(
+              fontFamily: 'Montserrat',
+              fontWeight: FontWeight.w800,
+              fontSize: 28,
+              color: Color(0xFF313131),
             ),
           ),
           Container(
