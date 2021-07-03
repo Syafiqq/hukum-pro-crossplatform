@@ -4,10 +4,13 @@ const double _kPadding = 20;
 const double _kAvatarRadius = 45;
 
 class CommonDialog extends StatefulWidget {
-  final String title, descriptions, text;
-  final Image img;
+  final String tmpTitle, tmpDescription, tmpText;
+  final Image tmpImg;
 
-  const CommonDialog(this.title, this.descriptions, this.text, this.img)
+  final String? title;
+
+  CommonDialog(this.tmpTitle, this.tmpDescription, this.tmpText, this.tmpImg,
+      {this.title})
       : super();
 
   @override
@@ -19,11 +22,13 @@ class _CommonDialogState extends State<CommonDialog> {
   Widget build(BuildContext context) {
     return Dialog(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(_kPadding),
+        borderRadius: BorderRadius.circular(8),
       ),
       elevation: 0,
-      backgroundColor: Colors.transparent,
-      child: contentBox(context),
+      backgroundColor: Colors.white,
+      child: Container(
+        height: 100,
+      ),
     );
   }
 
@@ -49,14 +54,14 @@ class _CommonDialogState extends State<CommonDialog> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Text(
-                widget.title,
+                widget.tmpTitle,
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
               ),
               SizedBox(
                 height: 15,
               ),
               Text(
-                widget.descriptions,
+                widget.tmpDescription,
                 style: TextStyle(fontSize: 14),
                 textAlign: TextAlign.center,
               ),
@@ -70,7 +75,7 @@ class _CommonDialogState extends State<CommonDialog> {
                       Navigator.of(context).pop();
                     },
                     child: Text(
-                      widget.text,
+                      widget.tmpText,
                       style: TextStyle(fontSize: 18),
                     )),
               ),
@@ -85,7 +90,7 @@ class _CommonDialogState extends State<CommonDialog> {
             radius: _kAvatarRadius,
             child: ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(_kAvatarRadius)),
-                child: widget.img),
+                child: widget.tmpImg),
           ),
         ),
       ],
