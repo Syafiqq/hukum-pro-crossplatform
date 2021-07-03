@@ -13,6 +13,9 @@ class AppColor {
   static const danger = Color(0xFFFD777D);
   static const info = Color(0xFF00B5FF);
 
+  static const background = Colors.white;
+  static const backgroundLight = Color(0xFFFCFDFF);
+
   static const textPrimary = Colors.white;
   static const textSecondary = Colors.black;
   static const textOnLightPrimary = Color(0xFF222222);
