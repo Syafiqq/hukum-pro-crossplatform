@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/check_local_version_cubit.dart';
 import 'package:hukum_pro/arch/presentation/view_model/state/check_local_version_ui_state.dart';
+import 'package:hukum_pro/common/ui/app_color.dart';
+import 'package:hukum_pro/common/ui/app_font.dart';
 import 'package:hukum_pro/di/impl/kiwi_object_resolver.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -28,12 +30,7 @@ class SplashScreen extends StatelessWidget {
           ),
           Text(
             'Hukum Pro',
-            style: TextStyle(
-              fontFamily: 'Montserrat',
-              fontWeight: FontWeight.w800,
-              fontSize: 28,
-              color: Color(0xFF313131),
-            ),
+            style: FontTitle.extraBold.font(28, AppColor.textOnLightPrimary),
           ),
           Container(
             height: 36,
@@ -69,12 +66,7 @@ class SplashScreen extends StatelessWidget {
         ),
         Text(
           text,
-          style: TextStyle(
-            fontFamily: 'Khula',
-            fontWeight: FontWeight.w600,
-            fontSize: 10,
-            color: Color(0xFF313131),
-          ),
+          style: FontSubtitle.semiBold.font(10, AppColor.textOnLightPrimary),
         ),
       ],
     );
