@@ -6,6 +6,8 @@ import 'package:hukum_pro/arch/domain/use_case/check_version_first_time_use_case
 import 'package:hukum_pro/arch/presentation/view_model/cubit/check_local_version_cubit.dart';
 import 'package:hukum_pro/arch/presentation/view_model/state/check_local_version_ui_state.dart';
 import 'package:hukum_pro/common/exception/defined_exception.dart';
+import 'package:hukum_pro/common/ui/app_color.dart';
+import 'package:hukum_pro/common/ui/app_font.dart';
 
 class SplashView extends StatelessWidget {
   @override
@@ -31,12 +33,7 @@ class SplashView extends StatelessWidget {
           ),
           Text(
             'Hukum Pro',
-            style: TextStyle(
-              fontFamily: 'Montserrat',
-              fontWeight: FontWeight.w800,
-              fontSize: 28,
-              color: Color(0xFF313131),
-            ),
+            style: FontTitle.extraBold.font(28, Color(0xFF313131)),
           ),
           Container(
             height: 36,
@@ -72,12 +69,7 @@ class SplashView extends StatelessWidget {
         ),
         Text(
           text,
-          style: TextStyle(
-            fontFamily: 'Khula',
-            fontWeight: FontWeight.w600,
-            fontSize: 10,
-            color: Color(0xFF313131),
-          ),
+          style: FontSubtitle.semiBold.font(10, AppColor.textOnLightPrimary),
         ),
       ],
     );
