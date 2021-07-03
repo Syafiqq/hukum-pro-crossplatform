@@ -166,16 +166,52 @@ flutter:
           weight: 600
         - asset: res/fonts/Catamaran-Thin.ttf
           weight: 100
-        - asset: res/fonts/Khula-Bold.ttf
+        - asset: res/fonts/WorkSans-Black.ttf
+          weight: 900
+        - asset: res/fonts/WorkSans-BlackItalic.ttf
+          weight: 900
+          style: italic
+        - asset: res/fonts/WorkSans-Bold.ttf
           weight: 700
-        - asset: res/fonts/Khula-ExtraBold.ttf
+        - asset: res/fonts/WorkSans-BoldItalic.ttf
+          weight: 700
+          style: italic
+        - asset: res/fonts/WorkSans-ExtraBold.ttf
           weight: 800
-        - asset: res/fonts/Khula-Light.ttf
-          weight: 300
-        - asset: res/fonts/Khula-Regular.ttf
+        - asset: res/fonts/WorkSans-ExtraBoldItalic.ttf
+          weight: 800
+          style: italic
+        - asset: res/fonts/WorkSans-ExtraLight.ttf
+          weight: 200
+        - asset: res/fonts/WorkSans-ExtraLightItalic.ttf
+          weight: 200
+          style: italic
+        - asset: res/fonts/WorkSans-Italic.ttf
           weight: 400
-        - asset: res/fonts/Khula-SemiBold.ttf
+          style: italic
+        - asset: res/fonts/WorkSans-Light.ttf
+          weight: 300
+        - asset: res/fonts/WorkSans-LightItalic.ttf
+          weight: 300
+          style: italic
+        - asset: res/fonts/WorkSans-Medium.ttf
+          weight: 500
+        - asset: res/fonts/WorkSans-MediumItalic.ttf
+          weight: 500
+          style: italic
+        - asset: res/fonts/WorkSans-Regular.ttf
+          weight: 400
+        - asset: res/fonts/WorkSans-SemiBold.ttf
           weight: 600
+        - asset: res/fonts/WorkSans-SemiBoldItalic.ttf
+          weight: 600
+          style: italic
+        - asset: res/fonts/WorkSans-Thin.ttf
+          weight: 100
+        - asset: res/fonts/WorkSans-ThinItalic.ttf
+          weight: 100
+          style: italic
+
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
 targets:
