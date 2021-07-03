@@ -32,7 +32,9 @@ class _CommonDialogState extends State<CommonDialog> {
         children: [
           Column(
             mainAxisSize: MainAxisSize.min,
-            children: [SizedBox.shrink()],
+            children: [
+              SizedBox.shrink(),
+            ],
           ),
           this.widget.closable ?? false
               ? Row(
@@ -41,7 +43,9 @@ class _CommonDialogState extends State<CommonDialog> {
                     IconButton(
                       icon: const Icon(Icons.close),
                       color: AppColor.secondary,
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context, rootNavigator: true).pop();
+                      },
                     )
                   ],
                 )
