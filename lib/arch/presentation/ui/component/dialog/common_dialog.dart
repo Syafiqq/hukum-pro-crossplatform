@@ -13,14 +13,18 @@ class CommonDialog extends StatelessWidget {
   final String? description;
   final String? primaryAction;
   final ButtonCtaType primaryStyle;
+  final String? secondaryAction;
+  final ButtonCtaType secondaryStyle;
 
-  CommonDialog(
-      {this.closable,
-      this.title,
-      this.description,
-      this.primaryAction,
-      this.primaryStyle = _kDefaultStyle})
-      : super();
+  CommonDialog({
+    this.closable,
+    this.title,
+    this.description,
+    this.primaryAction,
+    this.primaryStyle = _kDefaultStyle,
+    this.secondaryAction,
+    this.secondaryStyle = _kDefaultStyle,
+  }) : super();
 
   @override
   Widget build(BuildContext context) {
@@ -105,6 +109,7 @@ class CommonDialog extends StatelessWidget {
                           borderRadius: BorderRadius.circular(100),
                           side: primaryStyle is ButtonCtaTypeOutline
                               ? BorderSide(
+                                  width: 1.5,
                                   color: primaryStyle.foregroundColor,
                                 )
                               : BorderSide.none,
