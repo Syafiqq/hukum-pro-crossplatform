@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:hukum_pro/common/ui/app_color.dart';
+import 'package:hukum_pro/common/ui/app_font.dart';
 import 'package:hukum_pro/common/ui/dialog_closing_state.dart';
 
 class CommonDialog extends StatelessWidget {
   final bool? closable;
+  final String? title;
 
-  CommonDialog({this.closable}) : super();
+  CommonDialog({this.closable, this.title}) : super();
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +19,27 @@ class CommonDialog extends StatelessWidget {
       backgroundColor: AppColor.background,
       child: Stack(
         children: [
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox.shrink(),
-            ],
+          Padding(
+            padding: EdgeInsets.fromLTRB(16, 32, 16, 16),
+            child: Container(
+              color: Colors.red,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  this.title != null
+                      ? Center(
+                          child: Text(
+                            this.title ?? "",
+                            style: AppFontTitle.bold.font(
+                              16,
+                              AppColor.textOnLightPrimary,
+                            ),
+                          ),
+                        )
+                      : SizedBox.shrink()
+                ],
+              ),
+            ),
           ),
           this.closable ?? false
               ? Row(
