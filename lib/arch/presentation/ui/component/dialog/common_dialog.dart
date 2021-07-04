@@ -4,19 +4,22 @@ import 'package:hukum_pro/common/ui/app_font.dart';
 import 'package:hukum_pro/common/ui/button_cta_type.dart';
 import 'package:hukum_pro/common/ui/dialog_closing_state.dart';
 
+const _kDefaultStyle =
+    ButtonCtaType.outline(false, AppColor.textOnLightPrimary);
+
 class CommonDialog extends StatelessWidget {
   final bool? closable;
   final String? title;
   final String? description;
   final String? primaryAction;
-  final ButtonCtaType? primaryStyle;
+  final ButtonCtaType primaryStyle;
 
   CommonDialog(
       {this.closable,
       this.title,
       this.description,
       this.primaryAction,
-      this.primaryStyle})
+      this.primaryStyle = _kDefaultStyle})
       : super();
 
   @override
@@ -80,17 +83,24 @@ class CommonDialog extends StatelessWidget {
             : SizedBox.shrink(),
         this.primaryAction != null
             ? TextButton(
-                child: Text("Add to cart".toUpperCase(),
-                    style: TextStyle(fontSize: 14)),
+                child: Text((primaryAction ?? "").toUpperCase(),
+                    style: AppFontTitle.bold.font(
+                      14,
+                      null,
+                    )),
                 style: ButtonStyle(
-                    padding: MaterialStateProperty.all<EdgeInsets>(
-                        EdgeInsets.all(15)),
-                    foregroundColor:
-                        MaterialStateProperty.all<Color>(Colors.red),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18.0),
-                            side: BorderSide(color: Colors.red)))),
+                  padding: MaterialStateProperty.all<EdgeInsets>(
+                      EdgeInsets.fromLTRB(16, 12, 16, 12)),
+                  foregroundColor: MaterialStateProperty.all<Color>(Colors.red),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(100),
+                      side: BorderSide(
+                        color: Colors.red,
+                      ),
+                    ),
+                  ),
+                ),
                 onPressed: () => null)
             : SizedBox.shrink(),
       ],
