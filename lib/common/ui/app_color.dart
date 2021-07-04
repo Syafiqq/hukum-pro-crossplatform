@@ -17,7 +17,7 @@ class AppColor {
   static const backgroundLight = Color(0xFFFCFDFF);
 
   static const textPrimary = Colors.white;
-  static const textSecondary = Colors.black;
+  static const textSecondary = Colors.white;
   static const textOnLightPrimary = Color(0xFF222222);
   static const textOnLightSecondary = Color(0xFF515151);
 }
