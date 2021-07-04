@@ -67,7 +67,7 @@ class CommonDialog extends StatelessWidget {
               )
             : SizedBox.shrink(),
         this.description != null && this.title != null
-            ? Container(height: 16, color: Colors.red)
+            ? SizedBox(height: 16)
             : SizedBox.shrink(),
         this.description != null
             ? Center(
@@ -84,7 +84,7 @@ class CommonDialog extends StatelessWidget {
             : SizedBox.shrink(),
         this.primaryAction != null &&
                 (this.title != null || this.description != null)
-            ? Container(height: 24, color: Colors.green)
+            ? SizedBox(height: 24)
             : SizedBox.shrink(),
         this.primaryAction != null
             ? generateButtonWidget(
@@ -96,9 +96,9 @@ class CommonDialog extends StatelessWidget {
             : SizedBox.shrink(),
         this.secondaryAction != null
             ? this.primaryAction != null
-                ? Container(height: 8, color: Colors.blue)
+                ? SizedBox(height: 8)
                 : (this.title != null || this.description != null)
-                    ? Container(height: 24, color: Colors.yellow)
+                    ? SizedBox(height: 24)
                     : SizedBox.shrink()
             : SizedBox.shrink(),
         this.secondaryAction != null
