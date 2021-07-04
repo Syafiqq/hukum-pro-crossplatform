@@ -69,7 +69,7 @@ class SplashView extends StatelessWidget {
                   case CheckLocalVersionUiStatus.loading:
                     return buildProgress(context, 'Check Version');
                   case CheckLocalVersionUiStatus.success:
-                    return SizedBox.shrink();
+                    return buildProgress(context, 'Check Success');
                   case CheckLocalVersionUiStatus.failure:
                     return buildProgress(context, 'Check Failed');
                 }
