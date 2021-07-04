@@ -45,10 +45,6 @@ class CommonDialog extends StatelessWidget {
     );
   }
 
-  void routeClose(BuildContext context, DialogClosingState state) {
-    Navigator.of(context, rootNavigator: true).pop(state);
-  }
-
   Widget createDialogContent(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -114,7 +110,8 @@ class CommonDialog extends StatelessWidget {
                       ),
                     ),
                   ),
-                  onPressed: () => null,
+                  onPressed: () =>
+                      routeClose(context, DialogClosingState.primary),
                 ),
               )
             : SizedBox.shrink(),
@@ -130,14 +127,16 @@ class CommonDialog extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.close),
             color: AppColor.secondary,
-            onPressed: () {
-              routeClose(context, DialogClosingState.close);
-            },
+            onPressed: () => routeClose(context, DialogClosingState.close),
           )
         ],
       );
     } else {
       return SizedBox.shrink();
     }
+  }
+
+  void routeClose(BuildContext context, DialogClosingState state) {
+    Navigator.of(context, rootNavigator: true).pop(state);
   }
 }
