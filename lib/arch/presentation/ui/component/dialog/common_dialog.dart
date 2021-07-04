@@ -82,44 +82,11 @@ class CommonDialog extends StatelessWidget {
             ? Container(height: 24)
             : SizedBox.shrink(),
         this.primaryAction != null
-            ? Center(
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minWidth: 196,
-                    maxWidth: 256,
-                  ),
-                  child: TextButton(
-                    child: Text(
-                      (primaryAction ?? "").toUpperCase(),
-                      style: AppFontTitle.bold.font(
-                        14,
-                        null,
-                      ),
-                    ),
-                    style: ButtonStyle(
-                      padding: MaterialStateProperty.all<EdgeInsets>(
-                        EdgeInsets.fromLTRB(16, 12, 16, 12),
-                      ),
-                      foregroundColor: MaterialStateProperty.all(
-                          primaryStyle.foregroundColor),
-                      backgroundColor: MaterialStateProperty.all(
-                          primaryStyle.backgroundColor),
-                      shape: MaterialStateProperty.all(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(100),
-                          side: primaryStyle is ButtonCtaTypeOutline
-                              ? BorderSide(
-                                  width: 1.5,
-                                  color: primaryStyle.foregroundColor,
-                                )
-                              : BorderSide.none,
-                        ),
-                      ),
-                    ),
-                    onPressed: () =>
-                        routeClose(context, DialogClosingState.primary),
-                  ),
-                ),
+            ? generateButtonWidget(
+                context,
+                primaryAction ?? "",
+                primaryStyle,
+                DialogClosingState.primary,
               )
             : SizedBox.shrink(),
       ],
@@ -141,6 +108,50 @@ class CommonDialog extends StatelessWidget {
     } else {
       return SizedBox.shrink();
     }
+  }
+
+  Widget generateButtonWidget(
+    BuildContext context,
+    String text,
+    ButtonCtaType style,
+    DialogClosingState state,
+  ) {
+    return Center(
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          minWidth: 196,
+          maxWidth: 256,
+        ),
+        child: TextButton(
+          child: Text(
+            text.toUpperCase(),
+            style: AppFontTitle.bold.font(
+              14,
+              null,
+            ),
+          ),
+          style: ButtonStyle(
+            padding: MaterialStateProperty.all<EdgeInsets>(
+              EdgeInsets.fromLTRB(16, 12, 16, 12),
+            ),
+            foregroundColor: MaterialStateProperty.all(style.foregroundColor),
+            backgroundColor: MaterialStateProperty.all(style.backgroundColor),
+            shape: MaterialStateProperty.all(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(100),
+                side: style is ButtonCtaTypeOutline
+                    ? BorderSide(
+                        width: 1.5,
+                        color: style.foregroundColor,
+                      )
+                    : BorderSide.none,
+              ),
+            ),
+          ),
+          onPressed: () => routeClose(context, state),
+        ),
+      ),
+    );
   }
 
   void routeClose(BuildContext context, DialogClosingState state) {
