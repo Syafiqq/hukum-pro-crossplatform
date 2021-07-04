@@ -83,27 +83,34 @@ class CommonDialog extends StatelessWidget {
             : SizedBox.shrink(),
         this.primaryAction != null
             ? TextButton(
-                child: Text((primaryAction ?? "").toUpperCase(),
-                    style: AppFontTitle.bold.font(
-                      14,
-                      null,
-                    )),
+                child: Text(
+                  (primaryAction ?? "").toUpperCase(),
+                  style: AppFontTitle.bold.font(
+                    14,
+                    null,
+                  ),
+                ),
                 style: ButtonStyle(
                   padding: MaterialStateProperty.all<EdgeInsets>(
-                      EdgeInsets.fromLTRB(16, 12, 16, 12)),
-                  foregroundColor: MaterialStateProperty.all<Color>(Colors.red),
+                    EdgeInsets.fromLTRB(16, 12, 16, 12),
+                  ),
+                  foregroundColor:
+                      MaterialStateProperty.all(primaryStyle.foregroundColor),
                   backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.blue),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      MaterialStateProperty.all(primaryStyle.backgroundColor),
+                  shape: MaterialStateProperty.all(
                     RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(100),
-                      side: BorderSide(
-                        color: Colors.red,
-                      ),
+                      side: primaryStyle is ButtonCtaTypeOutline
+                          ? BorderSide(
+                              color: primaryStyle.foregroundColor,
+                            )
+                          : BorderSide.none,
                     ),
                   ),
                 ),
-                onPressed: () => null)
+                onPressed: () => null,
+              )
             : SizedBox.shrink(),
       ],
     );
