@@ -4,11 +4,8 @@ import 'package:hukum_pro/common/ui/dialog_closing_state.dart';
 
 class CommonDialog extends StatelessWidget {
   final bool? closable;
-  final Function(DialogClosingState state)? onDismissed;
-  final bool? autoCloseOnAction;
 
-  CommonDialog({this.closable, this.onDismissed, this.autoCloseOnAction})
-      : super();
+  CommonDialog({this.closable}) : super();
 
   @override
   Widget build(BuildContext context) {
@@ -46,12 +43,6 @@ class CommonDialog extends StatelessWidget {
   }
 
   void routeClose(BuildContext context, DialogClosingState state) {
-    if (autoCloseOnAction ?? true) {
-      Navigator.of(context, rootNavigator: true).pop();
-    }
-    var onDismissed = this.onDismissed;
-    if (onDismissed != null) {
-      onDismissed(state);
-    }
+    Navigator.of(context, rootNavigator: true).pop(state);
   }
 }
