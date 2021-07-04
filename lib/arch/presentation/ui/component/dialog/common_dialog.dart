@@ -57,7 +57,7 @@ class CommonDialog extends StatelessWidget {
         this.title != null
             ? Center(
                 child: Text(
-                  this.title ?? "",
+                  this.title ?? '',
                   style: AppFontTitle.bold.font(
                     18,
                     AppColor.textOnLightPrimary,
@@ -72,7 +72,7 @@ class CommonDialog extends StatelessWidget {
         this.description != null
             ? Center(
                 child: Text(
-                  this.description ?? "",
+                  this.description ?? '',
                   style: AppFontContent.medium.font(
                     14,
                     AppColor.textOnLightPrimary,
@@ -89,7 +89,7 @@ class CommonDialog extends StatelessWidget {
         this.primaryAction != null
             ? generateButtonWidget(
                 context,
-                primaryAction ?? "",
+                primaryAction ?? '',
                 primaryStyle,
                 DialogClosingState.primary,
               )
@@ -104,7 +104,7 @@ class CommonDialog extends StatelessWidget {
         this.secondaryAction != null
             ? generateButtonWidget(
                 context,
-                secondaryAction ?? "",
+                secondaryAction ?? '',
                 secondaryStyle,
                 DialogClosingState.secondary,
               )

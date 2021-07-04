@@ -9,26 +9,26 @@ import 'package:hukum_pro/common/exception/retryable_exception.dart';
 
 class DataNotExistsException extends DefinedException {
   DataNotExistsException(Exception? internalException, Error? internalError)
-      : super(internalException, internalError, "001-001",
-            "requested data is not found");
+      : super(internalException, internalError, '001-001',
+            'requested data is not found');
 }
 
 class ParseFailedException extends DefinedException {
   ParseFailedException(
       Type type, Exception? internalException, Error? internalError)
-      : super(internalException, internalError, "001-002",
-            "cannot parse to defined data $type");
+      : super(internalException, internalError, '001-002',
+            'cannot parse to defined data $type');
 }
 
 class DataFetchFailureException extends RetryableException {
   DataFetchFailureException(Exception? internalException, Error? internalError)
-      : super(internalException, internalError, "001-003",
-            "request data failed to retrieve");
+      : super(internalException, internalError, '001-003',
+            'request data failed to retrieve');
 }
 
 class DataLocationNotFoundException extends DefinedException {
   DataLocationNotFoundException(
       Exception? internalException, Error? internalError)
-      : super(internalException, internalError, "001-004",
-            "data location is not found");
+      : super(internalException, internalError, '001-004',
+            'data location is not found');
 }

@@ -44,8 +44,8 @@ class SplashView extends StatelessWidget {
                 switch (state.status) {
                   case CheckLocalVersionUiStatus.failure:
                     CommonDialog.show(context,
-                            description: "Failed to initialize app",
-                            primaryAction: "Okay",
+                            description: 'Failed to initialize app',
+                            primaryAction: 'Retry',
                             primaryStyle: ButtonCtaType.solid(
                               false,
                               AppColor.secondary,

@@ -45,19 +45,19 @@ class _AppState extends State<App> {
       builder: (context, snapshot) {
         // Check for errors
         if (snapshot.hasError) {
-          print("hasError = ${snapshot.hasError}");
+          print('hasError = ${snapshot.hasError}');
           print(snapshot.error);
         }
 
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
-          print("hasData = ${snapshot.hasData}");
+          print('hasData = ${snapshot.hasData}');
           print(snapshot.data);
           print(Firebase.app());
         }
 
         // Otherwise, show something whilst waiting for initialization to complete
-        print("Loading");
+        print('Loading');
         return Container(
           decoration: BoxDecoration(color: Colors.white),
           child: Center(

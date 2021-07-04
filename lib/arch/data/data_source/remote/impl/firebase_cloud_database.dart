@@ -39,7 +39,7 @@ class FirebaseCloudDatabase
       throw DataFetchFailureException(e, null);
     } on DatabaseError catch (e) {
       throw DataFetchFailureException(
-          DefinedException(null, null, "00C-${e.code}", e.message), null);
+          DefinedException(null, null, '00C-${e.code}', e.message), null);
     }
   }
 
@@ -76,7 +76,7 @@ class FirebaseCloudDatabase
       throw DataFetchFailureException(e, null);
     } on DatabaseError catch (e) {
       throw DataFetchFailureException(
-          DefinedException(null, null, "00C-${e.code}", e.message), null);
+          DefinedException(null, null, '00C-${e.code}', e.message), null);
     }
   }
 }
