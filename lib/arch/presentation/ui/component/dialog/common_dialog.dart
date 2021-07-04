@@ -89,6 +89,20 @@ class CommonDialog extends StatelessWidget {
                 DialogClosingState.primary,
               )
             : SizedBox.shrink(),
+        (this.title != null || this.description != null) &&
+                (this.secondaryAction != null)
+            ? this.primaryAction != null
+                ? Container(height: 8)
+                : Container(height: 24)
+            : SizedBox.shrink(),
+        this.secondaryAction != null
+            ? generateButtonWidget(
+                context,
+                secondaryAction ?? "",
+                secondaryStyle,
+                DialogClosingState.secondary,
+              )
+            : SizedBox.shrink(),
       ],
     );
   }
