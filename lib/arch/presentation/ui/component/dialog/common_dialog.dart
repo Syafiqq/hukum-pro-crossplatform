@@ -56,10 +56,10 @@ class CommonDialog extends StatelessWidget {
                   18,
                   AppColor.textOnLightPrimary,
                 ),
+                textAlign: TextAlign.center,
               )
             : SizedBox.shrink(),
-        this.title != null &&
-                (this.description != null)
+        this.title != null && (this.description != null)
             ? Container(height: 16)
             : SizedBox.shrink(),
         this.description != null
@@ -78,40 +78,42 @@ class CommonDialog extends StatelessWidget {
             ? Container(height: 24)
             : SizedBox.shrink(),
         this.primaryAction != null
-            ? ConstrainedBox(
-                constraints: BoxConstraints(
-                  minWidth: 196,
-                  maxWidth: 256,
-                ),
-                child: TextButton(
-                  child: Text(
-                    (primaryAction ?? "").toUpperCase(),
-                    style: AppFontTitle.bold.font(
-                      14,
-                      null,
-                    ),
+            ? Center(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minWidth: 196,
+                    maxWidth: 256,
                   ),
-                  style: ButtonStyle(
-                    padding: MaterialStateProperty.all<EdgeInsets>(
-                      EdgeInsets.fromLTRB(16, 12, 16, 12),
-                    ),
-                    foregroundColor:
-                        MaterialStateProperty.all(primaryStyle.foregroundColor),
-                    backgroundColor:
-                        MaterialStateProperty.all(primaryStyle.backgroundColor),
-                    shape: MaterialStateProperty.all(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(100),
-                        side: primaryStyle is ButtonCtaTypeOutline
-                            ? BorderSide(
-                                color: primaryStyle.foregroundColor,
-                              )
-                            : BorderSide.none,
+                  child: TextButton(
+                    child: Text(
+                      (primaryAction ?? "").toUpperCase(),
+                      style: AppFontTitle.bold.font(
+                        14,
+                        null,
                       ),
                     ),
+                    style: ButtonStyle(
+                      padding: MaterialStateProperty.all<EdgeInsets>(
+                        EdgeInsets.fromLTRB(16, 12, 16, 12),
+                      ),
+                      foregroundColor: MaterialStateProperty.all(
+                          primaryStyle.foregroundColor),
+                      backgroundColor: MaterialStateProperty.all(
+                          primaryStyle.backgroundColor),
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(100),
+                          side: primaryStyle is ButtonCtaTypeOutline
+                              ? BorderSide(
+                                  color: primaryStyle.foregroundColor,
+                                )
+                              : BorderSide.none,
+                        ),
+                      ),
+                    ),
+                    onPressed: () =>
+                        routeClose(context, DialogClosingState.primary),
                   ),
-                  onPressed: () =>
-                      routeClose(context, DialogClosingState.primary),
                 ),
               )
             : SizedBox.shrink(),
