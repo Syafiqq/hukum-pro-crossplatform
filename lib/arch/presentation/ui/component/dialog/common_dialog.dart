@@ -82,34 +82,40 @@ class CommonDialog extends StatelessWidget {
             ? Container(height: 24)
             : SizedBox.shrink(),
         this.primaryAction != null
-            ? TextButton(
-                child: Text(
-                  (primaryAction ?? "").toUpperCase(),
-                  style: AppFontTitle.bold.font(
-                    14,
-                    null,
-                  ),
+            ? ConstrainedBox(
+                constraints: BoxConstraints(
+                  minWidth: 196,
+                  maxWidth: 256,
                 ),
-                style: ButtonStyle(
-                  padding: MaterialStateProperty.all<EdgeInsets>(
-                    EdgeInsets.fromLTRB(16, 12, 16, 12),
-                  ),
-                  foregroundColor:
-                      MaterialStateProperty.all(primaryStyle.foregroundColor),
-                  backgroundColor:
-                      MaterialStateProperty.all(primaryStyle.backgroundColor),
-                  shape: MaterialStateProperty.all(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(100),
-                      side: primaryStyle is ButtonCtaTypeOutline
-                          ? BorderSide(
-                              color: primaryStyle.foregroundColor,
-                            )
-                          : BorderSide.none,
+                child: TextButton(
+                  child: Text(
+                    (primaryAction ?? "").toUpperCase(),
+                    style: AppFontTitle.bold.font(
+                      14,
+                      null,
                     ),
                   ),
+                  style: ButtonStyle(
+                    padding: MaterialStateProperty.all<EdgeInsets>(
+                      EdgeInsets.fromLTRB(16, 12, 16, 12),
+                    ),
+                    foregroundColor:
+                        MaterialStateProperty.all(primaryStyle.foregroundColor),
+                    backgroundColor:
+                        MaterialStateProperty.all(primaryStyle.backgroundColor),
+                    shape: MaterialStateProperty.all(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(100),
+                        side: primaryStyle is ButtonCtaTypeOutline
+                            ? BorderSide(
+                                color: primaryStyle.foregroundColor,
+                              )
+                            : BorderSide.none,
+                      ),
+                    ),
+                  ),
+                  onPressed: () => null,
                 ),
-                onPressed: () => null,
               )
             : SizedBox.shrink(),
       ],
