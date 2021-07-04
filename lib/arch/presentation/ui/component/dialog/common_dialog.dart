@@ -69,7 +69,7 @@ class CommonDialog extends StatelessWidget {
         this.description != null
             ? Text(
                 this.description ?? "",
-                style: AppFontContent.regular.font(
+                style: AppFontContent.medium.font(
                   14,
                   AppColor.textOnLightPrimary,
                   height: 1.2,
