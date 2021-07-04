@@ -1,19 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hukum_pro/common/ui/app_color.dart';
 
-const double _kPadding = 20;
-const double _kAvatarRadius = 45;
-
 class CommonDialog extends StatelessWidget {
-  final String tmpTitle, tmpDescription, tmpText;
-  final Image tmpImg;
-
   final String? title;
   final bool? closable;
 
-  CommonDialog(this.tmpTitle, this.tmpDescription, this.tmpText, this.tmpImg,
-      {this.title, this.closable})
-      : super();
+  CommonDialog({this.title, this.closable}) : super();
 
   @override
   Widget build(BuildContext context) {
