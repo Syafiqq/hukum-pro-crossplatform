@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hukum_pro/arch/domain/entity/misc/version_entity.dart';
 import 'package:hukum_pro/arch/domain/entity/version/check_local_version_state.dart';
 import 'package:hukum_pro/arch/domain/use_case/check_version_first_time_use_case.dart';
 import 'package:hukum_pro/arch/presentation/ui/component/dialog/common_dialog.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/check_local_version_cubit.dart';
 import 'package:hukum_pro/arch/presentation/view_model/state/check_local_version_ui_state.dart';
-import 'package:hukum_pro/common/exception/defined_exception.dart';
 import 'package:hukum_pro/common/ui/app_color.dart';
 import 'package:hukum_pro/common/ui/app_font.dart';
 import 'package:hukum_pro/common/ui/button_cta_type.dart';
