@@ -52,34 +52,39 @@ class CommonDialog extends StatelessWidget {
   Widget createDialogContent(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         this.title != null
-            ? Text(
-                this.title ?? "",
-                style: AppFontTitle.bold.font(
-                  18,
-                  AppColor.textOnLightPrimary,
+            ? Center(
+                child: Text(
+                  this.title ?? "",
+                  style: AppFontTitle.bold.font(
+                    18,
+                    AppColor.textOnLightPrimary,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-                textAlign: TextAlign.center,
               )
             : SizedBox.shrink(),
         this.title != null && (this.description != null)
-            ? Container(height: 16)
+            ? SizedBox(height: 16)
             : SizedBox.shrink(),
         this.description != null
-            ? Text(
-                this.description ?? "",
-                style: AppFontContent.medium.font(
-                  14,
-                  AppColor.textOnLightPrimary,
-                  height: 1.2,
+            ? Center(
+                child: Text(
+                  this.description ?? "",
+                  style: AppFontContent.medium.font(
+                    14,
+                    AppColor.textOnLightPrimary,
+                    height: 1.2,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-                textAlign: TextAlign.center,
               )
             : SizedBox.shrink(),
         (this.title != null || this.description != null) &&
                 (this.primaryAction != null)
-            ? Container(height: 24)
+            ? SizedBox(height: 24)
             : SizedBox.shrink(),
         this.primaryAction != null
             ? generateButtonWidget(
@@ -92,8 +97,8 @@ class CommonDialog extends StatelessWidget {
         (this.title != null || this.description != null) &&
                 (this.secondaryAction != null)
             ? this.primaryAction != null
-                ? Container(height: 8)
-                : Container(height: 24)
+                ? SizedBox(height: 8)
+                : SizedBox(height: 24)
             : SizedBox.shrink(),
         this.secondaryAction != null
             ? generateButtonWidget(
