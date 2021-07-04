@@ -4,8 +4,8 @@ import 'package:hukum_pro/common/ui/app_font.dart';
 import 'package:hukum_pro/common/ui/button_cta_type.dart';
 import 'package:hukum_pro/common/ui/dialog_closing_state.dart';
 
-const _kDefaultStyle =
-    ButtonCtaType.outline(false, AppColor.textOnLightPrimary);
+const _kDefaultStyle = ButtonCtaType.outline(
+    false, AppColor.background, AppColor.textOnLightPrimary);
 
 class CommonDialog extends StatelessWidget {
   final bool? closable;
@@ -92,6 +92,8 @@ class CommonDialog extends StatelessWidget {
                   padding: MaterialStateProperty.all<EdgeInsets>(
                       EdgeInsets.fromLTRB(16, 12, 16, 12)),
                   foregroundColor: MaterialStateProperty.all<Color>(Colors.red),
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.blue),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(100),
