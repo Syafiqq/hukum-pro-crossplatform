@@ -59,9 +59,9 @@ enum FontContent {
 extension TitleFontDefinition on FontTitle {
   TextStyle font(
     double? fontSize,
-    Color? backgroundColor, {
+    Color? color, {
     bool? inherit,
-    Color? color,
+    Color? backgroundColor,
     String? fontFamily,
     List<String>? fontFamilyFallback,
     FontStyle? fontStyle,
@@ -111,9 +111,9 @@ extension TitleFontDefinition on FontTitle {
 extension SubtitleFontDefinition on FontSubtitle {
   TextStyle font(
     double? fontSize,
-    Color? backgroundColor, {
+    Color? color, {
     bool? inherit,
-    Color? color,
+    Color? backgroundColor,
     String? fontFamily,
     List<String>? fontFamilyFallback,
     FontStyle? fontStyle,
@@ -163,9 +163,9 @@ extension SubtitleFontDefinition on FontSubtitle {
 extension ContentFontDefinition on FontContent {
   TextStyle font(
     double? fontSize,
-    Color? backgroundColor, {
+    Color? color, {
     bool? inherit,
-    Color? color,
+    Color? backgroundColor,
     String? fontFamily,
     List<String>? fontFamilyFallback,
     FontStyle? fontStyle,
