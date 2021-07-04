@@ -6,8 +6,9 @@ import 'package:hukum_pro/common/ui/dialog_closing_state.dart';
 class CommonDialog extends StatelessWidget {
   final bool? closable;
   final String? title;
+  final String? description;
 
-  CommonDialog({this.closable, this.title}) : super();
+  CommonDialog({this.closable, this.title, this.description}) : super();
 
   @override
   Widget build(BuildContext context) {
@@ -20,23 +21,35 @@ class CommonDialog extends StatelessWidget {
       child: Stack(
         children: [
           Padding(
-            padding: EdgeInsets.fromLTRB(16, 32, 16, 16),
+            padding: EdgeInsets.fromLTRB(16, 32, 16, 24),
             child: Container(
-              color: Colors.red,
+              color: Colors.transparent,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   this.title != null
-                      ? Center(
-                          child: Text(
-                            this.title ?? "",
-                            style: AppFontTitle.bold.font(
-                              16,
-                              AppColor.textOnLightPrimary,
-                            ),
+                      ? Text(
+                          this.title ?? "",
+                          style: AppFontTitle.bold.font(
+                            18,
+                            AppColor.textOnLightPrimary,
                           ),
                         )
-                      : SizedBox.shrink()
+                      : SizedBox.shrink(),
+                  this.title != null && this.description != null
+                      ? Container(height: 16)
+                      : SizedBox.shrink(),
+                  this.description != null
+                      ? Text(
+                          this.description ?? "",
+                          style: AppFontContent.regular.font(
+                            14,
+                            AppColor.textOnLightPrimary,
+                            height: 1.2,
+                          ),
+                          textAlign: TextAlign.center,
+                        )
+                      : SizedBox.shrink(),
                 ],
               ),
             ),
