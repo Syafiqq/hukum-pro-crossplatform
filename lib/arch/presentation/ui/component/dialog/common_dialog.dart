@@ -177,4 +177,29 @@ class CommonDialog extends StatelessWidget {
   void routeClose(BuildContext context, DialogClosingState state) {
     Navigator.of(context, rootNavigator: true).pop(state);
   }
+
+  static Future<DialogClosingState> show(
+    BuildContext context, {
+    title: String,
+    description: String,
+    primaryAction: String,
+    primaryStyle: ButtonCtaType,
+    secondaryAction: String,
+    secondaryStyle: ButtonCtaType,
+    isClosable: bool,
+  }) async {
+    return await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return CommonDialog(
+            closable: isClosable,
+            title: title,
+            description: description,
+            primaryAction: primaryAction,
+            primaryStyle: primaryStyle,
+            secondaryAction: secondaryAction,
+            secondaryStyle: secondaryStyle,
+          );
+        });
+  }
 }
