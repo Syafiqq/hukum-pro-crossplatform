@@ -59,4 +59,5 @@ app.*.map.json
 **/lock.mdb
 lib/ui_design
 **/presentation/view_model/**/*.freezed.dart
+**/common/ui/**/*.freezed.dart
 
