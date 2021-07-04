@@ -2,7 +2,7 @@ import 'dart:ui' as ui show Shadow, FontFeature, TextLeadingDistribution;
 
 import 'package:flutter/painting.dart';
 
-enum FontTitle {
+enum AppFontTitle {
   thin,
   thinItalic,
   extraLight,
@@ -23,7 +23,7 @@ enum FontTitle {
   blackItalic,
 }
 
-enum FontSubtitle {
+enum AppFontSubtitle {
   thin,
   extraLight,
   light,
@@ -35,7 +35,7 @@ enum FontSubtitle {
   black,
 }
 
-enum FontContent {
+enum AppFontContent {
   thin,
   thinItalic,
   extraLight,
@@ -56,7 +56,7 @@ enum FontContent {
   blackItalic,
 }
 
-extension TitleFontDefinition on FontTitle {
+extension AppFontTitleTextStyle on AppFontTitle {
   TextStyle font(
     double? fontSize,
     Color? color, {
@@ -89,7 +89,7 @@ extension TitleFontDefinition on FontTitle {
         fontFamilyFallback: fontFamilyFallback,
         fontSize: fontSize,
         fontWeight: FontWeight.values[this.index ~/ 2],
-        fontStyle: this.index % 2 == 1 ? FontStyle.normal : FontStyle.italic,
+        fontStyle: this.index % 2 == 0 ? FontStyle.normal : FontStyle.italic,
         letterSpacing: letterSpacing,
         wordSpacing: wordSpacing,
         textBaseline: textBaseline,
@@ -108,7 +108,7 @@ extension TitleFontDefinition on FontTitle {
       );
 }
 
-extension SubtitleFontDefinition on FontSubtitle {
+extension AppFontSubtitleTextStyle on AppFontSubtitle {
   TextStyle font(
     double? fontSize,
     Color? color, {
@@ -160,7 +160,7 @@ extension SubtitleFontDefinition on FontSubtitle {
       );
 }
 
-extension ContentFontDefinition on FontContent {
+extension AppFontContentTextStyle on AppFontContent {
   TextStyle font(
     double? fontSize,
     Color? color, {
@@ -193,7 +193,7 @@ extension ContentFontDefinition on FontContent {
         fontFamilyFallback: fontFamilyFallback,
         fontSize: fontSize,
         fontWeight: FontWeight.values[this.index ~/ 2],
-        fontStyle: this.index % 2 == 1 ? FontStyle.normal : FontStyle.italic,
+        fontStyle: this.index % 2 == 0 ? FontStyle.normal : FontStyle.italic,
         letterSpacing: letterSpacing,
         wordSpacing: wordSpacing,
         textBaseline: textBaseline,
