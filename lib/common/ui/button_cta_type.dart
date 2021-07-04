@@ -6,7 +6,8 @@ part 'button_cta_type.freezed.dart';
 
 @freezed
 class ButtonCtaType with _$ButtonCtaType {
-  const factory ButtonCtaType.outline(bool disabled) = ButtonCtaTypeOutline;
+  const factory ButtonCtaType.outline(bool disabled, Color color) =
+      ButtonCtaTypeOutline;
 
   const factory ButtonCtaType.solid(bool disabled, Color color) =
       ButtonCtaTypeSolid;
