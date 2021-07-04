@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:hukum_pro/common/ui/app_color.dart';
+import 'package:hukum_pro/common/ui/dialog_closing_state.dart';
 
 class CommonDialog extends StatelessWidget {
-  final String? title;
   final bool? closable;
+  final Function(DialogClosingState state)? onDismissed;
+  final bool? autoCloseOnAction;
 
-  CommonDialog({this.title, this.closable}) : super();
+  CommonDialog({this.closable, this.onDismissed, this.autoCloseOnAction})
+      : super();
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +34,7 @@ class CommonDialog extends StatelessWidget {
                       icon: const Icon(Icons.close),
                       color: AppColor.secondary,
                       onPressed: () {
-                        Navigator.of(context, rootNavigator: true).pop();
+                        routeClose(context, DialogClosingState.close);
                       },
                     )
                   ],
@@ -40,5 +43,15 @@ class CommonDialog extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void routeClose(BuildContext context, DialogClosingState state) {
+    if (autoCloseOnAction ?? true) {
+      Navigator.of(context, rootNavigator: true).pop();
+    }
+    var onDismissed = this.onDismissed;
+    if (onDismissed != null) {
+      onDismissed(state);
+    }
   }
 }
