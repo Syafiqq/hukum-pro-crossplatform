@@ -59,7 +59,7 @@ class CommonDialog extends StatelessWidget {
               )
             : SizedBox.shrink(),
         this.title != null &&
-                (this.description != null || this.primaryAction != null)
+                (this.description != null)
             ? Container(height: 16)
             : SizedBox.shrink(),
         this.description != null
