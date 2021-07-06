@@ -8,6 +8,8 @@ import 'package:hukum_pro/arch/presentation/ui/component/dialog/common_dialog.da
 import 'package:hukum_pro/arch/presentation/view_model/cubit/check_local_version_cubit.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/splash_view_cubit.dart';
 import 'package:hukum_pro/arch/presentation/view_model/state/check_local_version_ui_state.dart';
+import 'package:hukum_pro/arch/presentation/view_model/state/splash_view_ui_state.dart';
+import 'package:hukum_pro/common/exception/defined_exception.dart';
 import 'package:hukum_pro/common/ui/app_color.dart';
 import 'package:hukum_pro/common/ui/app_font.dart';
 import 'package:hukum_pro/common/ui/button_cta_type.dart';
@@ -40,11 +42,25 @@ class SplashView extends StatelessWidget {
           ),
           Container(
             height: 36,
-            child:
-                BlocConsumer<CheckLocalVersionCubit, CheckLocalVersionUiState>(
+            child: BlocConsumer<SplashViewCubit, SplashViewUiState>(
               listener: (context, state) {
-                switch (state.status) {
-                  case CheckLocalVersionUiStatus.failure:
+                state.maybeWhen(
+                  checkVersionFailed: (_) {
+                    CommonDialog.show(context,
+                            description: 'Failed to check version',
+                            primaryAction: 'Retry',
+                            primaryStyle: ButtonCtaType.solid(
+                              false,
+                              AppColor.secondary,
+                              AppColor.textSecondary,
+                            ),
+                            isClosable: false,
+                            dismissOnTouchOutside: false)
+                        .then(
+                      (value) => context.read<SplashViewCubit>().checkVersion(),
+                    );
+                  },
+                  initializeAppFailed: (_, version) {
                     CommonDialog.show(context,
                             description: 'Failed to initialize app',
                             primaryAction: 'Retry',
@@ -56,25 +72,29 @@ class SplashView extends StatelessWidget {
                             isClosable: false,
                             dismissOnTouchOutside: false)
                         .then(
-                      (value) =>
-                          context.read<CheckLocalVersionCubit>().checkVersion(),
+                      (value) => context
+                          .read<SplashViewCubit>()
+                          .initializeApp(version),
                     );
-                    break;
-                  default:
-                    break;
-                }
+                  },
+                  orElse: () {},
+                );
               },
               builder: (context, state) {
-                switch (state.status) {
-                  case CheckLocalVersionUiStatus.initial:
-                    return SizedBox.shrink();
-                  case CheckLocalVersionUiStatus.loading:
-                    return buildProgress(context, 'Check Version');
-                  case CheckLocalVersionUiStatus.success:
-                    return buildProgress(context, 'Check Success');
-                  case CheckLocalVersionUiStatus.failure:
-                    return buildProgress(context, 'Check Failed');
-                }
+                return state.maybeWhen(
+                  versionLoading: () => buildProgress(context, 'Check Version'),
+                  checkVersionFailed: (_) =>
+                      buildProgress(context, 'Check Failed'),
+                  checkVersionSuccess: (_) =>
+                      buildProgress(context, 'Check Success'),
+                  initializeAppLoading: () =>
+                      buildProgress(context, 'Initialize App'),
+                  initializeAppFailed: (_, __) =>
+                      buildProgress(context, 'Initialize Failed'),
+                  initializeAppSuccess: () =>
+                      buildProgress(context, 'Initialize Success'),
+                  orElse: () => SizedBox.shrink(),
+                );
               },
             ),
           ),
