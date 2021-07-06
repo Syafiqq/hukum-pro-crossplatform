@@ -16,7 +16,7 @@ class SplashViewCubit extends Cubit<SplashViewUiState> {
   Future<void> checkVersion() async {
     if (!(state is InitialState || state is VersionCheckFailed)) return;
 
-    emit(SplashViewUiState.loadingCheckVersion());
+    emit(SplashViewUiState.versionLoading());
 
     try {
       var version = await _checkVersionFirstTimeUseCase.execute();
@@ -25,7 +25,7 @@ class SplashViewCubit extends Cubit<SplashViewUiState> {
           emit(SplashViewUiState.versionPresent(version));
         },
         needInitializeVersion: (VersionEntity version) {
-          emit(SplashViewUiState.needInitializeApp(version));
+          emit(SplashViewUiState.checkVersionSuccess(version));
           initializeApp(version);
         },
       );
@@ -36,16 +36,16 @@ class SplashViewCubit extends Cubit<SplashViewUiState> {
   }
 
   Future<void> initializeApp(VersionEntity version) async {
-    if (!(state is VersionInitialize || state is InitializeFailed)) return;
+    if (!(state is VersionCheckSuccess || state is InitializeFailed)) return;
 
-    emit(SplashViewUiState.loadingInitializeApp());
+    emit(SplashViewUiState.initializeAppLoading());
 
     try {
       await _reinitializeWholeDataUseCase.execute(version);
       emit(SplashViewUiState.initializeAppSuccess());
     } on Exception catch (e) {
       print(e);
-      emit(SplashViewUiState.initializeAppFailed(e));
+      emit(SplashViewUiState.initializeAppFailed(e, version));
     }
   }
 }
