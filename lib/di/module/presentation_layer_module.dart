@@ -1,3 +1,5 @@
+import 'package:hukum_pro/di/module/presentation_layer/cubit_module.dart';
+
 class PresentationLayerModule {
   static final PresentationLayerModule _singleton =
       PresentationLayerModule._internal();
@@ -8,5 +10,7 @@ class PresentationLayerModule {
 
   PresentationLayerModule._internal();
 
-  void build() {}
+  void build() {
+    CubitModule().build();
+  }
 }

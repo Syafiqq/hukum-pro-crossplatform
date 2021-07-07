@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hukum_pro/arch/presentation/ui/view/splash_view.dart';
 
 class SplashScreen extends StatelessWidget {
   @override
@@ -7,6 +8,9 @@ class SplashScreen extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+      ),
+      home: Scaffold(
+        body: SplashView(),
       ),
     );
   }
