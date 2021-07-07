@@ -2,7 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hukum_pro/arch/domain/entity/misc/version_entity.dart';
 import 'package:hukum_pro/arch/domain/use_case/check_version_first_time_use_case.dart';
 import 'package:hukum_pro/arch/domain/use_case/reinitialize_whole_data_use_case.dart';
-import 'package:hukum_pro/arch/presentation/view_model/state/splash_view_ui_state.dart';
+import 'package:hukum_pro/arch/presentation/view_model/state/check_local_version_and_initialize_state.dart';
 
 class SplashViewCubit extends Cubit<SplashViewUiState> {
   final CheckVersionFirstTimeUseCase _checkVersionFirstTimeUseCase;
@@ -25,18 +25,18 @@ class SplashViewCubit extends Cubit<SplashViewUiState> {
           emit(SplashViewUiState.versionPresent(version));
         },
         needInitializeVersion: (VersionEntity version) {
-          emit(SplashViewUiState.checkVersionSuccess(version));
+          emit(SplashViewUiState.versionNotExistButRemote(version));
           initializeApp(version);
         },
       );
     } on Exception catch (e) {
       print(e);
-      emit(SplashViewUiState.checkVersionFailed(e));
+      emit(SplashViewUiState.checkVersionFailed());
     }
   }
 
   Future<void> initializeApp(VersionEntity version) async {
-    if (!(state is VersionCheckSuccess || state is InitializeFailed)) return;
+    if (!(state is VersionLocalNotPresent || state is InitializeFailed)) return;
 
     emit(SplashViewUiState.initializeAppLoading());
 
@@ -45,7 +45,7 @@ class SplashViewCubit extends Cubit<SplashViewUiState> {
       emit(SplashViewUiState.initializeAppSuccess());
     } on Exception catch (e) {
       print(e);
-      emit(SplashViewUiState.initializeAppFailed(e, version));
+      emit(SplashViewUiState.initializeAppFailed(version));
     }
   }
 }

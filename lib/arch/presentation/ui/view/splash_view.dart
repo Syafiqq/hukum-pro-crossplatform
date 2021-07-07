@@ -8,7 +8,7 @@ import 'package:hukum_pro/arch/presentation/ui/component/dialog/common_dialog.da
 import 'package:hukum_pro/arch/presentation/view_model/cubit/check_local_version_cubit.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/splash_view_cubit.dart';
 import 'package:hukum_pro/arch/presentation/view_model/state/check_local_version_ui_state.dart';
-import 'package:hukum_pro/arch/presentation/view_model/state/splash_view_ui_state.dart';
+import 'package:hukum_pro/arch/presentation/view_model/state/check_local_version_and_initialize_state.dart';
 import 'package:hukum_pro/common/exception/defined_exception.dart';
 import 'package:hukum_pro/common/ui/app_color.dart';
 import 'package:hukum_pro/common/ui/app_font.dart';
@@ -45,7 +45,7 @@ class SplashView extends StatelessWidget {
             child: BlocConsumer<SplashViewCubit, SplashViewUiState>(
               listener: (context, state) {
                 state.maybeWhen(
-                  checkVersionFailed: (_) {
+                  checkVersionFailed: () {
                     CommonDialog.show(context,
                             description: 'Failed to check version',
                             primaryAction: 'Retry',
@@ -60,7 +60,7 @@ class SplashView extends StatelessWidget {
                       (value) => context.read<SplashViewCubit>().checkVersion(),
                     );
                   },
-                  initializeAppFailed: (_, version) {
+                  initializeAppFailed: (version) {
                     CommonDialog.show(context,
                             description: 'Failed to initialize app',
                             primaryAction: 'Retry',
@@ -83,13 +83,15 @@ class SplashView extends StatelessWidget {
               builder: (context, state) {
                 return state.maybeWhen(
                   versionLoading: () => buildProgress(context, 'Check Version'),
-                  checkVersionFailed: (_) =>
+                  checkVersionFailed: () =>
                       buildProgress(context, 'Check Failed'),
-                  checkVersionSuccess: (_) =>
+                  versionPresent: (_) =>
                       buildProgress(context, 'Check Success'),
+                  versionNotExistButRemote: (_) =>
+                      buildProgress(context, 'App not initialized'),
                   initializeAppLoading: () =>
                       buildProgress(context, 'Initialize App'),
-                  initializeAppFailed: (_, __) =>
+                  initializeAppFailed: (_) =>
                       buildProgress(context, 'Initialize Failed'),
                   initializeAppSuccess: () =>
                       buildProgress(context, 'Initialize Success'),
