@@ -1,4 +1,5 @@
-# hukum_pro
+# hukum_pro 
+[![codecov](https://codecov.io/gh/Syafiqq/hukum-pro-crossplatform/branch/master/graph/badge.svg?token=DEOW3P19VC)](https://codecov.io/gh/Syafiqq/hukum-pro-crossplatform)
 
 HukumPro
 
