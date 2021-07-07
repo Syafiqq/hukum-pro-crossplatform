@@ -4,19 +4,24 @@ import 'package:hukum_pro/arch/domain/entity/misc/version_entity.dart';
 part 'check_local_version_and_initialize_state.freezed.dart';
 
 @freezed
-class SplashViewUiState with _$SplashViewUiState {
-  const factory SplashViewUiState.initial() = InitialState;
-  const factory SplashViewUiState.versionLoading() = VersionLoading;
-  const factory SplashViewUiState.versionPresent(
+class CheckLocalVersionAndInitializeUiState
+    with _$CheckLocalVersionAndInitializeUiState {
+  const factory CheckLocalVersionAndInitializeUiState.initial() = InitialState;
+  const factory CheckLocalVersionAndInitializeUiState.versionLoading() =
+      VersionLoading;
+  const factory CheckLocalVersionAndInitializeUiState.versionPresent(
     VersionEntity version,
   ) = VersionLocalPresent;
-  const factory SplashViewUiState.versionNotExistButRemote(
+  const factory CheckLocalVersionAndInitializeUiState.versionNotExistButRemote(
     VersionEntity version,
   ) = VersionLocalNotPresent;
-  const factory SplashViewUiState.checkVersionFailed() = VersionCheckFailed;
-  const factory SplashViewUiState.initializeAppLoading() = InitializeLoading;
-  const factory SplashViewUiState.initializeAppSuccess() = InitializeSuccess;
-  const factory SplashViewUiState.initializeAppFailed(
+  const factory CheckLocalVersionAndInitializeUiState.checkVersionFailed() =
+      VersionCheckFailed;
+  const factory CheckLocalVersionAndInitializeUiState.initializeAppLoading() =
+      InitializeLoading;
+  const factory CheckLocalVersionAndInitializeUiState.initializeAppSuccess() =
+      InitializeSuccess;
+  const factory CheckLocalVersionAndInitializeUiState.initializeAppFailed(
     VersionEntity version,
   ) = InitializeFailed;
 }

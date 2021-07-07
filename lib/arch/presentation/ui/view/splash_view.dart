@@ -40,7 +40,8 @@ class SplashView extends StatelessWidget {
           ),
           Container(
             height: 36,
-            child: BlocConsumer<SplashViewCubit, SplashViewUiState>(
+            child: BlocConsumer<CheckLocalVersionAndInitializeCubit,
+                CheckLocalVersionAndInitializeUiState>(
               listener: (context, state) {
                 state.maybeWhen(
                   checkVersionFailed: () {
@@ -55,7 +56,9 @@ class SplashView extends StatelessWidget {
                             isClosable: false,
                             dismissOnTouchOutside: false)
                         .then(
-                      (value) => context.read<SplashViewCubit>().checkVersion(),
+                      (value) => context
+                          .read<CheckLocalVersionAndInitializeCubit>()
+                          .checkVersion(),
                     );
                   },
                   initializeAppFailed: (version) {
@@ -71,7 +74,7 @@ class SplashView extends StatelessWidget {
                             dismissOnTouchOutside: false)
                         .then(
                       (value) => context
-                          .read<SplashViewCubit>()
+                          .read<CheckLocalVersionAndInitializeCubit>()
                           .initializeApp(version),
                     );
                   },
