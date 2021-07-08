@@ -21,7 +21,7 @@ class LawMenuNavigationView extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Image(
-                    image: AssetImage('res/images/ic_hukum_pro_logo_2_192.png'),
+                    image: AssetImage('res/images/ic_hukum_pro_logo_2_48.png'),
                     color: AppColor.textOnLightPrimary,
                     width: 36,
                     height: 36,
