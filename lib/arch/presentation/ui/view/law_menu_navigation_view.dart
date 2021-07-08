@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hukum_pro/common/ui/app_color.dart';
+import 'package:hukum_pro/common/ui/app_font.dart';
 
 class LawMenuNavigationView extends StatelessWidget {
   final int _selectedDestination = 0;
@@ -13,10 +15,13 @@ class LawMenuNavigationView extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Center(
-              child: Text(
-                'Header',
+            padding: const EdgeInsets.fromLTRB(0, 24, 0, 24),
+            child: Text(
+              'Hukum Pro',
+              textAlign: TextAlign.center,
+              style: AppFontTitle.extraBold.font(
+                20,
+                AppColor.textOnLightPrimary,
               ),
             ),
           ),
