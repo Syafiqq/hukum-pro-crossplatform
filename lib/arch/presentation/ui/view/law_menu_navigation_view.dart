@@ -16,12 +16,26 @@ class LawMenuNavigationView extends StatelessWidget {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 24, 0, 24),
-            child: Text(
-              'Hukum Pro',
-              textAlign: TextAlign.center,
-              style: AppFontTitle.extraBold.font(
-                20,
-                AppColor.textOnLightPrimary,
+            child: Center(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image(
+                    image: AssetImage('res/images/ic_hukum_pro_logo_2_192.png'),
+                    color: AppColor.textOnLightPrimary,
+                    width: 36,
+                    height: 36,
+                  ),
+                  SizedBox(width: 4),
+                  Text(
+                    'Hukum Pro',
+                    textAlign: TextAlign.center,
+                    style: AppFontTitle.extraBold.font(
+                      24,
+                      AppColor.textOnLightPrimary,
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
