@@ -76,6 +76,18 @@ class LawMenuNavigationView extends StatelessWidget {
             thickness: 1,
           ),
           ListTile(
+            leading: Icon(Icons.sync),
+            title: Text(
+              'Sinkron',
+              style: AppFontContent.regular.font(16),
+            ),
+            onTap: () => selectDestination(0),
+          ),
+          const Divider(
+            height: 1,
+            thickness: 1,
+          ),
+          ListTile(
             leading: Icon(Icons.favorite),
             title: Text('Item 1'),
             selected: _selectedDestination == 1,
