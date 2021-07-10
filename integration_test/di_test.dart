@@ -25,6 +25,7 @@ import 'package:hukum_pro/arch/domain/use_case/reinitialize_whole_data_use_case.
 import 'package:hukum_pro/arch/infrastructure/app/platform_identifier.dart';
 import 'package:hukum_pro/arch/infrastructure/local_database/object_box/store_provider.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/check_local_version_and_initialize_cubit.dart';
+import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_menu_cubit.dart';
 import 'package:hukum_pro/di/contract/object_resolver.dart';
 import 'package:hukum_pro/di/root_injector.dart';
 import 'package:hukum_pro/objectbox.g.dart';
@@ -139,6 +140,8 @@ void checkKiwi() {
   checkObject(container.resolve<ReinitializeWholeDataUseCase>());
   checkObject(container.resolve<CheckLocalVersionAndInitializeCubit>());
   checkObject(container.resolve<CheckLocalVersionAndInitializeCubit>());
+  checkObject(container.resolve<LoadLawMenuCubit>());
+  checkObject(container.resolve<LoadLawMenuCubit>());
 }
 
 void checkObject(Object x) {
