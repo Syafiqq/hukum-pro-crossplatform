@@ -60,7 +60,7 @@ class CommonDialog extends StatelessWidget {
                   this.title ?? '',
                   style: AppFontTitle.bold.font(
                     18,
-                    AppColor.textOnLightPrimary,
+                    color: AppColor.textOnLightPrimary,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -75,7 +75,7 @@ class CommonDialog extends StatelessWidget {
                   this.description ?? '',
                   style: AppFontContent.medium.font(
                     14,
-                    AppColor.textOnLightPrimary,
+                    color: AppColor.textOnLightPrimary,
                     height: 1.2,
                   ),
                   textAlign: TextAlign.center,
@@ -147,7 +147,6 @@ class CommonDialog extends StatelessWidget {
             text.toUpperCase(),
             style: AppFontTitle.bold.font(
               14,
-              null,
             ),
           ),
           style: ButtonStyle(

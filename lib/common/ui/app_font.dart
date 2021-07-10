@@ -58,8 +58,8 @@ enum AppFontContent {
 
 extension AppFontTitleTextStyle on AppFontTitle {
   TextStyle font(
-    double? fontSize,
-    Color? color, {
+    double? fontSize, {
+    Color? color,
     bool? inherit,
     Color? backgroundColor,
     String? fontFamily,
@@ -110,8 +110,8 @@ extension AppFontTitleTextStyle on AppFontTitle {
 
 extension AppFontSubtitleTextStyle on AppFontSubtitle {
   TextStyle font(
-    double? fontSize,
-    Color? color, {
+    double? fontSize, {
+    Color? color,
     bool? inherit,
     Color? backgroundColor,
     String? fontFamily,
@@ -137,7 +137,7 @@ extension AppFontSubtitleTextStyle on AppFontSubtitle {
         inherit: inherit ?? true,
         color: color,
         backgroundColor: backgroundColor,
-        fontFamily: 'Montserrat',
+        fontFamily: 'Catamaran',
         fontFamilyFallback: fontFamilyFallback,
         fontSize: fontSize,
         fontWeight: FontWeight.values[this.index],
@@ -162,8 +162,8 @@ extension AppFontSubtitleTextStyle on AppFontSubtitle {
 
 extension AppFontContentTextStyle on AppFontContent {
   TextStyle font(
-    double? fontSize,
-    Color? color, {
+    double? fontSize, {
+    Color? color,
     bool? inherit,
     Color? backgroundColor,
     String? fontFamily,
@@ -189,7 +189,7 @@ extension AppFontContentTextStyle on AppFontContent {
         inherit: inherit ?? true,
         color: color,
         backgroundColor: backgroundColor,
-        fontFamily: 'Montserrat',
+        fontFamily: 'WorkSans',
         fontFamilyFallback: fontFamilyFallback,
         fontSize: fontSize,
         fontWeight: FontWeight.values[this.index ~/ 2],

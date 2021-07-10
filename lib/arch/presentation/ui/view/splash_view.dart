@@ -32,7 +32,10 @@ class SplashView extends StatelessWidget {
           ),
           Text(
             'Hukum Pro',
-            style: AppFontTitle.extraBold.font(28, AppColor.textOnLightPrimary),
+            style: AppFontTitle.extraBold.font(
+              28,
+              color: AppColor.textOnLightPrimary,
+            ),
           ),
           Container(
             height: 36,
@@ -113,7 +116,10 @@ class SplashView extends StatelessWidget {
         ),
         Text(
           text,
-          style: AppFontSubtitle.semiBold.font(10, AppColor.textOnLightPrimary),
+          style: AppFontSubtitle.semiBold.font(
+            10,
+            color: AppColor.textOnLightPrimary,
+          ),
         ),
       ],
     );

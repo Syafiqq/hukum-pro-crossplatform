@@ -35,12 +35,24 @@ class LawMenuNavigationView extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: AppFontTitle.extraBold.font(
                       24,
-                      AppColor.textOnLightPrimary,
+                      color: AppColor.textOnLightPrimary,
                     ),
                   ),
                 ],
               ),
             ),
+          ),
+          const Divider(
+            height: 1,
+            thickness: 1,
+          ),
+          ListTile(
+            leading: Icon(Icons.search),
+            title: Text(
+              'Pencarian',
+              style: AppFontContent.regular.font(16),
+            ),
+            onTap: () => selectDestination(0),
           ),
           const Divider(
             height: 1,
@@ -66,19 +78,19 @@ class LawMenuNavigationView extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.favorite),
             title: Text('Item 1'),
-            selected: _selectedDestination == 0,
+            selected: _selectedDestination == 1,
             onTap: () => selectDestination(0),
           ),
           ListTile(
             leading: Icon(Icons.delete),
             title: Text('Item 2'),
-            selected: _selectedDestination == 1,
+            selected: _selectedDestination == 2,
             onTap: () => selectDestination(1),
           ),
           ListTile(
             leading: Icon(Icons.label),
             title: Text('Item 3'),
-            selected: _selectedDestination == 2,
+            selected: _selectedDestination == 3,
             onTap: () => selectDestination(2),
           ),
           Divider(
@@ -94,7 +106,7 @@ class LawMenuNavigationView extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.bookmark),
             title: Text('Item A'),
-            selected: _selectedDestination == 3,
+            selected: _selectedDestination == 4,
             onTap: () => selectDestination(3),
           ),
         ],
