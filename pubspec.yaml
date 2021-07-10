@@ -149,6 +149,8 @@ flutter:
         - asset: res/fonts/Montserrat-ThinItalic.ttf
           weight: 100
           style: italic
+    - family: Catamaran
+      fonts:
         - asset: res/fonts/Catamaran-Black.ttf
           weight: 900
         - asset: res/fonts/Catamaran-Bold.ttf
@@ -167,6 +169,8 @@ flutter:
           weight: 600
         - asset: res/fonts/Catamaran-Thin.ttf
           weight: 100
+    - family: WorkSans
+      fonts:
         - asset: res/fonts/WorkSans-Black.ttf
           weight: 900
         - asset: res/fonts/WorkSans-BlackItalic.ttf
