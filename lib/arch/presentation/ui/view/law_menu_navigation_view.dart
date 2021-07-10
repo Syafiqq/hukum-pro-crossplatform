@@ -20,13 +20,13 @@ class LawMenuNavigationView extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Image(
+                  const Image(
                     image: AssetImage('res/images/ic_hukum_pro_logo_2_48.png'),
                     color: AppColor.textOnLightPrimary,
                     width: 36,
                     height: 36,
                   ),
-                  SizedBox(width: 4),
+                  const SizedBox(width: 4),
                   Text(
                     'Hukum Pro',
                     textAlign: TextAlign.center,
@@ -39,7 +39,7 @@ class LawMenuNavigationView extends StatelessWidget {
               ),
             ),
           ),
-          Divider(
+          const Divider(
             height: 1,
             thickness: 1,
           ),
