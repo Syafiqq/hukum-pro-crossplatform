@@ -52,7 +52,7 @@ class LawMenuNavigationView extends StatelessWidget {
               thickness: 1,
             ),
             ListTile(
-              leading: Icon(Icons.search),
+              leading: const Icon(Icons.search),
               title: Text(
                 'Pencarian',
                 style: AppFontContent.regular.font(16),
@@ -81,7 +81,7 @@ class LawMenuNavigationView extends StatelessWidget {
               thickness: 1,
             ),
             ListTile(
-              leading: Icon(Icons.sync),
+              leading: const Icon(Icons.sync),
               title: Text(
                 'Sinkron',
                 style: AppFontContent.regular.font(16),
