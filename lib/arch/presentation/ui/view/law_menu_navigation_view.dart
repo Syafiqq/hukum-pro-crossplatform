@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hukum_pro/common/ui/app_color.dart';
 import 'package:hukum_pro/common/ui/app_font.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 
 class LawMenuNavigationView extends StatelessWidget {
   final int _selectedDestination = 0;
@@ -38,6 +39,23 @@ class LawMenuNavigationView extends StatelessWidget {
                     ),
                   ),
                 ],
+              ),
+            ),
+          ),
+          const Divider(
+            height: 1,
+            thickness: 1,
+          ),
+          Padding(
+            padding: EdgeInsets.all(16),
+            child: Center(
+              child: SizedBox(
+                height: 32,
+                width: 32,
+                child: LoadingIndicator(
+                  indicatorType: Indicator.circleStrokeSpin,
+                  color: Colors.black,
+                ),
               ),
             ),
           ),
