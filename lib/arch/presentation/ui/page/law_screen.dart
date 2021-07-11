@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flinq/flinq.dart';
 import 'package:hukum_pro/arch/presentation/ui/component/dialog/common_dialog.dart';
 import 'package:hukum_pro/arch/presentation/ui/view/law_menu_navigation_view.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/selected_law_menu_cubit.dart';
@@ -31,6 +32,14 @@ class LawScreen extends StatelessWidget {
       child: BlocListener<LoadLawMenuCubit, LawMenuNavigationUiState>(
         listener: (context, state) {
           state.maybeWhen(
+            loadSuccess: (menus) {
+              final menu = menus.firstOrNull;
+              if (menu == null) {
+                return;
+              }
+              BlocProvider.of<SelectedLawMenuCubit>(context)
+                  .changeLawIfNotPresent(menu);
+            },
             loadFailed: () {
               CommonDialog.show(context,
                       description: 'Failed to load menu',
