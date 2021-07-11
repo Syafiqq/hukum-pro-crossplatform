@@ -135,15 +135,17 @@ class LawMenuNavigationView extends StatelessWidget {
 
   Widget buildLawMenus(BuildContext context, List<LawMenuOrderEntity> menus) {
     return Column(
-      children: [
-        ListTile(
-          leading: const Icon(Icons.sync),
-          title: Text(
-            'Sinkron',
-            style: AppFontContent.regular.font(16),
-          ),
-        ),
-      ],
+      children: menus
+          .map(
+            (e) => ListTile(
+              leading: Icon(Icons.local_police_outlined),
+              title: Text(
+                e.name?.toUpperCase() ?? '',
+                style: AppFontContent.regular.font(16),
+              ),
+            ),
+          )
+          .toList(),
     );
   }
 }
