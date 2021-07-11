@@ -117,6 +117,9 @@ class LawMenuNavigationView extends StatelessWidget {
                 e.name?.toUpperCase() ?? '',
                 style: AppFontContent.regular.font(16),
               ),
+              onTap: () {
+                Navigator.pop(context);
+              },
             ),
           )
           .toList(),
