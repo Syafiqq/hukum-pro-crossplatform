@@ -8,8 +8,6 @@ import 'package:hukum_pro/di/impl/kiwi_object_resolver.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 
 class LawMenuNavigationView extends StatelessWidget {
-  final int _selectedDestination = 0;
-
   LawMenuNavigationView() : super();
 
   @override
@@ -26,36 +24,7 @@ class LawMenuNavigationView extends StatelessWidget {
             const Divider(height: 1, thickness: 1),
             buildSearch(context),
             const Divider(height: 1, thickness: 1),
-            BlocConsumer<LoadLawMenuCubit, LawMenuNavigationUiState>(
-              listener: (context, state) {
-                state.maybeWhen(
-                  loadFailed: () {
-                    CommonDialog.show(context,
-                            description: 'Failed to load menu',
-                            primaryAction: 'Retry',
-                            primaryStyle: ButtonCtaType.solid(
-                              false,
-                              AppColor.secondary,
-                              AppColor.textSecondary,
-                            ),
-                            isClosable: false,
-                            dismissOnTouchOutside: false)
-                        .then(
-                      (value) => context.read<LoadLawMenuCubit>().load(),
-                    );
-                  },
-                  orElse: () {},
-                );
-              },
-              builder: (context, state) {
-                return state.maybeWhen(
-                  loadSuccess: (menus) {
-                    return buildLawMenus(context, menus);
-                  },
-                  orElse: () => buildSpinner(context),
-                );
-              },
-            ),
+            buildMenu(context),
             const Divider(height: 1, thickness: 1),
             buildSync(context),
             const Divider(height: 1, thickness: 1),
@@ -102,7 +71,6 @@ class LawMenuNavigationView extends StatelessWidget {
         'Pencarian',
         style: AppFontContent.regular.font(16),
       ),
-      onTap: () => selectDestination(0),
     );
   }
 
@@ -129,15 +97,53 @@ class LawMenuNavigationView extends StatelessWidget {
         'Sinkron',
         style: AppFontContent.regular.font(16),
       ),
-      onTap: () => selectDestination(0),
+    );
+  }
+
+  Widget buildMenu(BuildContext context) {
+    return BlocConsumer<LoadLawMenuCubit, LawMenuNavigationUiState>(
+      listener: (context, state) {
+        state.maybeWhen(
+          loadFailed: () {
+            CommonDialog.show(context,
+                    description: 'Failed to load menu',
+                    primaryAction: 'Retry',
+                    primaryStyle: ButtonCtaType.solid(
+                      false,
+                      AppColor.secondary,
+                      AppColor.textSecondary,
+                    ),
+                    isClosable: false,
+                    dismissOnTouchOutside: false)
+                .then(
+              (value) => context.read<LoadLawMenuCubit>().load(),
+            );
+          },
+          orElse: () {},
+        );
+      },
+      builder: (context, state) {
+        return state.maybeWhen(
+          loadSuccess: (menus) {
+            return buildLawMenus(context, menus);
+          },
+          orElse: () => buildSpinner(context),
+        );
+      },
     );
   }
 
   Widget buildLawMenus(BuildContext context, List<LawMenuOrderEntity> menus) {
-    return SizedBox.shrink();
-  }
-
-  void selectDestination(int index) {
-    print('Select destination $index');
+    return Column(
+      children: [
+        ListTile(
+          leading: const Icon(Icons.sync),
+          title: Text(
+            'Sinkron',
+            style: AppFontContent.regular.font(16),
+          ),
+        ),
+      ],
+    );
   }
 }
