@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hukum_pro/arch/domain/entity/law/law_menu_order_entity.dart';
-import 'package:hukum_pro/arch/presentation/ui/component/dialog/common_dialog.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_menu_cubit.dart';
 import 'package:hukum_pro/arch/presentation/view_model/state/law_menu_navigation_state.dart';
 import 'package:hukum_pro/common/ui/app_color.dart';
 import 'package:hukum_pro/common/ui/app_font.dart';
-import 'package:hukum_pro/common/ui/button_cta_type.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 
 class LawMenuNavigationView extends StatelessWidget {
@@ -97,27 +95,7 @@ class LawMenuNavigationView extends StatelessWidget {
   }
 
   Widget buildMenu(BuildContext context) {
-    return BlocConsumer<LoadLawMenuCubit, LawMenuNavigationUiState>(
-      listener: (context, state) {
-        state.maybeWhen(
-          loadFailed: () {
-            CommonDialog.show(context,
-                    description: 'Failed to load menu',
-                    primaryAction: 'Retry',
-                    primaryStyle: ButtonCtaType.solid(
-                      false,
-                      AppColor.secondary,
-                      AppColor.textSecondary,
-                    ),
-                    isClosable: false,
-                    dismissOnTouchOutside: false)
-                .then(
-              (value) => context.read<LoadLawMenuCubit>().load(),
-            );
-          },
-          orElse: () {},
-        );
-      },
+    return BlocBuilder<LoadLawMenuCubit, LawMenuNavigationUiState>(
       builder: (context, state) {
         return state.maybeWhen(
           loadSuccess: (menus) {
