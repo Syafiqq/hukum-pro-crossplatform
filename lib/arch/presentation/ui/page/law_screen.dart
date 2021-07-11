@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hukum_pro/arch/presentation/ui/component/dialog/common_dialog.dart';
 import 'package:hukum_pro/arch/presentation/ui/view/law_menu_navigation_view.dart';
+import 'package:hukum_pro/arch/presentation/view_model/cubit/selected_law_menu_cubit.dart';
 import 'package:hukum_pro/common/ui/app_color.dart';
 import 'package:hukum_pro/common/ui/button_cta_type.dart';
 import 'package:hukum_pro/di/impl/kiwi_object_resolver.dart';
@@ -11,10 +12,22 @@ import 'package:hukum_pro/di/impl/kiwi_object_resolver.dart';
 class LawScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) {
-        return KiwiObjectResolver.getInstance().getLoadLawMenuCubit()..load();
-      },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<LoadLawMenuCubit>(
+          lazy: false,
+          create: (BuildContext context) {
+            return KiwiObjectResolver.getInstance().getLoadLawMenuCubit()
+              ..load();
+          },
+        ),
+        BlocProvider<SelectedLawMenuCubit>(
+          lazy: false,
+          create: (BuildContext context) {
+            return KiwiObjectResolver.getInstance().getSelectedLawMenuCubit()
+          },
+        ),
+      ],
       child: BlocListener<LoadLawMenuCubit, LawMenuNavigationUiState>(
         listener: (context, state) {
           state.maybeWhen(
