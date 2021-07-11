@@ -6,6 +6,10 @@ class LawMenuNavigationDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(child: LawMenuNavigationView());
+    return Drawer(
+      child: SafeArea(
+        child: LawMenuNavigationView(),
+      ),
+    );
   }
 }

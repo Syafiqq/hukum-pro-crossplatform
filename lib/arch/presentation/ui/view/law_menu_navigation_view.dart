@@ -13,23 +13,22 @@ class LawMenuNavigationView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          KiwiObjectResolver.getInstance().getLoadLawMenuCubit()..load(),
-      child: Drawer(
-        child: ListView(
-          // Important: Remove any padding from the ListView.
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            buildHeader(context),
-            const Divider(height: 1, thickness: 1),
-            buildSearch(context),
-            const Divider(height: 1, thickness: 1),
-            buildMenu(context),
-            const Divider(height: 1, thickness: 1),
-            buildSync(context),
-            const Divider(height: 1, thickness: 1),
-          ],
-        ),
+      create: (context) {
+        return KiwiObjectResolver.getInstance().getLoadLawMenuCubit()..load();
+      },
+      child: ListView(
+        // Important: Remove any padding from the ListView.
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          buildHeader(context),
+          const Divider(height: 1, thickness: 1),
+          buildSearch(context),
+          const Divider(height: 1, thickness: 1),
+          buildMenu(context),
+          const Divider(height: 1, thickness: 1),
+          buildSync(context),
+          const Divider(height: 1, thickness: 1),
+        ],
       ),
     );
   }
