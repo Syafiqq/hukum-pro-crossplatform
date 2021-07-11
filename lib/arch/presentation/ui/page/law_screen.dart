@@ -37,7 +37,6 @@ class LawScreen extends StatelessWidget {
           );
         },
         child: Scaffold(
-          body: Container(),
           drawer: SizedBox(
             width: min(
               max(
@@ -52,6 +51,7 @@ class LawScreen extends StatelessWidget {
               ),
             ),
           ),
+          body: Container(),
         ),
       ),
     );
