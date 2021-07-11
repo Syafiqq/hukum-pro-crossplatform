@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hukum_pro/arch/domain/entity/law/law_menu_order_entity.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_menu_cubit.dart';
+import 'package:hukum_pro/arch/presentation/view_model/cubit/selected_law_menu_cubit.dart';
 import 'package:hukum_pro/arch/presentation/view_model/state/law_menu_navigation_state.dart';
 import 'package:hukum_pro/common/ui/app_color.dart';
 import 'package:hukum_pro/common/ui/app_font.dart';
@@ -118,6 +119,7 @@ class LawMenuNavigationView extends StatelessWidget {
                 style: AppFontContent.regular.font(16),
               ),
               onTap: () {
+                BlocProvider.of<SelectedLawMenuCubit>(context).changeLaw(e);
                 Navigator.pop(context);
               },
             ),
