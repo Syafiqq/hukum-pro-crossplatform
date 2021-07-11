@@ -25,7 +25,7 @@ class LawScreen extends StatelessWidget {
         BlocProvider<SelectedLawMenuCubit>(
           lazy: false,
           create: (BuildContext context) {
-            return KiwiObjectResolver.getInstance().getSelectedLawMenuCubit()
+            return KiwiObjectResolver.getInstance().getSelectedLawMenuCubit();
           },
         ),
       ],
