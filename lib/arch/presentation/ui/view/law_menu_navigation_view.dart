@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hukum_pro/arch/presentation/ui/component/dialog/common_dialog.dart';
 import 'package:hukum_pro/common/ui/app_color.dart';
 import 'package:hukum_pro/common/ui/app_font.dart';
+import 'package:hukum_pro/common/ui/button_cta_type.dart';
 import 'package:hukum_pro/di/impl/kiwi_object_resolver.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 
@@ -24,7 +26,36 @@ class LawMenuNavigationView extends StatelessWidget {
             const Divider(height: 1, thickness: 1),
             buildSearch(context),
             const Divider(height: 1, thickness: 1),
-            buildSpinner(context),
+            BlocConsumer<LoadLawMenuCubit, LawMenuNavigationUiState>(
+              listener: (context, state) {
+                state.maybeWhen(
+                  loadFailed: () {
+                    CommonDialog.show(context,
+                            description: 'Failed to load menu',
+                            primaryAction: 'Retry',
+                            primaryStyle: ButtonCtaType.solid(
+                              false,
+                              AppColor.secondary,
+                              AppColor.textSecondary,
+                            ),
+                            isClosable: false,
+                            dismissOnTouchOutside: false)
+                        .then(
+                      (value) => context.read<LoadLawMenuCubit>().load(),
+                    );
+                  },
+                  orElse: () {},
+                );
+              },
+              builder: (context, state) {
+                return state.maybeWhen(
+                  loadSuccess: (menus) {
+                    return buildLawMenus(context, menus);
+                  },
+                  orElse: () => buildSpinner(context),
+                );
+              },
+            ),
             const Divider(height: 1, thickness: 1),
             buildSync(context),
             const Divider(height: 1, thickness: 1),
@@ -100,6 +131,10 @@ class LawMenuNavigationView extends StatelessWidget {
       ),
       onTap: () => selectDestination(0),
     );
+  }
+
+  Widget buildLawMenus(BuildContext context, List<LawMenuOrderEntity> menus) {
+    return SizedBox.shrink();
   }
 
   void selectDestination(int index) {
