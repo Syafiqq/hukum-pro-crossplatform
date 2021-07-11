@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hukum_pro/arch/domain/entity/law/law_menu_order_entity.dart';
 import 'package:hukum_pro/arch/presentation/ui/component/dialog/common_dialog.dart';
+import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_menu_cubit.dart';
+import 'package:hukum_pro/arch/presentation/view_model/state/law_menu_navigation_state.dart';
 import 'package:hukum_pro/common/ui/app_color.dart';
 import 'package:hukum_pro/common/ui/app_font.dart';
 import 'package:hukum_pro/common/ui/button_cta_type.dart';
-import 'package:hukum_pro/di/impl/kiwi_object_resolver.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 
 class LawMenuNavigationView extends StatelessWidget {
@@ -12,24 +14,19 @@ class LawMenuNavigationView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) {
-        return KiwiObjectResolver.getInstance().getLoadLawMenuCubit()..load();
-      },
-      child: ListView(
-        // Important: Remove any padding from the ListView.
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          buildHeader(context),
-          const Divider(height: 1, thickness: 1),
-          buildSearch(context),
-          const Divider(height: 1, thickness: 1),
-          buildMenu(context),
-          const Divider(height: 1, thickness: 1),
-          buildSync(context),
-          const Divider(height: 1, thickness: 1),
-        ],
-      ),
+    return ListView(
+      // Important: Remove any padding from the ListView.
+      padding: EdgeInsets.zero,
+      children: <Widget>[
+        buildHeader(context),
+        const Divider(height: 1, thickness: 1),
+        buildSearch(context),
+        const Divider(height: 1, thickness: 1),
+        buildMenu(context),
+        const Divider(height: 1, thickness: 1),
+        buildSync(context),
+        const Divider(height: 1, thickness: 1),
+      ],
     );
   }
 
