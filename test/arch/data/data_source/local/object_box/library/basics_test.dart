@@ -1,4 +1,5 @@
 import 'dart:ffi' as ffi;
+import 'dart:io';
 
 import 'package:objectbox/internal.dart';
 import 'package:objectbox/src/native/bindings/bindings.dart';
@@ -6,8 +7,8 @@ import 'package:objectbox/src/native/bindings/helpers.dart';
 import 'package:objectbox/src/store.dart';
 import 'package:test/test.dart';
 
-import '../../../../../../objectbox.g.dart';
 import 'entity.dart';
+import 'objectbox.g.dart';
 import 'test_env.dart';
 
 void main() {
@@ -88,7 +89,6 @@ void main() {
     env.close();
   });
 
-  /* FIXME: Commented due failed to test
   test('store multi-open', () {
     final stores = <Store>[];
 
@@ -117,5 +117,22 @@ void main() {
     stores.forEach((store) => store.close());
     Directory('objectbox').deleteSync(recursive: true);
   });
-   */
+
+  test('openStore()', () {
+    final store = openStore(directory: 'objectbox');
+    store.close();
+    Directory('objectbox').deleteSync(recursive: true);
+  });
+
+  test('store options', () {
+    final store = Store(getObjectBoxModel(),
+        directory: 'basics',
+        maxDBSizeInKB: 100,
+        fileMode: int.parse('0666', radix: 8),
+        maxReaders: 5,
+        queriesCaseSensitiveDefault: false,
+        macosApplicationGroup: 'foo-bar');
+    store.close();
+    Directory('basics').deleteSync(recursive: true);
+  });
 }

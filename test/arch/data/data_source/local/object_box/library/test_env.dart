@@ -2,12 +2,13 @@ import 'dart:io';
 
 import 'package:test/test.dart';
 
-import '../../../../../../objectbox.g.dart';
 import 'entity.dart';
+import 'objectbox.g.dart';
 
 class TestEnv {
   final Directory dir;
   final Store store;
+  final bool short;
 
   factory TestEnv(String name, {bool? queryCaseSensitive}) {
     final dir = Directory('testdata-' + name);
@@ -17,10 +18,11 @@ class TestEnv {
         : Store(getObjectBoxModel(),
             directory: dir.path,
             queriesCaseSensitiveDefault: queryCaseSensitive);
-    return TestEnv._(dir, store);
+    return TestEnv._(
+        dir, store, Platform.environment.containsKey('TEST_SHORT'));
   }
 
-  TestEnv._(this.dir, this.store);
+  TestEnv._(this.dir, this.store, this.short);
 
   Box<TestEntity> get box => store.box();
 

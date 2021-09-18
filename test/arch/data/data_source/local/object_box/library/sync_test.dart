@@ -2,14 +2,14 @@ import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 
-import 'package:objectbox/internal.dart';
 import 'package:objectbox/objectbox.dart';
+import 'package:objectbox/internal.dart';
 import 'package:objectbox/src/native/store.dart';
 import 'package:test/test.dart';
 
-import '../../../../../../objectbox.g.dart';
 import 'entity.dart';
 import 'entity2.dart';
+import 'objectbox.g.dart';
 import 'test_env.dart';
 
 // We want to have types explicit - verifying the return types of functions.

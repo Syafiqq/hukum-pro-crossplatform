@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:objectbox/objectbox.dart';
@@ -60,7 +61,6 @@ void main() {
     expect(b.id, 2);
   });
 
-  /* FIXME: Commented due failed to test
   test('.putAsync failures', () async {
     final box = store.box<TestEntity2>();
     expect(
@@ -112,10 +112,10 @@ void main() {
       expect(object.id, isNull); // ID must remain unassigned
     }
   });
-  */
 
   test('.putAsync many', () async {
-    final items = List.generate(1000, (i) => TestEntityNonRel.filled(id: 0));
+    final items = List.generate(
+        env.short ? 100 : 1000, (i) => TestEntityNonRel.filled(id: 0));
     final futures = items.map(store.box<TestEntityNonRel>().putAsync).toList();
     print('${futures.length} futures collected');
     final ids = await Future.wait(futures);
@@ -127,13 +127,14 @@ void main() {
 
   test('.putQueued', () {
     final box = store.box<TestEntityNonRel>();
-    final items = List.generate(1000, (i) => TestEntityNonRel.filled(id: 0));
+    final items = List.generate(
+        env.short ? 100 : 1000, (i) => TestEntityNonRel.filled(id: 0));
     final ids = items.map(box.putQueued).toList();
     for (int i = 0; i < items.length; i++) {
       expect(items[i].id, ids[i]);
     }
     store.awaitAsyncSubmitted();
-    expect(box.count(), 1000);
+    expect(box.count(), items.length);
   });
 
   test('.putQueued failures', () async {
@@ -589,6 +590,9 @@ void main() {
     final object = TestEntity();
     object.tDate = DateTime.now();
     object.tDateNano = DateTime.now();
+    final objectUtc = TestEntity();
+    objectUtc.tDate = object.tDate!.toUtc();
+    objectUtc.tDateNano = object.tDateNano!.toUtc();
 
     {
       // first, test some assumptions the code generator makes
@@ -601,15 +605,62 @@ void main() {
       expect(object.tDateNano!.difference(time2).inMicroseconds, equals(0));
     }
 
-    box.putMany([object, TestEntity()]);
+    box.putMany([object, objectUtc, TestEntity()]);
     final items = box.getAll();
 
     // DateTime has microsecond precision in dart but is stored in ObjectBox
     // with millisecond precision so allow a sub-millisecond difference.
     expect(items[0].tDate!.difference(object.tDate!).inMilliseconds, 0);
+    expect(items[1].tDate!.difference(object.tDate!).inMilliseconds, 0);
+    // DateTime is always restored with local time zone in ObjectBox.
+    expect(items[0].tDate!.isUtc, false);
+    expect(items[1].tDate!.isUtc, false);
 
     expect(items[0].tDateNano, object.tDateNano);
-    expect(items[1].tDate, isNull);
-    expect(items[1].tDateNano, isNull);
+    expect(items[1].tDateNano, object.tDateNano);
+    expect(items[2].tDate, isNull);
+    expect(items[2].tDateNano, isNull);
+  });
+
+  test('large-data', () {
+    final numBytes = 1024 * 1024;
+    final str = List.generate(numBytes, (i) => 'A').join();
+    expect(str.length, numBytes);
+    box.put(TestEntity(tString: str));
+    expect(box.get(1)!.tString, str);
+    env.store.close();
+  });
+
+  test(
+      'TX multiple cursors',
+      () => store.runInTransaction(TxMode.write, () {
+            final box2 = store.box<TestEntity2>();
+            box.put(TestEntity());
+            box2.put(TestEntity2());
+            box.get(1);
+            box2.get(1);
+          }));
+
+  test('throwing in converters', () {
+    late Box<ThrowingInConverters> box = store.box();
+
+    box.put(ThrowingInConverters());
+    box.put(ThrowingInConverters(throwOnGet: true));
+    expect(() => box.put(ThrowingInConverters(throwOnPut: true)),
+        ThrowingInConverters.throwsIn('Getter'));
+
+    expect(
+        () => box.putMany([
+              ThrowingInConverters(),
+              ThrowingInConverters(),
+              ThrowingInConverters(throwOnPut: true)
+            ]),
+        ThrowingInConverters.throwsIn('Getter'));
+
+    expect(box.count(), 2);
+
+    box.get(1);
+    expect(() => box.get(2), ThrowingInConverters.throwsIn('Setter'));
+    expect(() => box.getAll(), ThrowingInConverters.throwsIn('Setter'));
   });
 }

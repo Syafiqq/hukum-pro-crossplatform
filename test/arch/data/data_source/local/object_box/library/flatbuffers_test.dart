@@ -9,15 +9,16 @@ import 'package:objectbox/src/native/bindings/flatbuffers.dart';
 import 'package:objectbox/src/native/bindings/nativemem.dart';
 import 'package:test/test.dart';
 
-import '../../../../../../objectbox.g.dart';
 import 'entity.dart';
+import 'objectbox.g.dart';
 import 'test_env.dart';
 
 Uint8List addFbData(fb.Builder fbb) {
   fbb.startTable(2);
   fbb.addInt32(0, 24);
   fbb.addInt64(1, 42);
-  return fbb.finish(fbb.endTable());
+  fbb.finish(fbb.endTable());
+  return fbb.buffer;
 }
 
 // Uint8List addFbDataUpstream(fb_upstream.Builder fbb) {
@@ -34,7 +35,7 @@ void main() {
 
       final fb1 = BuilderWithCBuffer(initialSize: initialSize);
       final list1a = addFbData(fb1.fbb);
-      final list1b = fb1.bufPtr.cast<Uint8>().asTypedList(fb1.fbb.size);
+      final list1b = fb1.bufPtr.cast<Uint8>().asTypedList(fb1.fbb.size());
 
       // final fb2 = fb_upstream.Builder(initialSize: initialSize);
       // final list2 = addFbDataUpstream(fb2);
@@ -49,7 +50,7 @@ void main() {
       fb1.fbb.reset();
       expect(addFbData(fb1.fbb), equals(list1a));
       expect(
-          fb1.bufPtr.cast<Uint8>().asTypedList(fb1.fbb.size), equals(list1b));
+          fb1.bufPtr.cast<Uint8>().asTypedList(fb1.fbb.size()), equals(list1b));
 
       fb1.clear();
     });
@@ -57,29 +58,6 @@ void main() {
 
   final bytesSum =
       (ByteData data) => data.buffer.asInt8List().reduce((v, e) => v + e);
-
-  test('allocator', () {
-    final allocator = Allocator();
-
-    final buf1 = allocator.allocate(1024);
-    allocator.clear(buf1, true);
-
-    final buf2 = allocator.allocate(1024);
-    allocator.clear(buf2, true);
-
-    expect(bytesSum(buf1), isZero);
-    expect(bytesSum(buf2), isZero);
-
-    buf2.setInt8(42, 1);
-    expect(bytesSum(buf1), isZero);
-    expect(bytesSum(buf2), 1);
-
-    allocator.clear(buf2, false);
-    expect(bytesSum(buf2), isZero);
-
-    allocator.deallocate(buf1);
-    allocator.freeAll();
-  });
 
   // Note: only checks content initialized by TestEntity.filled
   void checkSameEntities(TestEntityNonRel a, TestEntityNonRel b) {
@@ -105,11 +83,14 @@ void main() {
         as EntityDefinition<TestEntityNonRel>;
 
     final source = TestEntityNonRel.filled();
+    // Test the "dagger" char (0x20 0x20) which may cause problems if
+    // utf16/ascii isn't recognized properly.
+    source.tString = source.tString! + '†asdf';
 
     final fb1 = BuilderWithCBuffer();
     binding.objectToFB(source, fb1.fbb);
     final fbData = ByteData.view(
-        fb1.bufPtr.cast<Uint8>().asTypedList(fb1.fbb.size).buffer);
+        fb1.bufPtr.cast<Uint8>().asTypedList(fb1.fbb.size()).buffer);
 
     // must have the same content after reading back
     final target = binding.objectFromFB(env.store, fbData);
