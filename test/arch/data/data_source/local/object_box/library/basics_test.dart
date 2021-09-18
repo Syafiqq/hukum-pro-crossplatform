@@ -118,8 +118,8 @@ void main() {
     Directory('objectbox').deleteSync(recursive: true);
   });
 
-  test('openStore()', () {
-    final store = openStore(directory: 'objectbox');
+  test('openStore()', () async {
+    final store = await openStore(directory: 'objectbox');
     store.close();
     Directory('objectbox').deleteSync(recursive: true);
   });

@@ -853,7 +853,7 @@ void main() {
     }
   });
 
-  test('set param on links', () async {
+  /*test('Commented: set param on links', () async {
     final query = (box.query(TestEntity_.tString.equals(''))
           ..link(TestEntity_.relB, RelatedEntityB_.tString.equals(''))
           ..linkMany(TestEntity_.relManyA, RelatedEntityA_.tInt.equals(0)))
@@ -869,7 +869,7 @@ void main() {
           '| Link RelatedEntityB via relBId with conditions: tString == "bar"',
           '| Link RelatedEntityA via standalone Relation 1 (from entity 1 to 4) with conditions: tInt == 11',
         ].join('\n'));
-  });
+  });*/
 
   test('throwing in converters', () {
     late Box<ThrowingInConverters> box = env.store.box();

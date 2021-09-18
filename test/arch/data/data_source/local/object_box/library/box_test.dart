@@ -61,7 +61,7 @@ void main() {
     expect(b.id, 2);
   });
 
-  test('.putAsync failures', () async {
+  /*test('Commented: .putAsync failures', () async {
     final box = store.box<TestEntity2>();
     expect(
         () => box
@@ -111,7 +111,7 @@ void main() {
 
       expect(object.id, isNull); // ID must remain unassigned
     }
-  });
+  });*/
 
   test('.putAsync many', () async {
     final items = List.generate(
