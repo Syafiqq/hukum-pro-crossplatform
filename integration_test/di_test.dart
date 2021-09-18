@@ -30,6 +30,7 @@ import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_year_cubit
 import 'package:hukum_pro/di/contract/object_resolver.dart';
 import 'package:hukum_pro/di/root_injector.dart';
 import 'package:hukum_pro/objectbox.g.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:kiwi/kiwi.dart';
 import 'package:shared_preferences/shared_preferences.dart';
