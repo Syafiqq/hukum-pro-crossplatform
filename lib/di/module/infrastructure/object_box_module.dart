@@ -18,7 +18,7 @@ class ObjectBoxModule {
 
   void build() {
     KiwiContainer container = KiwiContainer();
-    container.registerFactory<Future<Store>>((c) async {
+    container.registerSingleton<Future<Store>>((c) async {
       final platform = c<PlatformIdentifier>();
       var path = '';
       if (platform.isAndroid) {
