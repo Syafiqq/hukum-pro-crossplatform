@@ -10,7 +10,7 @@ import 'package:objectbox/src/native/bindings/nativemem.dart';
 import 'package:test/test.dart';
 
 import 'entity.dart';
-import 'objectbox.g.dart';
+import '../../../../../../objectbox.g.dart';
 import 'test_env.dart';
 
 Uint8List addFbData(fb.Builder fbb) {

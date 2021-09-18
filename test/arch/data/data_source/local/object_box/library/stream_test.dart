@@ -4,7 +4,7 @@ import 'package:test/test.dart';
 
 import 'entity.dart';
 import 'entity2.dart';
-import 'objectbox.g.dart';
+import '../../../../../../objectbox.g.dart';
 import 'test_env.dart';
 
 // ignore_for_file: non_constant_identifier_names
