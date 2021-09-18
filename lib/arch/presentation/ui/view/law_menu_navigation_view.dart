@@ -78,7 +78,7 @@ class LawMenuNavigationView extends StatelessWidget {
           width: 32,
           child: LoadingIndicator(
             indicatorType: Indicator.circleStrokeSpin,
-            color: Colors.black,
+            colors: [Colors.black],
           ),
         ),
       ),
