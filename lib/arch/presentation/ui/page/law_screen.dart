@@ -32,7 +32,7 @@ class LawScreen extends StatelessWidget {
       child: BlocListener<LoadLawMenuCubit, LawMenuNavigationUiState>(
         listener: (context, state) {
           state.maybeWhen(
-            loadSuccess: (menus) {
+            loadSuccess: (menus, selected) {
               final menu = menus.firstOrNull;
               if (menu == null) {
                 return;

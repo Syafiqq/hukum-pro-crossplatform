@@ -15,7 +15,7 @@ class LawMenuNavigationView extends StatelessWidget {
     return BlocBuilder<LoadLawMenuCubit, LawMenuNavigationUiState>(
       builder: (context, state) {
         return state.maybeWhen(
-          loadSuccess: (menus) {
+          loadSuccess: (menus, _) {
             return buildMenus(context, menus);
           },
           orElse: () => buildSpinner(context),
