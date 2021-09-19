@@ -3,7 +3,7 @@ enum LawMenuOrderDataPresenterType {
   search,
   law,
   sync,
-  divider
+  divider,
 }
 
 class LawMenuOrderDataPresenter {

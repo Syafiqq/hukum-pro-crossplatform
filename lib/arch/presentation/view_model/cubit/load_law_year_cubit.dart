@@ -1,5 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hukum_pro/arch/domain/entity/law/law_year_entity.dart';
 import 'package:hukum_pro/arch/domain/repository/law_year_repository.dart';
+import 'package:hukum_pro/arch/presentation/entity/law_year_list_data_presenter.dart';
 import 'package:hukum_pro/arch/presentation/view_model/state/law_year_load_state.dart';
 
 var _kPageSize = 20;
@@ -34,7 +36,9 @@ class LoadLawYearCubit extends Cubit<LawYearLoadState> {
     emit(state.copyWith(state: LawYearLoadUiState.loading));
 
     try {
-      var lawYears = await _lawYearRepository.get(_kPageSize, _page);
+      final rawLawYears = await _lawYearRepository.get(_kPageSize, _page);
+      var lawYears = _rawDataMapper(rawLawYears);
+
       emit(
         state.copyWith(
           state: LawYearLoadUiState.loadSuccess,
@@ -56,7 +60,9 @@ class LoadLawYearCubit extends Cubit<LawYearLoadState> {
     emit(state.copyWith(state: LawYearLoadUiState.loadMore));
 
     try {
-      var lawYears = await _lawYearRepository.get(_kPageSize, _page + 1);
+      final rawLawYears = await _lawYearRepository.get(_kPageSize, _page + 1);
+      var lawYears = _rawDataMapper(rawLawYears);
+
       _page += 1;
       emit(
         state.copyWith(
@@ -69,5 +75,18 @@ class LoadLawYearCubit extends Cubit<LawYearLoadState> {
       print(e);
       emit(state.copyWith(state: LawYearLoadUiState.loadFailed));
     }
+  }
+
+  List<LawYearListDataPresenter> _rawDataMapper(List<LawYearEntity> years) {
+    return years
+        .map(
+          (year) => LawYearListDataPresenter(
+            "${year.id}",
+            LawYearListDataPresenterType.law,
+            "${year.year}",
+            "${year.count}",
+          ),
+        )
+        .toList();
   }
 }
