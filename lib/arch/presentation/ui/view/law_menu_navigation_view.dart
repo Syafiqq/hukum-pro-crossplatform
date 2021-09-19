@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hukum_pro/arch/domain/entity/law/law_menu_order_entity.dart';
+import 'package:hukum_pro/arch/presentation/entity/law_menu_order_data_presenter.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_menu_cubit.dart';
-import 'package:hukum_pro/arch/presentation/view_model/cubit/selected_law_menu_cubit.dart';
 import 'package:hukum_pro/arch/presentation/view_model/state/law_menu_navigation_state.dart';
 import 'package:hukum_pro/common/ui/app_color.dart';
 import 'package:hukum_pro/common/ui/app_font.dart';
@@ -13,19 +12,39 @@ class LawMenuNavigationView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      // Important: Remove any padding from the ListView.
+    return BlocBuilder<LoadLawMenuCubit, LawMenuNavigationUiState>(
+      builder: (context, state) {
+        return state.maybeWhen(
+          loadSuccess: (menus) {
+            return buildMenus(context, menus);
+          },
+          orElse: () => buildSpinner(context),
+        );
+      },
+    );
+  }
+
+  Widget buildMenus(
+    BuildContext context,
+    List<LawMenuOrderDataPresenter> menus,
+  ) {
+    return ListView.builder(
       padding: EdgeInsets.zero,
-      children: <Widget>[
-        buildHeader(context),
-        const Divider(height: 1, thickness: 1),
-        buildSearch(context),
-        const Divider(height: 1, thickness: 1),
-        buildMenu(context),
-        const Divider(height: 1, thickness: 1),
-        buildSync(context),
-        const Divider(height: 1, thickness: 1),
-      ],
+      itemCount: menus.length,
+      itemBuilder: (BuildContext context, int index) {
+        switch (menus[index].type) {
+          case LawMenuOrderDataPresenterType.header:
+            return buildHeader(context);
+          case LawMenuOrderDataPresenterType.search:
+            return buildSearch(context, menus[index]);
+          case LawMenuOrderDataPresenterType.law:
+            return buildMenu(context, menus[index]);
+          case LawMenuOrderDataPresenterType.sync:
+            return buildSync(context, menus[index]);
+          case LawMenuOrderDataPresenterType.divider:
+            return const Divider(height: 1, thickness: 1);
+        }
+      },
     );
   }
 
@@ -59,13 +78,17 @@ class LawMenuNavigationView extends StatelessWidget {
     );
   }
 
-  Widget buildSearch(BuildContext context) {
+  Widget buildSearch(BuildContext context, LawMenuOrderDataPresenter menu) {
     return ListTile(
-      leading: const Icon(Icons.search),
+      leading: Icon(Icons.search),
       title: Text(
-        'Pencarian',
+        menu.name.toUpperCase(),
         style: AppFontContent.regular.font(16),
       ),
+      selected: menu.isSelected,
+      onTap: () {
+        Navigator.pop(context);
+      },
     );
   }
 
@@ -85,46 +108,31 @@ class LawMenuNavigationView extends StatelessWidget {
     );
   }
 
-  Widget buildSync(BuildContext context) {
+  Widget buildSync(BuildContext context, LawMenuOrderDataPresenter menu) {
     return ListTile(
-      leading: const Icon(Icons.sync),
+      leading: Icon(Icons.search),
       title: Text(
-        'Sinkron',
+        menu.name.toUpperCase(),
         style: AppFontContent.regular.font(16),
       ),
-    );
-  }
-
-  Widget buildMenu(BuildContext context) {
-    return BlocBuilder<LoadLawMenuCubit, LawMenuNavigationUiState>(
-      builder: (context, state) {
-        return state.maybeWhen(
-          loadSuccess: (menus) {
-            return buildLawMenus(context, menus);
-          },
-          orElse: () => buildSpinner(context),
-        );
+      selected: menu.isSelected,
+      onTap: () {
+        Navigator.pop(context);
       },
     );
   }
 
-  Widget buildLawMenus(BuildContext context, List<LawMenuOrderEntity> menus) {
-    return Column(
-      children: menus
-          .map(
-            (e) => ListTile(
-              leading: Icon(Icons.local_police_outlined),
-              title: Text(
-                e.name?.toUpperCase() ?? '',
-                style: AppFontContent.regular.font(16),
-              ),
-              onTap: () {
-                BlocProvider.of<SelectedLawMenuCubit>(context).changeLaw(e);
-                Navigator.pop(context);
-              },
-            ),
-          )
-          .toList(),
+  Widget buildMenu(BuildContext context, LawMenuOrderDataPresenter menu) {
+    return ListTile(
+      leading: Icon(Icons.local_police_outlined),
+      title: Text(
+        menu.name.toUpperCase(),
+        style: AppFontContent.regular.font(16),
+      ),
+      selected: menu.isSelected,
+      onTap: () {
+        Navigator.pop(context);
+      },
     );
   }
 }

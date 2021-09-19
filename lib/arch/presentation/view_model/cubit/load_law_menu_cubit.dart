@@ -19,18 +19,31 @@ class LoadLawMenuCubit extends Cubit<LawMenuNavigationUiState> {
     try {
       var rawLaws = await _lawMenuOrderRepository.fetchFromLocal();
       rawLaws.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+      var startingStaticId = 1000;
 
       List<LawMenuOrderDataPresenter> menus = [];
 
       menus.addAll([
         LawMenuOrderDataPresenter(
-          "1000",
+          "${++startingStaticId}",
+          LawMenuOrderDataPresenterType.header,
+          "",
+          false,
+        ),
+        LawMenuOrderDataPresenter(
+          "${++startingStaticId}",
+          LawMenuOrderDataPresenterType.divider,
+          "",
+          false,
+        ),
+        LawMenuOrderDataPresenter(
+          "${++startingStaticId}",
           LawMenuOrderDataPresenterType.search,
           "Pencarian",
           false,
         ),
         LawMenuOrderDataPresenter(
-          "1001",
+          "${++startingStaticId}",
           LawMenuOrderDataPresenterType.divider,
           "",
           false,
@@ -39,17 +52,23 @@ class LoadLawMenuCubit extends Cubit<LawMenuNavigationUiState> {
       menus.addAll(_rawDataMapper(rawLaws));
       menus.addAll([
         LawMenuOrderDataPresenter(
-          "1002",
+          "${++startingStaticId}",
+          LawMenuOrderDataPresenterType.divider,
+          "",
+          false,
+        ),
+        LawMenuOrderDataPresenter(
+          "${++startingStaticId}",
           LawMenuOrderDataPresenterType.sync,
           "Sinkron",
           false,
         ),
         LawMenuOrderDataPresenter(
-          "1003",
+          "${++startingStaticId}",
           LawMenuOrderDataPresenterType.divider,
           "",
           false,
-        )
+        ),
       ]);
 
       emit(LawMenuNavigationUiState.loadSuccess(menus));
