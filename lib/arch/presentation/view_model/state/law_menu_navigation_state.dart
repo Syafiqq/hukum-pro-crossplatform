@@ -8,6 +8,8 @@ class LawMenuNavigationUiState with _$LawMenuNavigationUiState {
   const factory LawMenuNavigationUiState.initial() = InitialState;
   const factory LawMenuNavigationUiState.loading() = MenuLoading;
   const factory LawMenuNavigationUiState.loadSuccess(
-      List<LawMenuOrderDataPresenter> menus) = MenuLoadSuccess;
+    List<LawMenuOrderDataPresenter> menus,
+    LawMenuOrderDataPresenter? selected,
+  ) = MenuLoadSuccess;
   const factory LawMenuNavigationUiState.loadFailed() = MenuLoadFailed;
 }

@@ -3,6 +3,7 @@ import 'package:hukum_pro/arch/domain/entity/law/law_menu_order_entity.dart';
 import 'package:hukum_pro/arch/domain/repository/law_menu_order_repository.dart';
 import 'package:hukum_pro/arch/presentation/entity/law_menu_order_data_presenter.dart';
 import 'package:hukum_pro/arch/presentation/view_model/state/law_menu_navigation_state.dart';
+import 'package:flinq/flinq.dart';
 
 class LoadLawMenuCubit extends Cubit<LawMenuNavigationUiState> {
   final LawMenuOrderRepository _lawMenuOrderRepository;
@@ -71,17 +72,19 @@ class LoadLawMenuCubit extends Cubit<LawMenuNavigationUiState> {
         ),
       ]);
 
-      if (initializeSelect &&
-          menus.where((element) => element.isSelected).isEmpty) {
+      if (initializeSelect && menus.where((menu) => menu.isSelected).isEmpty) {
         final index = menus.indexWhere(
-            (element) => element.type == LawMenuOrderDataPresenterType.law);
+            (menu) => menu.type == LawMenuOrderDataPresenterType.law);
 
         if (index >= 0) {
           menus[index].isSelected = true;
         }
       }
 
-      emit(LawMenuNavigationUiState.loadSuccess(menus));
+      emit(LawMenuNavigationUiState.loadSuccess(
+        menus,
+        menus.firstOrNullWhere((menu) => menu.isSelected),
+      ));
     } on Exception catch (e) {
       print(e);
       emit(LawMenuNavigationUiState.loadFailed());
@@ -92,18 +95,21 @@ class LoadLawMenuCubit extends Cubit<LawMenuNavigationUiState> {
     if (!(state is MenuLoadSuccess)) return;
     var menus = (state as MenuLoadSuccess).menus;
 
-    final index = menus.indexWhere((element) => element.id == ofId);
+    final index = menus.indexWhere((menu) => menu.id == ofId);
 
     if (index < 0) {
       return;
     }
 
-    menus.forEach((element) {
-      element.isSelected = false;
+    menus.forEach((menu) {
+      menu.isSelected = false;
     });
     menus[index].isSelected = true;
 
-    emit(LawMenuNavigationUiState.loadSuccess(menus));
+    emit(LawMenuNavigationUiState.loadSuccess(
+      menus,
+      menus.firstOrNullWhere((menu) => menu.isSelected),
+    ));
   }
 
   List<LawMenuOrderDataPresenter> _rawDataMapper(
