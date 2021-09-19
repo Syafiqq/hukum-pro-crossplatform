@@ -5,7 +5,6 @@ import 'package:hukum_pro/arch/domain/use_case/reinitialize_whole_data_use_case.
 import 'package:hukum_pro/arch/presentation/view_model/cubit/check_local_version_and_initialize_cubit.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_menu_cubit.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_year_cubit.dart';
-import 'package:hukum_pro/arch/presentation/view_model/cubit/selected_law_menu_cubit.dart';
 import 'package:kiwi/kiwi.dart';
 
 class CubitModule {
@@ -29,9 +28,6 @@ class CubitModule {
       (c) => LoadLawMenuCubit(
         c.resolve<LawMenuOrderRepository>(),
       ),
-    );
-    container.registerFactory<SelectedLawMenuCubit>(
-      (_) => SelectedLawMenuCubit(),
     );
     container.registerFactory<LoadLawYearCubit>(
       (c) => LoadLawYearCubit(
