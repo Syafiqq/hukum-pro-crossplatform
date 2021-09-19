@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hukum_pro/arch/domain/entity/law/law_year_entity.dart';
 import 'package:hukum_pro/arch/presentation/view_model/state/law_year_load_state.dart';
+import 'package:hukum_pro/common/ui/app_color.dart';
 import 'package:hukum_pro/di/impl/kiwi_object_resolver.dart';
 
 class LawYearListView extends StatelessWidget {
@@ -43,7 +44,7 @@ class LawYearListView extends StatelessWidget {
           width: 32,
           child: LoadingIndicator(
             indicatorType: Indicator.circleStrokeSpin,
-            colors: [Colors.black],
+            colors: [AppColor.secondary],
           ),
         ),
       ),
