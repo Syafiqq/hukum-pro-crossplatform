@@ -40,6 +40,9 @@ class LoadLawYearCubit extends Cubit<LawYearLoadState> {
       final rawLawYears = await _lawYearRepository.get(_kPageSize, _page);
       final hasMore = rawLawYears.length == _kPageSize;
       var lawYears = _rawDataMapper(rawLawYears);
+      if (hasMore) {
+        lawYears.add(createLoadMore());
+      }
 
       emit(
         state.copyWith(
@@ -65,6 +68,9 @@ class LoadLawYearCubit extends Cubit<LawYearLoadState> {
       final rawLawYears = await _lawYearRepository.get(_kPageSize, _page + 1);
       final hasMore = rawLawYears.length == _kPageSize;
       var lawYears = _rawDataMapper(rawLawYears);
+      if (hasMore) {
+        lawYears.add(createLoadMore());
+      }
 
       _page += 1;
       emit(
