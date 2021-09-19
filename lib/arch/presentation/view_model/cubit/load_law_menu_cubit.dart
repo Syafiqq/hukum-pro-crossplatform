@@ -1,5 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hukum_pro/arch/domain/entity/law/law_menu_order_entity.dart';
 import 'package:hukum_pro/arch/domain/repository/law_menu_order_repository.dart';
+import 'package:hukum_pro/arch/presentation/entity/law_menu_order_data_presenter.dart';
 import 'package:hukum_pro/arch/presentation/view_model/state/law_menu_navigation_state.dart';
 
 class LoadLawMenuCubit extends Cubit<LawMenuNavigationUiState> {
@@ -15,11 +17,55 @@ class LoadLawMenuCubit extends Cubit<LawMenuNavigationUiState> {
     emit(LawMenuNavigationUiState.loading());
 
     try {
-      var menus = await _lawMenuOrderRepository.fetchFromLocal();
+      var rawLaws = await _lawMenuOrderRepository.fetchFromLocal();
+      rawLaws.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+
+      List<LawMenuOrderDataPresenter> menus = [];
+
+      menus.addAll([
+        LawMenuOrderDataPresenter(
+          "1000",
+          LawMenuOrderDataPresenterType.search,
+          "Pencarian",
+          false,
+        ),
+        LawMenuOrderDataPresenter(
+          "1001",
+          LawMenuOrderDataPresenterType.divider,
+          "",
+          false,
+        )
+      ]);
+      menus.addAll(_rawDataMapper(rawLaws));
+      menus.addAll([
+        LawMenuOrderDataPresenter(
+          "1002",
+          LawMenuOrderDataPresenterType.sync,
+          "Sinkron",
+          false,
+        ),
+        LawMenuOrderDataPresenter(
+          "1003",
+          LawMenuOrderDataPresenterType.divider,
+          "",
+          false,
+        )
+      ]);
+
       emit(LawMenuNavigationUiState.loadSuccess(menus));
     } on Exception catch (e) {
       print(e);
       emit(LawMenuNavigationUiState.loadFailed());
     }
+  }
+
+  List<LawMenuOrderDataPresenter> _rawDataMapper(
+      List<LawMenuOrderEntity> menus) {
+    return menus
+        .map(
+          (menu) => LawMenuOrderDataPresenter(menu.id,
+              LawMenuOrderDataPresenterType.law, menu.name ?? "", false),
+        )
+        .toList(growable: false);
   }
 }
