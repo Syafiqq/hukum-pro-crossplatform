@@ -7,6 +7,7 @@ import 'package:hukum_pro/arch/presentation/view_model/state/law_year_load_state
 var _kPageSize = 20;
 
 class LoadLawYearCubit extends Cubit<LawYearLoadState> {
+  var startingStaticId = 1000;
   final LawYearRepository _lawYearRepository;
   int _page = 0;
 
@@ -37,13 +38,14 @@ class LoadLawYearCubit extends Cubit<LawYearLoadState> {
 
     try {
       final rawLawYears = await _lawYearRepository.get(_kPageSize, _page);
+      final hasMore = rawLawYears.length == _kPageSize;
       var lawYears = _rawDataMapper(rawLawYears);
 
       emit(
         state.copyWith(
           state: LawYearLoadUiState.loadSuccess,
           lawYears: [...state.lawYears, ...lawYears],
-          hasMore: lawYears.length == _kPageSize,
+          hasMore: hasMore,
         ),
       );
     } on Exception catch (e) {
@@ -61,6 +63,7 @@ class LoadLawYearCubit extends Cubit<LawYearLoadState> {
 
     try {
       final rawLawYears = await _lawYearRepository.get(_kPageSize, _page + 1);
+      final hasMore = rawLawYears.length == _kPageSize;
       var lawYears = _rawDataMapper(rawLawYears);
 
       _page += 1;
@@ -68,7 +71,7 @@ class LoadLawYearCubit extends Cubit<LawYearLoadState> {
         state.copyWith(
           state: LawYearLoadUiState.loadSuccess,
           lawYears: [...state.lawYears, ...lawYears],
-          hasMore: lawYears.length == _kPageSize,
+          hasMore: hasMore,
         ),
       );
     } on Exception catch (e) {
@@ -88,5 +91,14 @@ class LoadLawYearCubit extends Cubit<LawYearLoadState> {
           ),
         )
         .toList();
+  }
+
+  LawYearListDataPresenter createLoadMore() {
+    return LawYearListDataPresenter(
+      "${++startingStaticId}",
+      LawYearListDataPresenterType.loadMore,
+      "",
+      "",
+    );
   }
 }
