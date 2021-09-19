@@ -88,6 +88,7 @@ class LawMenuNavigationView extends StatelessWidget {
       selected: menu.isSelected,
       onTap: () {
         Navigator.pop(context);
+        BlocProvider.of<LoadLawMenuCubit>(context).selectMenu(ofId: menu.id);
       },
     );
   }
@@ -132,6 +133,7 @@ class LawMenuNavigationView extends StatelessWidget {
       selected: menu.isSelected,
       onTap: () {
         Navigator.pop(context);
+        BlocProvider.of<LoadLawMenuCubit>(context).selectMenu(ofId: menu.id);
       },
     );
   }

@@ -88,6 +88,24 @@ class LoadLawMenuCubit extends Cubit<LawMenuNavigationUiState> {
     }
   }
 
+  void selectMenu({ofId: String}) {
+    if (!(state is MenuLoadSuccess)) return;
+    var menus = (state as MenuLoadSuccess).menus;
+
+    final index = menus.indexWhere((element) => element.id == ofId);
+
+    if (index < 0) {
+      return;
+    }
+
+    menus.forEach((element) {
+      element.isSelected = false;
+    });
+    menus[index].isSelected = true;
+
+    emit(LawMenuNavigationUiState.loadSuccess(menus));
+  }
+
   List<LawMenuOrderDataPresenter> _rawDataMapper(
       List<LawMenuOrderEntity> menus) {
     return menus
