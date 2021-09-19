@@ -11,7 +11,7 @@ class LoadLawMenuCubit extends Cubit<LawMenuNavigationUiState> {
     this._lawMenuOrderRepository,
   ) : super(LawMenuNavigationUiState.initial());
 
-  Future<void> load() async {
+  Future<void> load({ initializeSelect: bool }) async {
     if (!(state is InitialState || state is MenuLoadFailed)) return;
 
     emit(LawMenuNavigationUiState.loading());
