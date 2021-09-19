@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hukum_pro/arch/presentation/entity/law_menu_order_data_presenter.dart';
 import 'package:hukum_pro/arch/presentation/ui/component/dialog/common_dialog.dart';
 import 'package:hukum_pro/arch/presentation/ui/view/law/law_menu_navigation_view.dart';
+import 'package:hukum_pro/arch/presentation/ui/view/law/law_year_list_view.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_menu_cubit.dart';
 import 'package:hukum_pro/arch/presentation/view_model/state/law_menu_navigation_state.dart';
 import 'package:hukum_pro/common/ui/app_color.dart';
@@ -71,7 +72,7 @@ class LawScreen extends StatelessWidget {
                     return Container();
                   }
                   if (selected.type == LawMenuOrderDataPresenterType.law) {
-                    return Container();
+                    return LawYearListView(selected.id);
                   }
                   return buildEmptyStateView(context);
                 },
