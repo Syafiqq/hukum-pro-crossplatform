@@ -11,7 +11,7 @@ class LoadLawMenuCubit extends Cubit<LawMenuNavigationUiState> {
     this._lawMenuOrderRepository,
   ) : super(LawMenuNavigationUiState.initial());
 
-  Future<void> load({ initializeSelect: bool }) async {
+  Future<void> load({initializeSelect: bool}) async {
     if (!(state is InitialState || state is MenuLoadFailed)) return;
 
     emit(LawMenuNavigationUiState.loading());
@@ -70,6 +70,16 @@ class LoadLawMenuCubit extends Cubit<LawMenuNavigationUiState> {
           false,
         ),
       ]);
+
+      if (initializeSelect &&
+          menus.where((element) => element.isSelected).isEmpty) {
+        final index = menus.indexWhere(
+            (element) => element.type == LawMenuOrderDataPresenterType.law);
+
+        if (index >= 0) {
+          menus[index].isSelected = true;
+        }
+      }
 
       emit(LawMenuNavigationUiState.loadSuccess(menus));
     } on Exception catch (e) {
