@@ -16,15 +16,20 @@ class LawYearListView extends StatelessWidget {
         return KiwiObjectResolver.getInstance().getLoadLawYearCubit()
           ..resetAndLoad(lawId);
       },
-      child: BlocBuilder<LoadLawYearCubit, LawYearLoadState>(
-        builder: (context, state) {
-          switch (state.state) {
-            case LawYearLoadUiState.loading:
-              return buildSpinner(context);
-            default:
-              return Container();
-          }
-        },
+      child: Container(
+        color: Colors.white,
+        child: SafeArea(
+          child: BlocBuilder<LoadLawYearCubit, LawYearLoadState>(
+            builder: (context, state) {
+              switch (state.state) {
+                case LawYearLoadUiState.loading:
+                  return buildSpinner(context);
+                default:
+                  return Container();
+              }
+            },
+          ),
+        ),
       ),
     );
   }
