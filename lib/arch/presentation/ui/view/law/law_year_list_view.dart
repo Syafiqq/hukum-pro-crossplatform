@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hukum_pro/arch/domain/entity/law/law_year_entity.dart';
+import 'package:hukum_pro/arch/presentation/entity/law_year_list_data_presenter.dart';
 import 'package:hukum_pro/arch/presentation/view_model/state/law_year_load_state.dart';
 import 'package:hukum_pro/common/ui/app_color.dart';
 import 'package:hukum_pro/common/ui/app_font.dart';
@@ -33,14 +34,22 @@ class LawYearListView extends StatelessWidget {
                   return ListView.separated(
                     itemCount: state.lawYears.length,
                     itemBuilder: (BuildContext context, int index) {
-                      return Container(
-                        child: Center(
-                          child: Text(
-                            'Entry ${state.lawYears[index].year}',
-                            style: AppFontContent.regular.font(14),
-                          ),
-                        ),
-                      );
+                      switch (state.lawYears[index].type) {
+                        case LawYearListDataPresenterType.law:
+                          return Center(
+                            child: Text(
+                              'Entry ${state.lawYears[index].year}',
+                              style: AppFontContent.regular.font(14),
+                            ),
+                          );
+                        case LawYearListDataPresenterType.loadMore:
+                          return Center(
+                            child: Text(
+                              'Loading...',
+                              style: AppFontContent.regularItalic.font(14),
+                            ),
+                          );
+                      }
                     },
                     separatorBuilder: (BuildContext context, int index) =>
                         const Divider(),
