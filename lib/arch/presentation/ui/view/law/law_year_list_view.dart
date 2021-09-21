@@ -42,7 +42,6 @@ class LawYearListView extends StatelessWidget {
                                   .toUpperCase(),
                               style: AppFontContent.regular.font(
                                 16,
-                                color: AppColor.textOnLightPrimary,
                               ),
                             ),
                             trailing: Row(
@@ -53,7 +52,6 @@ class LawYearListView extends StatelessWidget {
                                       .toUpperCase(),
                                   style: AppFontContent.medium.font(
                                     16,
-                                    color: AppColor.textOnLightPrimary,
                                   ),
                                 ),
                                 SizedBox(width: 8),
