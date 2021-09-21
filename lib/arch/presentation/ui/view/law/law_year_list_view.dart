@@ -36,23 +36,19 @@ class LawYearListView extends StatelessWidget {
                     itemBuilder: (BuildContext context, int index) {
                       switch (state.lawYears[index].type) {
                         case LawYearListDataPresenterType.law:
-                          return Center(
-                            child: Text(
-                              'Entry ${state.lawYears[index].year}',
-                              style: AppFontContent.regular.font(14),
-                            ),
+                          return Container(
+                            height: 100,
+                            color: Colors.red,
                           );
                         case LawYearListDataPresenterType.loadMore:
-                          return Center(
-                            child: Text(
-                              'Loading...',
-                              style: AppFontContent.regularItalic.font(14),
-                            ),
+                          return Container(
+                            height: 100,
+                            color: Colors.green,
                           );
                       }
                     },
                     separatorBuilder: (BuildContext context, int index) =>
-                        const Divider(),
+                        const Divider(height: 1, thickness: 1),
                   );
                 default:
                   return Container();
