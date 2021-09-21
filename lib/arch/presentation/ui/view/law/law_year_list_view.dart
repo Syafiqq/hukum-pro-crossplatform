@@ -67,8 +67,16 @@ class LawYearListView extends StatelessWidget {
                           );
                         case LawYearListDataPresenterType.loadMore:
                           return Container(
-                            height: 100,
-                            color: Colors.green,
+                            padding: EdgeInsets.fromLTRB(16, 8, 10, 8),
+                            child: Center(
+                              child: Text(
+                                'Loading...',
+                                style: AppFontContent.regularItalic.font(
+                                  14,
+                                  color: AppColor.textOnLightSecondary,
+                                ),
+                              ),
+                            ),
                           );
                       }
                     },
