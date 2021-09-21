@@ -37,8 +37,12 @@ class LawYearListView extends StatelessWidget {
                       switch (state.lawYears[index].type) {
                         case LawYearListDataPresenterType.law:
                           return Container(
-                            height: 100,
-                            color: Colors.red,
+                            padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
+                            child: Text(
+                              'Tahun ${state.lawYears[index].year}'
+                                  .toUpperCase(),
+                              style: AppFontContent.regular.font(16),
+                            ),
                           );
                         case LawYearListDataPresenterType.loadMore:
                           return Container(
