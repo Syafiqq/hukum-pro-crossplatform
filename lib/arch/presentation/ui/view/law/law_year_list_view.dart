@@ -36,22 +36,18 @@ class LawYearListView extends StatelessWidget {
                     itemBuilder: (BuildContext context, int index) {
                       switch (state.lawYears[index].type) {
                         case LawYearListDataPresenterType.law:
-                          return Container(
-                            padding: EdgeInsets.fromLTRB(16, 8, 10, 8),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                Expanded(
-                                  child: Text(
-                                    'Tahun ${state.lawYears[index].year}'
-                                        .toUpperCase(),
-                                    style: AppFontContent.regular.font(
-                                      16,
-                                      color: AppColor.textOnLightPrimary,
-                                    ),
-                                  ),
-                                  flex: 1,
-                                ),
+                          return ListTile(
+                            title: Text(
+                              'Tahun ${state.lawYears[index].year}'
+                                  .toUpperCase(),
+                              style: AppFontContent.regular.font(
+                                16,
+                                color: AppColor.textOnLightPrimary,
+                              ),
+                            ),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
                                 Text(
                                   '${state.lawYears[index].count}'
                                       .toUpperCase(),
@@ -61,7 +57,7 @@ class LawYearListView extends StatelessWidget {
                                   ),
                                 ),
                                 SizedBox(width: 8),
-                                Icon(Icons.chevron_right, size: 20)
+                                Icon(Icons.chevron_right)
                               ],
                             ),
                           );
