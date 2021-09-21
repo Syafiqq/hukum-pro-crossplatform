@@ -37,11 +37,37 @@ class LawYearListView extends StatelessWidget {
                       switch (state.lawYears[index].type) {
                         case LawYearListDataPresenterType.law:
                           return Container(
-                            padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
-                            child: Text(
-                              'Tahun ${state.lawYears[index].year}'
-                                  .toUpperCase(),
-                              style: AppFontContent.regular.font(16),
+                            padding: EdgeInsets.fromLTRB(16, 8, 8, 8),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Expanded(
+                                  child: DecoratedBox(
+                                    decoration:
+                                        const BoxDecoration(color: Colors.blue),
+                                    child: Text(
+                                      'Tahun ${state.lawYears[index].year}'
+                                          .toUpperCase(),
+                                      style: AppFontContent.regular.font(16),
+                                    ),
+                                  ),
+                                  flex: 1,
+                                ),
+                                DecoratedBox(
+                                  decoration:
+                                      const BoxDecoration(color: Colors.red),
+                                  child: Text(
+                                    '${state.lawYears[index].count}'
+                                        .toUpperCase(),
+                                    style: AppFontContent.medium.font(16),
+                                  ),
+                                ),
+                                DecoratedBox(
+                                  decoration:
+                                      const BoxDecoration(color: Colors.green),
+                                  child: Icon(Icons.chevron_right, size: 20),
+                                )
+                              ],
                             ),
                           );
                         case LawYearListDataPresenterType.loadMore:
