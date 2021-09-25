@@ -92,6 +92,9 @@ class _LawYearListStatefulViewState extends State<_LawYearListStatefulView> {
                           Icon(Icons.chevron_right)
                         ],
                       ),
+                      onTap: () {
+                        // TODO: Move to Law Per Year
+                      },
                     );
                   case LawYearListDataPresenterType.loadMore:
                     return Container(
