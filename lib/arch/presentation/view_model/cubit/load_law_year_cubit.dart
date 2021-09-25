@@ -90,10 +90,10 @@ class LoadLawYearCubit extends Cubit<LawYearLoadState> {
     return years
         .map(
           (year) => LawYearListDataPresenter(
-            "${year.id}",
-            LawYearListDataPresenterType.law,
-            "${year.year}",
-            "${year.count}",
+            id: "${year.id}",
+            type: LawYearListDataPresenterType.law,
+            year: "${year.year}",
+            count: "${year.count}",
           ),
         )
         .toList();
@@ -101,10 +101,10 @@ class LoadLawYearCubit extends Cubit<LawYearLoadState> {
 
   LawYearListDataPresenter createLoadMore() {
     return LawYearListDataPresenter(
-      "${++startingStaticId}",
-      LawYearListDataPresenterType.loadMore,
-      "",
-      "",
+      id: "${++startingStaticId}",
+      type: LawYearListDataPresenterType.loadMore,
+      year: "",
+      count: "",
     );
   }
 }
