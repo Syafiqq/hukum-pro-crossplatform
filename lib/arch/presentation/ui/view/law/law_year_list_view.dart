@@ -66,6 +66,7 @@ class _LawYearListStatefulViewState extends State<_LawYearListStatefulView> {
           case LawYearLoadUiState.loading:
             return buildSpinner(context);
           case LawYearLoadUiState.loadSuccess:
+          case LawYearLoadUiState.loadMore:
             return ListView.separated(
               itemCount: state.lawYears.length,
               itemBuilder: (BuildContext context, int index) {
@@ -109,6 +110,7 @@ class _LawYearListStatefulViewState extends State<_LawYearListStatefulView> {
               },
               separatorBuilder: (BuildContext context, int index) =>
                   const Divider(height: 1, thickness: 1),
+              controller: _scrollController,
             );
           default:
             return Container();
