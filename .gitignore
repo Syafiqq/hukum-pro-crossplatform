@@ -60,4 +60,4 @@ app.*.map.json
 lib/ui_design
 **/presentation/view_model/**/*.freezed.dart
 **/common/ui/**/*.freezed.dart
-
+/example-data
