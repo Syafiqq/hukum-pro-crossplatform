@@ -14,7 +14,8 @@ class LawEntity extends Equatable {
   String? description;
   String? status;
   String? reference;
-  String? category;
+  @Index()
+  String category = "";
   DateTime? dateCreated;
 
   @override
