@@ -65,12 +65,14 @@ class LoadLawYearCubit extends Cubit<LawYearLoadState> {
         state.state == LawYearLoadUiState.loadFailed ||
         state.state == LawYearLoadUiState.loading)) return;
 
+    if (!state.hasMore) return
+
     emit(state.copyWith(state: LawYearLoadUiState.loadMore));
 
     try {
       final rawLawYears =
           await _lawYearRepository.get(_lawId, _kPageSize, _page + 1);
-      final hasMore = rawLawYears.length == _kPageSize;
+      final hasMore = rawLawYears.length != 0;
       var lawYears = _rawDataMapper(rawLawYears);
       if (hasMore) {
         lawYears.add(createLoadMore());
