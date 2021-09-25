@@ -78,11 +78,14 @@ class LoadLawYearCubit extends Cubit<LawYearLoadState> {
         lawYears.add(createLoadMore());
       }
 
+      var currentLawYear = state.lawYears.where(
+          (lawYear) => lawYear.type != LawYearListDataPresenterType.loadMore);
+
       _page += 1;
       emit(
         state.copyWith(
           state: LawYearLoadUiState.loadSuccess,
-          lawYears: [...state.lawYears, ...lawYears],
+          lawYears: [...currentLawYear, ...lawYears],
           hasMore: hasMore,
         ),
       );
