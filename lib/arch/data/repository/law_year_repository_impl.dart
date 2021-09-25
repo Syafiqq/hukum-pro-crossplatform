@@ -32,7 +32,7 @@ class LawYearRepositoryImpl implements LawYearRepository {
   }
 }
 
-extension _ExtensionDomainLawYearEntity on LawYearEntity {
+extension ExtensionDomainLawYearEntity on LawYearEntity {
   DataLawYearEntity.LawYearEntity toData({String category = ""}) =>
       DataLawYearEntity.LawYearEntity()
         ..year = year
@@ -40,6 +40,6 @@ extension _ExtensionDomainLawYearEntity on LawYearEntity {
         ..category = category;
 }
 
-extension _ExtensionDataLawYearEntity on DataLawYearEntity.LawYearEntity {
+extension ExtensionDataLawYearEntity on DataLawYearEntity.LawYearEntity {
   LawYearEntity toDomain() => LawYearEntity(id, year, count);
 }

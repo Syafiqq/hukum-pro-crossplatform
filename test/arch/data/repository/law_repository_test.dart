@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hukum_pro/arch/data/data_source/local/contract/law_local_datasource.dart';
 import 'package:hukum_pro/arch/data/data_source/local/entity/law_entity.dart'
-as DataLawEntity;
+    as DataLawEntity;
 import 'package:hukum_pro/arch/data/repository/law_repository_impl.dart';
 import 'package:hukum_pro/arch/domain/entity/law/law_entity.dart';
 import 'package:hukum_pro/arch/domain/repository/law_repository.dart';
@@ -39,7 +39,7 @@ void main() {
       test('it should call datasource addLaws', () async {
         var entities = [0, 1]
             .map((e) => LawEntity(
-                e, e.toString(), e, null, null, null, null, null, null))
+                e, e.toString(), e, null, null, null, null, '1', null))
             .toList();
 
         when(mockLawLocalDatasource.addLaws(any))
@@ -47,20 +47,25 @@ void main() {
 
         await repository.addAll(entities);
 
-        verify(mockLawLocalDatasource.addLaws(
-                entities.map((e) => e.toData()).toList(growable: false)))
+        verify(mockLawLocalDatasource.addLaws([0, 1]
+                .map((e) => DataLawEntity.LawEntity()
+                  ..id = 0
+                  ..remoteId = '$e'
+                  ..category = '1')
+                .toList()))
             .called(1);
       });
     });
 
     group('getByYear', () {
       test('it should call datasource getLawsByYearWithPagination', () async {
-        when(mockLawLocalDatasource.getLawsByYearWithPagination(any, any, any))
+        when(mockLawLocalDatasource.getLawsByYearWithPagination(
+                any, any, any, any))
             .thenAnswer((realInvocation) => Future.value([]));
 
-        await repository.getByYear(1, 1, 1);
+        await repository.getByYear('1', 1, 1, 1);
 
-        verify(mockLawLocalDatasource.getLawsByYearWithPagination(1, 1, 1))
+        verify(mockLawLocalDatasource.getLawsByYearWithPagination('1', 1, 1, 1))
             .called(1);
       });
     });

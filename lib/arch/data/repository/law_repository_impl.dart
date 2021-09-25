@@ -33,7 +33,7 @@ class LawRepositoryImpl implements LawRepository {
   }
 }
 
-extension _ExtensionDomainLawEntity on LawEntity {
+extension ExtensionDomainLawEntity on LawEntity {
   DataLawEntity.LawEntity toData() => DataLawEntity.LawEntity()
     ..remoteId = remoteId
     ..year = year ?? 0
@@ -45,7 +45,7 @@ extension _ExtensionDomainLawEntity on LawEntity {
     ..dateCreated = dateCreated;
 }
 
-extension _ExtensionDataLawEntity on DataLawEntity.LawEntity {
+extension ExtensionDataLawEntity on DataLawEntity.LawEntity {
   LawEntity toDomain() => LawEntity(id, remoteId, year, no, description, status,
       reference, category, dateCreated);
 }
