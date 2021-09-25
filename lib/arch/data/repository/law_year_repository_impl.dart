@@ -10,8 +10,12 @@ class LawYearRepositoryImpl implements LawYearRepository {
   LawYearRepositoryImpl(this.localDatasource);
 
   @override
-  Future<void> addAll(List<LawYearEntity> laws) async => await localDatasource
-      .addLawYears(laws.map((e) => e.toData()).toList(growable: false));
+  Future<void> addAll(Map<String, List<LawYearEntity>> laws) async {
+    for (var law in laws.entries) {
+      await localDatasource.addLawYears(
+          law.value.map((e) => e.toData(category: law.key)).toList());
+    }
+  }
 
   @override
   Future<void> deleteAll() async => await localDatasource.deleteAllLawYear();
@@ -21,8 +25,9 @@ class LawYearRepositoryImpl implements LawYearRepository {
       (await localDatasource.getLawYearById(id))?.toDomain();
 
   @override
-  Future<List<LawYearEntity>> get(int limit, int page) async {
-    final laws = await localDatasource.getLawYearsWithPagination(limit, page);
+  Future<List<LawYearEntity>> get(String category, int limit, int page) async {
+    final laws =
+        await localDatasource.getLawYearsWithPagination(category, limit, page);
     return laws.map((e) => e.toDomain()).toList();
   }
 }

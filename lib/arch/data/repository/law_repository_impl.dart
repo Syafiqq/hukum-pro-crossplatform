@@ -25,9 +25,10 @@ class LawRepositoryImpl implements LawRepository {
       (await localDatasource.getLawByRemoteId(remoteId))?.toDomain();
 
   @override
-  Future<List<LawEntity>> getByYear(int year, int limit, int page) async {
-    final laws =
-        await localDatasource.getLawsByYearWithPagination(year, limit, page);
+  Future<List<LawEntity>> getByYear(
+      String category, int year, int limit, int page) async {
+    final laws = await localDatasource.getLawsByYearWithPagination(
+        category, year, limit, page);
     return laws.map((e) => e.toDomain()).toList();
   }
 }

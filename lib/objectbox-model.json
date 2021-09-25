@@ -51,7 +51,9 @@
         {
           "id": "8:6453183956639016650",
           "name": "category",
-          "type": 9
+          "type": 9,
+          "flags": 2048,
+          "indexId": "4:3862354587575265251"
         },
         {
           "id": "9:5525855814039374399",
@@ -63,7 +65,7 @@
     },
     {
       "id": "2:4608631878622724996",
-      "lastPropertyId": "3:8605044649442273114",
+      "lastPropertyId": "4:5362594068020002386",
       "name": "LawYearEntity",
       "properties": [
         {
@@ -83,13 +85,20 @@
           "id": "3:8605044649442273114",
           "name": "count",
           "type": 6
+        },
+        {
+          "id": "4:5362594068020002386",
+          "name": "category",
+          "type": 9,
+          "flags": 2048,
+          "indexId": "5:5493287556755306756"
         }
       ],
       "relations": []
     }
   ],
   "lastEntityId": "2:4608631878622724996",
-  "lastIndexId": "3:6593493272592799177",
+  "lastIndexId": "5:5493287556755306756",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",
   "modelVersion": 5,
