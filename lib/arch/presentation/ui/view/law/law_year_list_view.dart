@@ -22,71 +22,98 @@ class LawYearListView extends StatelessWidget {
         return KiwiObjectResolver.getInstance().getLoadLawYearCubit()
           ..resetAndLoad(lawId);
       },
-      child: Container(
-        color: Colors.white,
-        child: SafeArea(
-          child: BlocConsumer<LoadLawYearCubit, LawYearLoadState>(
-            listener: (context, state) {
-              // TODO: Show Failed dialog
-            },
-            builder: (context, state) {
-              switch (state.state) {
-                case LawYearLoadUiState.loading:
-                  return buildSpinner(context);
-                case LawYearLoadUiState.loadSuccess:
-                  return ListView.separated(
-                    itemCount: state.lawYears.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      switch (state.lawYears[index].type) {
-                        case LawYearListDataPresenterType.law:
-                          return ListTile(
-                            title: Text(
-                              'Tahun ${state.lawYears[index].year}'
-                                  .toUpperCase(),
-                              style: AppFontContent.regular.font(
-                                16,
-                              ),
-                            ),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  '${state.lawYears[index].count}'
-                                      .toUpperCase(),
-                                  style: AppFontContent.medium.font(
-                                    16,
-                                  ),
-                                ),
-                                SizedBox(width: 8),
-                                Icon(Icons.chevron_right)
-                              ],
-                            ),
-                          );
-                        case LawYearListDataPresenterType.loadMore:
-                          return Container(
-                            padding: EdgeInsets.fromLTRB(16, 8, 10, 8),
-                            child: Center(
-                              child: Text(
-                                'Loading...',
-                                style: AppFontContent.regularItalic.font(
-                                  14,
-                                  color: AppColor.textOnLightSecondary,
-                                ),
-                              ),
-                            ),
-                          );
-                      }
-                    },
-                    separatorBuilder: (BuildContext context, int index) =>
-                        const Divider(height: 1, thickness: 1),
-                  );
-                default:
-                  return Container();
-              }
-            },
-          ),
+      child: SafeArea(
+        child: Container(
+          color: Colors.white,
+          child: _LawYearListStatefulView(),
         ),
       ),
+    );
+  }
+}
+
+class _LawYearListStatefulView extends StatefulWidget {
+  @override
+  _LawYearListStatefulViewState createState() =>
+      _LawYearListStatefulViewState();
+}
+
+class _LawYearListStatefulViewState extends State<_LawYearListStatefulView> {
+  final _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController
+      ..removeListener(_onScroll)
+      ..dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<LoadLawYearCubit, LawYearLoadState>(
+      listener: (context, state) {
+        // TODO: Show Failed dialog
+      },
+      builder: (context, state) {
+        switch (state.state) {
+          case LawYearLoadUiState.loading:
+            return buildSpinner(context);
+          case LawYearLoadUiState.loadSuccess:
+            return ListView.separated(
+              itemCount: state.lawYears.length,
+              itemBuilder: (BuildContext context, int index) {
+                switch (state.lawYears[index].type) {
+                  case LawYearListDataPresenterType.law:
+                    return ListTile(
+                      title: Text(
+                        'Tahun ${state.lawYears[index].year}'.toUpperCase(),
+                        style: AppFontContent.regular.font(
+                          16,
+                        ),
+                      ),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            '${state.lawYears[index].count}'.toUpperCase(),
+                            style: AppFontContent.medium.font(
+                              16,
+                            ),
+                          ),
+                          SizedBox(width: 8),
+                          Icon(Icons.chevron_right)
+                        ],
+                      ),
+                    );
+                  case LawYearListDataPresenterType.loadMore:
+                    return Container(
+                      padding: EdgeInsets.fromLTRB(16, 8, 10, 8),
+                      child: Center(
+                        child: Text(
+                          'Loading...',
+                          style: AppFontContent.regularItalic.font(
+                            14,
+                            color: AppColor.textOnLightSecondary,
+                          ),
+                        ),
+                      ),
+                    );
+                }
+              },
+              separatorBuilder: (BuildContext context, int index) =>
+                  const Divider(height: 1, thickness: 1),
+            );
+          default:
+            return Container();
+        }
+      },
     );
   }
 
@@ -104,5 +131,16 @@ class LawYearListView extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _onScroll() {
+    if (_isBottom) context.read<LoadLawYearCubit>().loadMore("1");
+  }
+
+  bool get _isBottom {
+    if (!_scrollController.hasClients) return false;
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.offset;
+    return currentScroll >= (maxScroll * 0.9);
   }
 }
