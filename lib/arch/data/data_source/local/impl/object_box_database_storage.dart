@@ -23,15 +23,18 @@ class ObjectBoxDatabaseStorage
   }
 
   @override
-  Future<List<LawEntity>> getLawsByYear(int year) =>
-      getLawsByYearWithPagination(year, _safeInt, 0);
+  Future<List<LawEntity>> getLawsByYear(String category, int year) =>
+      getLawsByYearWithPagination(category, year, _safeInt, 0);
 
   @override
   Future<List<LawEntity>> getLawsByYearWithPagination(
-      int year, int limit, int page) async {
+      String category, int year, int limit, int page) async {
     final store = await storeProvider.store;
     final lawBox = store.box<LawEntity>();
-    Query<LawEntity> query = lawBox.query(LawEntity_.year.equals(year)).build()
+    Query<LawEntity> query = lawBox
+        .query(
+            LawEntity_.category.equals(category) & LawEntity_.year.equals(year))
+        .build()
       ..offset = (max(1, page) - 1) * limit
       ..limit = limit;
     return Future.value(query.find());
@@ -78,20 +81,25 @@ class ObjectBoxDatabaseStorage
   }
 
   @override
-  Future<LawYearEntity?> getLawYearByYear(int year) async {
+  Future<LawYearEntity?> getLawYearByYear(String category, int year) async {
     final store = await storeProvider.store;
     final lawBox = store.box<LawYearEntity>();
-    Query<LawYearEntity> query =
-        lawBox.query(LawYearEntity_.year.equals(year)).build();
+    Query<LawYearEntity> query = lawBox
+        .query(LawYearEntity_.category.equals(category) &
+            LawYearEntity_.year.equals(year))
+        .build();
     return Future.value(query.findFirst());
   }
 
   @override
   Future<List<LawYearEntity>> getLawYearsWithPagination(
-      int limit, int page) async {
+      String category, int limit, int page) async {
     final store = await storeProvider.store;
     final lawBox = store.box<LawYearEntity>();
-    Query<LawYearEntity> query = lawBox.query().build()
+    QueryBuilder<LawYearEntity> queryBuilder = lawBox
+        .query(LawYearEntity_.category.equals(category))
+      ..order(LawYearEntity_.year, flags: Order.descending);
+    Query<LawYearEntity> query = queryBuilder.build()
       ..offset = (max(1, page) - 1) * limit
       ..limit = limit;
     return Future.value(query.find());
