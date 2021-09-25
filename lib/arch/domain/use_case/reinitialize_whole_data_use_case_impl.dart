@@ -17,7 +17,7 @@ class ReinitializeWholeDataUseCaseImpl implements ReinitializeWholeDataUseCase {
   LawYearRepository lawYearRepository;
   LawMenuOrderRepository lawMenuOrderRepository;
 
-  var lawYearsRaw = LinkedHashMap<int, int>();
+  var lawYearsRaw = Map<String, Map<int, int>>();
 
   ReinitializeWholeDataUseCaseImpl(this.bulkLawsRepository, this.lawRepository,
       this.lawYearRepository, this.lawMenuOrderRepository);
@@ -58,23 +58,34 @@ class ReinitializeWholeDataUseCaseImpl implements ReinitializeWholeDataUseCase {
       await lawRepository.addAll(bulkLaws);
     }
 
-    final lawYears = lawYearsRaw.entries
-        .map((e) => LawYearEntity(e.key, e.key, e.value))
-        .toList();
-    await lawYearRepository.addAll(lawYears);
+    await lawYearRepository.addAll(convertYearList());
+  }
+
+  Map<String, List<LawYearEntity>> convertYearList() {
+    var result = Map<String, List<LawYearEntity>>();
+    for (var yearLists in lawYearsRaw.entries) {
+      result[yearLists.key] = yearLists.value.entries
+          .map((e) => LawYearEntity(0, e.key, e.value))
+          .toList();
+    }
+    return result;
   }
 
   void extractYear(List<LawEntity> bulkLaws) {
     for (var law in bulkLaws) {
       final year = law.year;
-      if (year == null) {
+      final category = law.category;
+      if (year == null || category == null) {
         continue;
       }
 
-      if (!lawYearsRaw.containsKey(year)) {
-        lawYearsRaw[year] = 0;
+      if (!lawYearsRaw.containsKey(category)) {
+        lawYearsRaw[category] = Map<int, int>();
       }
-      lawYearsRaw[year] = lawYearsRaw[year]! + 1;
+      if (!lawYearsRaw[category]!.containsKey(year)) {
+        lawYearsRaw[category]![year] = 0;
+      }
+      lawYearsRaw[category]![year] = lawYearsRaw[category]![year]! + 1;
     }
   }
 }
