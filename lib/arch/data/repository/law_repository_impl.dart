@@ -32,7 +32,7 @@ class LawRepositoryImpl implements LawRepository {
   }
 }
 
-extension DomainCodable on LawEntity {
+extension _ExtensionDomainLawEntity on LawEntity {
   DataLawEntity.LawEntity toData() => DataLawEntity.LawEntity()
     ..remoteId = remoteId
     ..year = year ?? 0
@@ -40,11 +40,11 @@ extension DomainCodable on LawEntity {
     ..description = description
     ..status = status
     ..reference = reference
-    ..category = category
+    ..category = category ?? ""
     ..dateCreated = dateCreated;
 }
 
-extension DataCodable on DataLawEntity.LawEntity {
+extension _ExtensionDataLawEntity on DataLawEntity.LawEntity {
   LawEntity toDomain() => LawEntity(id, remoteId, year, no, description, status,
       reference, category, dateCreated);
 }

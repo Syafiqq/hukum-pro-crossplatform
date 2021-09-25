@@ -27,12 +27,14 @@ class LawYearRepositoryImpl implements LawYearRepository {
   }
 }
 
-extension DomainCodable on LawYearEntity {
-  DataLawYearEntity.LawYearEntity toData() => DataLawYearEntity.LawYearEntity()
-    ..year = year
-    ..count = count;
+extension _ExtensionDomainLawYearEntity on LawYearEntity {
+  DataLawYearEntity.LawYearEntity toData({String category = ""}) =>
+      DataLawYearEntity.LawYearEntity()
+        ..year = year
+        ..count = count
+        ..category = category;
 }
 
-extension DataCodable on DataLawYearEntity.LawYearEntity {
+extension _ExtensionDataLawYearEntity on DataLawYearEntity.LawYearEntity {
   LawYearEntity toDomain() => LawYearEntity(id, year, count);
 }
