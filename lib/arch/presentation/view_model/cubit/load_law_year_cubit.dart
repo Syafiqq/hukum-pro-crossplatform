@@ -10,6 +10,7 @@ class LoadLawYearCubit extends Cubit<LawYearLoadState> {
   var startingStaticId = 1000;
   final LawYearRepository _lawYearRepository;
   int _page = 0;
+  String _lawId = "";
 
   LoadLawYearCubit(
     this._lawYearRepository,
@@ -27,6 +28,7 @@ class LoadLawYearCubit extends Cubit<LawYearLoadState> {
         state.state == LawYearLoadUiState.loading)) return;
 
     _page = 0;
+    _lawId = lawId;
     emit(
       state.copyWith(
         state: LawYearLoadUiState.reset,
@@ -37,7 +39,8 @@ class LoadLawYearCubit extends Cubit<LawYearLoadState> {
     emit(state.copyWith(state: LawYearLoadUiState.loading));
 
     try {
-      final rawLawYears = await _lawYearRepository.get(_kPageSize, _page);
+      final rawLawYears =
+          await _lawYearRepository.get(_lawId, _kPageSize, _page);
       final hasMore = rawLawYears.length == _kPageSize;
       var lawYears = _rawDataMapper(rawLawYears);
       if (hasMore) {
@@ -57,7 +60,7 @@ class LoadLawYearCubit extends Cubit<LawYearLoadState> {
     }
   }
 
-  Future<void> loadMore(String lawId) async {
+  Future<void> loadMore() async {
     if (!(state.state == LawYearLoadUiState.loadSuccess ||
         state.state == LawYearLoadUiState.loadFailed ||
         state.state == LawYearLoadUiState.loading)) return;
@@ -65,7 +68,8 @@ class LoadLawYearCubit extends Cubit<LawYearLoadState> {
     emit(state.copyWith(state: LawYearLoadUiState.loadMore));
 
     try {
-      final rawLawYears = await _lawYearRepository.get(_kPageSize, _page + 1);
+      final rawLawYears =
+          await _lawYearRepository.get(_lawId, _kPageSize, _page + 1);
       final hasMore = rawLawYears.length == _kPageSize;
       var lawYears = _rawDataMapper(rawLawYears);
       if (hasMore) {

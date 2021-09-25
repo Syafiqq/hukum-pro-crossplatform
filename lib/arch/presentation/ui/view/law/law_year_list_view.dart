@@ -134,7 +134,7 @@ class _LawYearListStatefulViewState extends State<_LawYearListStatefulView> {
   }
 
   void _onScroll() {
-    if (_isBottom) context.read<LoadLawYearCubit>().loadMore("1");
+    if (_isBottom) context.read<LoadLawYearCubit>().loadMore();
   }
 
   bool get _isBottom {
