@@ -57,7 +57,7 @@ void main() {
         act: (cubit) => cubit.load(),
         expect: () => <Matcher>[
           isA<MenuLoading>(),
-          isA<MenuLoadSuccess>().having((e) => e.menus, 'version', isEmpty),
+          isA<MenuLoadSuccess>(),
         ],
       );
 
