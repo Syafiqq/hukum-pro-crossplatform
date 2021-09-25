@@ -65,7 +65,7 @@ class LoadLawYearCubit extends Cubit<LawYearLoadState> {
         state.state == LawYearLoadUiState.loadFailed ||
         state.state == LawYearLoadUiState.loading)) return;
 
-    if (!state.hasMore) return
+    if (!state.hasMore) return;
 
     emit(state.copyWith(state: LawYearLoadUiState.loadMore));
 
