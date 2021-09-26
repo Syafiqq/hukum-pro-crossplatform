@@ -20,7 +20,7 @@ class LawYearListView extends StatelessWidget {
     return BlocProvider(
       create: (BuildContext context) {
         return KiwiObjectResolver.getInstance().getLoadLawYearCubit()
-          ..resetAndLoad(lawId);
+          ..resetAndLoad();
       },
       child: SafeArea(
         child: Container(

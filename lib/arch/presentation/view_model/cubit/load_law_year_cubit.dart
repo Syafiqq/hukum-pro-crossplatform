@@ -1,19 +1,23 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hukum_pro/arch/domain/entity/law/law_year_entity.dart';
 import 'package:hukum_pro/arch/domain/repository/law_year_repository.dart';
+import 'package:hukum_pro/arch/domain/service/active_law_service.dart';
 import 'package:hukum_pro/arch/presentation/entity/law_year_list_data_presenter.dart';
 import 'package:hukum_pro/arch/presentation/view_model/state/law_year_load_state.dart';
 
 var _kPageSize = 20;
 
 class LoadLawYearCubit extends Cubit<LawYearLoadState> {
-  var startingStaticId = 1000;
   final LawYearRepository _lawYearRepository;
+  final ActiveLawService _activeLawService;
+
+  var startingStaticId = 1000;
   int _page = 0;
   String _lawId = "";
 
   LoadLawYearCubit(
     this._lawYearRepository,
+    this._activeLawService,
   ) : super(
           LawYearLoadState(
               state: LawYearLoadUiState.initial,
@@ -23,9 +27,14 @@ class LoadLawYearCubit extends Cubit<LawYearLoadState> {
               hasMore: true),
         );
 
-  Future<void> resetAndLoad(String lawId) async {
+  Future<void> resetAndLoad() async {
     if (!(state.state == LawYearLoadUiState.initial ||
         state.state == LawYearLoadUiState.loading)) return;
+
+    final lawId = _activeLawService.getActiveLawId();
+    if (lawId == null) {
+      return;
+    }
 
     _page = 0;
     _lawId = lawId;
