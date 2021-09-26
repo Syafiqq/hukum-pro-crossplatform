@@ -26,64 +26,90 @@ class LawScreen extends StatelessWidget {
           },
         ),
       ],
-      child: BlocListener<LoadLawMenuCubit, LawMenuNavigationUiState>(
-        listener: (context, state) {
-          state.maybeWhen(
-            loadFailed: () {
-              CommonDialog.show(context,
-                      description: 'Failed to load menu',
-                      primaryAction: 'Retry',
-                      primaryStyle: ButtonCtaType.solid(
-                        false,
-                        AppColor.secondary,
-                        AppColor.textSecondary,
-                      ),
-                      isClosable: false,
-                      dismissOnTouchOutside: false)
-                  .then(
-                (value) => context.read<LoadLawMenuCubit>().load(),
-              );
-            },
-            orElse: () {},
-          );
-        },
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text('Page title'),
-          ),
-          drawer: SizedBox(
-            width: min(
-              max(
-                256,
-                MediaQuery.of(context).size.width * 0.75,
-              ),
-              320,
-            ), // 75% of screen will be occupied
-            child: Drawer(
-              child: SafeArea(
-                child: LawMenuNavigationView(),
-              ),
+      child: _LawScreenStateful(),
+    );
+  }
+}
+
+class _LawScreenStateful extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _LawScreenStatefulState();
+}
+
+class _LawScreenStatefulState extends State<_LawScreenStateful> {
+  var _title = "Hukum Pro";
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<LoadLawMenuCubit, LawMenuNavigationUiState>(
+      listener: (context, state) {
+        state.maybeWhen(
+          loadFailed: () {
+            CommonDialog.show(context,
+                    description: 'Failed to load menu',
+                    primaryAction: 'Retry',
+                    primaryStyle: ButtonCtaType.solid(
+                      false,
+                      AppColor.secondary,
+                      AppColor.textSecondary,
+                    ),
+                    isClosable: false,
+                    dismissOnTouchOutside: false)
+                .then(
+              (value) => context.read<LoadLawMenuCubit>().load(),
+            );
+          },
+          loadSuccess: (_, selected) {
+            if (selected == null) {
+            } else if (selected.type == LawMenuOrderDataPresenterType.search) {
+              setState(() {
+                _title = "Pencarian";
+              });
+            } else if (selected.type == LawMenuOrderDataPresenterType.law) {
+              setState(() {
+                _title = selected.name;
+              });
+            }
+            return buildEmptyStateView(context);
+          },
+          orElse: () {},
+        );
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(_title),
+        ),
+        drawer: SizedBox(
+          width: min(
+            max(
+              256,
+              MediaQuery.of(context).size.width * 0.75,
+            ),
+            320,
+          ), // 75% of screen will be occupied
+          child: Drawer(
+            child: SafeArea(
+              child: LawMenuNavigationView(),
             ),
           ),
-          body: BlocBuilder<LoadLawMenuCubit, LawMenuNavigationUiState>(
-            builder: (context, state) {
-              return state.maybeWhen(
-                loadSuccess: (_, selected) {
-                  if (selected == null) {
-                    return buildEmptyStateView(context);
-                  }
-                  if (selected.type == LawMenuOrderDataPresenterType.search) {
-                    return Container();
-                  }
-                  if (selected.type == LawMenuOrderDataPresenterType.law) {
-                    return LawYearListView();
-                  }
+        ),
+        body: BlocBuilder<LoadLawMenuCubit, LawMenuNavigationUiState>(
+          builder: (context, state) {
+            return state.maybeWhen(
+              loadSuccess: (_, selected) {
+                if (selected == null) {
                   return buildEmptyStateView(context);
-                },
-                orElse: () => buildEmptyStateView(context),
-              );
-            },
-          ),
+                } else if (selected.type ==
+                    LawMenuOrderDataPresenterType.search) {
+                  return Container();
+                } else if (selected.type == LawMenuOrderDataPresenterType.law) {
+                  return LawYearListView();
+                }
+                return buildEmptyStateView(context);
+              },
+              orElse: () => buildEmptyStateView(context),
+            );
+          },
         ),
       ),
     );
