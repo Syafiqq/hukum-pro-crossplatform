@@ -1,18 +1,21 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hukum_pro/arch/domain/entity/law/law_menu_order_entity.dart';
 import 'package:hukum_pro/arch/domain/repository/law_menu_order_repository.dart';
+import 'package:hukum_pro/arch/domain/service/active_law_service.dart';
 import 'package:hukum_pro/arch/presentation/entity/law_menu_order_data_presenter.dart';
 import 'package:hukum_pro/arch/presentation/view_model/state/law_menu_navigation_state.dart';
 import 'package:flinq/flinq.dart';
 
 class LoadLawMenuCubit extends Cubit<LawMenuNavigationUiState> {
   final LawMenuOrderRepository _lawMenuOrderRepository;
+  final ActiveLawService _activeLawService;
 
   LoadLawMenuCubit(
     this._lawMenuOrderRepository,
+    this._activeLawService,
   ) : super(LawMenuNavigationUiState.initial());
 
-  Future<void> load({ bool initializeSelect = true }) async {
+  Future<void> load({bool initializeSelect = true}) async {
     if (!(state is InitialState || state is MenuLoadFailed)) return;
 
     emit(LawMenuNavigationUiState.loading());

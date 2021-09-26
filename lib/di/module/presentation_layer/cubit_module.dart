@@ -1,5 +1,6 @@
 import 'package:hukum_pro/arch/domain/repository/law_menu_order_repository.dart';
 import 'package:hukum_pro/arch/domain/repository/law_year_repository.dart';
+import 'package:hukum_pro/arch/domain/service/active_law_service.dart';
 import 'package:hukum_pro/arch/domain/use_case/check_version_first_time_use_case.dart';
 import 'package:hukum_pro/arch/domain/use_case/reinitialize_whole_data_use_case.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/check_local_version_and_initialize_cubit.dart';
@@ -27,6 +28,7 @@ class CubitModule {
     container.registerFactory<LoadLawMenuCubit>(
       (c) => LoadLawMenuCubit(
         c.resolve<LawMenuOrderRepository>(),
+        c.resolve<ActiveLawService>(),
       ),
     );
     container.registerFactory<LoadLawYearCubit>(
