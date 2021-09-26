@@ -14,6 +14,10 @@ class ActiveLawServiceImpl implements ActiveLawService {
 
   @override
   changeLawId({required String to}) {
+    if (_activeLawId == to) {
+      return;
+    }
+
     _activeLawId = to;
     _activeYear = null;
     _activeLawMenuEntity = null;
