@@ -73,7 +73,7 @@ class LawScreen extends StatelessWidget {
                     return Container();
                   }
                   if (selected.type == LawMenuOrderDataPresenterType.law) {
-                    return LawYearListView(selected.id);
+                    return LawYearListView();
                   }
                   return buildEmptyStateView(context);
                 },

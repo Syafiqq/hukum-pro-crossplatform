@@ -11,10 +11,6 @@ import 'package:loading_indicator/loading_indicator.dart';
 
 //
 class LawYearListView extends StatelessWidget {
-  final String lawId;
-
-  LawYearListView(this.lawId) : super();
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
