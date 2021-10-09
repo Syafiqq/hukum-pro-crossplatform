@@ -49,36 +49,48 @@ void main() async {
 
     group('getLawsByYearWithPagination', () {
       test('it should get 1 laws', () async {
-        var entities = [1, 2].map((id) => LawYearEntity()..year = 1).toList();
+        var entities = [1, 2]
+            .map((id) => LawYearEntity()
+              ..year = 1
+              ..category = '1')
+            .toList();
 
         var box = store.box<LawYearEntity>();
         box.putMany(entities);
 
-        var laws = await datasource.getLawYearsWithPagination(1, 1);
+        var laws = await datasource.getLawYearsWithPagination('1', 1, 1);
 
         expect(laws.length, 1);
         expect(laws.first.year, 1);
       });
 
       test('it should get 2 laws', () async {
-        var entities = [1, 2].map((id) => LawYearEntity()..year = 1).toList();
+        var entities = [1, 2]
+            .map((id) => LawYearEntity()
+              ..year = 1
+              ..category = '1')
+            .toList();
 
         var box = store.box<LawYearEntity>();
         box.putMany(entities);
 
-        var laws = await datasource.getLawYearsWithPagination(1, 2);
+        var laws = await datasource.getLawYearsWithPagination('1', 1, 2);
 
         expect(laws.length, 1);
         expect(laws.first.year, 1);
       });
 
       test('it should get empty laws', () async {
-        var entities = [1, 2].map((id) => LawYearEntity()..year = 1).toList();
+        var entities = [1, 2]
+            .map((id) => LawYearEntity()
+              ..year = 1
+              ..category = '1')
+            .toList();
 
         var box = store.box<LawYearEntity>();
         box.putMany(entities);
 
-        var laws = await datasource.getLawYearsWithPagination(1, 10);
+        var laws = await datasource.getLawYearsWithPagination('1', 1, 10);
 
         expect(laws.length, 0);
       });
@@ -110,23 +122,31 @@ void main() async {
 
     group('getLawYearByYear', () {
       test('it should get law', () async {
-        var entities = [1, 2].map((id) => LawYearEntity()..year = id).toList();
+        var entities = [1, 2]
+            .map((id) => LawYearEntity()
+              ..year = id
+              ..category = '1')
+            .toList();
 
         var box = store.box<LawYearEntity>();
         box.putMany(entities);
 
-        var law = await datasource.getLawYearByYear(1);
+        var law = await datasource.getLawYearByYear('1', 1);
 
         expect(law, isNotNull);
       });
 
       test('it should get null', () async {
-        var entities = [1, 2].map((id) => LawYearEntity()..year = id).toList();
+        var entities = [1, 2]
+            .map((id) => LawYearEntity()
+              ..year = id
+              ..category = '1')
+            .toList();
 
         var box = store.box<LawYearEntity>();
         box.putMany(entities);
 
-        var law = await datasource.getLawYearByYear(3);
+        var law = await datasource.getLawYearByYear('1', 3);
 
         expect(law, isNull);
       });

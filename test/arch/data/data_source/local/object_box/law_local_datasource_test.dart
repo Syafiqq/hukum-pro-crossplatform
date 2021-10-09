@@ -56,13 +56,14 @@ void main() async {
         var entities = [1, 2]
             .map((id) => LawEntity()
               ..remoteId = id.toString()
-              ..year = id)
+              ..year = id
+              ..category = '1')
             .toList();
 
         var box = store.box<LawEntity>();
         box.putMany(entities);
 
-        var laws = await datasource.getLawsByYear(1);
+        var laws = await datasource.getLawsByYear('1', 1);
 
         expect(laws.length, 1);
       });
@@ -71,13 +72,14 @@ void main() async {
         var entities = [1, 2]
             .map((id) => LawEntity()
               ..remoteId = id.toString()
-              ..year = id)
+              ..year = id
+              ..category = '1')
             .toList();
 
         var box = store.box<LawEntity>();
         box.putMany(entities);
 
-        var laws = await datasource.getLawsByYear(3);
+        var laws = await datasource.getLawsByYear('1', 3);
 
         expect(laws.length, 0);
       });
@@ -88,13 +90,14 @@ void main() async {
         var entities = [1, 2]
             .map((id) => LawEntity()
               ..remoteId = id.toString()
-              ..year = 1)
+              ..year = 1
+              ..category = '1')
             .toList();
 
         var box = store.box<LawEntity>();
         box.putMany(entities);
 
-        var laws = await datasource.getLawsByYearWithPagination(1, 1, 1);
+        var laws = await datasource.getLawsByYearWithPagination('1', 1, 1, 1);
 
         expect(laws.length, 1);
         expect(laws.first.remoteId, '1');
@@ -104,13 +107,14 @@ void main() async {
         var entities = [1, 2]
             .map((id) => LawEntity()
               ..remoteId = id.toString()
-              ..year = 1)
+              ..year = 1
+              ..category = '1')
             .toList();
 
         var box = store.box<LawEntity>();
         box.putMany(entities);
 
-        var laws = await datasource.getLawsByYearWithPagination(1, 1, 2);
+        var laws = await datasource.getLawsByYearWithPagination('1', 1, 1, 2);
 
         expect(laws.length, 1);
         expect(laws.first.remoteId, '2');
@@ -120,13 +124,14 @@ void main() async {
         var entities = [1, 2]
             .map((id) => LawEntity()
               ..remoteId = id.toString()
-              ..year = 1)
+              ..year = 1
+              ..category = '1')
             .toList();
 
         var box = store.box<LawEntity>();
         box.putMany(entities);
 
-        var laws = await datasource.getLawsByYearWithPagination(1, 1, 10);
+        var laws = await datasource.getLawsByYearWithPagination('1', 1, 1, 10);
 
         expect(laws.length, 0);
       });

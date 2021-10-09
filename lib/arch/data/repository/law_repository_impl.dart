@@ -25,14 +25,15 @@ class LawRepositoryImpl implements LawRepository {
       (await localDatasource.getLawByRemoteId(remoteId))?.toDomain();
 
   @override
-  Future<List<LawEntity>> getByYear(int year, int limit, int page) async {
-    final laws =
-        await localDatasource.getLawsByYearWithPagination(year, limit, page);
+  Future<List<LawEntity>> getByYear(
+      String category, int year, int limit, int page) async {
+    final laws = await localDatasource.getLawsByYearWithPagination(
+        category, year, limit, page);
     return laws.map((e) => e.toDomain()).toList();
   }
 }
 
-extension DomainCodable on LawEntity {
+extension ExtensionDomainLawEntity on LawEntity {
   DataLawEntity.LawEntity toData() => DataLawEntity.LawEntity()
     ..remoteId = remoteId
     ..year = year ?? 0
@@ -40,11 +41,11 @@ extension DomainCodable on LawEntity {
     ..description = description
     ..status = status
     ..reference = reference
-    ..category = category
+    ..category = category ?? ""
     ..dateCreated = dateCreated;
 }
 
-extension DataCodable on DataLawEntity.LawEntity {
+extension ExtensionDataLawEntity on DataLawEntity.LawEntity {
   LawEntity toDomain() => LawEntity(id, remoteId, year, no, description, status,
       reference, category, dateCreated);
 }

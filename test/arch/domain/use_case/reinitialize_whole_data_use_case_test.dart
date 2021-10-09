@@ -60,11 +60,11 @@ void main() {
       when(mockBulkLawsRepository.decodeFile(
               argThat(isA<File>().having((e) => e.path, 'path', '1'))))
           .thenAnswer((_) => Future.value(
-              [LawEntity(1, '1', 1, null, null, null, null, null, null)]));
+              [LawEntity(1, '1', 1, null, null, null, null, '1', null)]));
       when(mockBulkLawsRepository.decodeFile(
               argThat(isA<File>().having((e) => e.path, 'path', '2'))))
           .thenAnswer((_) => Future.value(
-              [LawEntity(2, '2', 2, null, null, null, null, null, null)]));
+              [LawEntity(2, '2', 2, null, null, null, null, '1', null)]));
       when(mockLawRepository.addAll(any)).thenAnswer((_) => Future.value(null));
       when(mockLawYearRepository.addAll(any))
           .thenAnswer((_) => Future.value(null));
@@ -125,16 +125,22 @@ void main() {
       ]);
 
       expect(verify(mockLawYearRepository.addAll(captureAny)).captured, [
-        [
-          isA<LawYearEntity>()
-              .having((e) => e.id, 'id', 1)
-              .having((e) => e.year, 'year', 1)
-              .having((e) => e.count, 'count', 1),
-          isA<LawYearEntity>()
-              .having((e) => e.id, 'id', 2)
-              .having((e) => e.year, 'year', 2)
-              .having((e) => e.count, 'count', 1)
-        ],
+        isA<Map<String, List<LawYearEntity>>>()
+            .having((map) => map.length, 'length', 1)
+            .having((map) => map.keys, 'keys', ['1']).having(
+          (map) => map['1'],
+          'value at key 1',
+          [
+            isA<LawYearEntity>()
+                .having((e) => e.id, 'id', 0)
+                .having((e) => e.year, 'year', 1)
+                .having((e) => e.count, 'count', 1),
+            isA<LawYearEntity>()
+                .having((e) => e.id, 'id', 0)
+                .having((e) => e.year, 'year', 2)
+                .having((e) => e.count, 'count', 1)
+          ],
+        )
       ]);
     });
 
@@ -153,11 +159,11 @@ void main() {
       when(mockBulkLawsRepository.decodeFile(
               argThat(isA<File>().having((e) => e.path, 'path', '1'))))
           .thenAnswer((_) => Future.value(
-              [LawEntity(1, '1', 1, null, null, null, null, null, null)]));
+              [LawEntity(1, '1', 1, null, null, null, null, '1', null)]));
       when(mockBulkLawsRepository.decodeFile(
               argThat(isA<File>().having((e) => e.path, 'path', '2'))))
           .thenAnswer((_) => Future.value(
-              [LawEntity(2, '2', 2, null, null, null, null, null, null)]));
+              [LawEntity(2, '2', 2, null, null, null, null, '1', null)]));
       when(mockLawRepository.addAll(any)).thenAnswer((_) => Future.value(null));
       when(mockLawYearRepository.addAll(any))
           .thenAnswer((_) => Future.value(null));
@@ -218,16 +224,22 @@ void main() {
       ]);
 
       expect(verify(mockLawYearRepository.addAll(captureAny)).captured, [
-        [
-          isA<LawYearEntity>()
-              .having((e) => e.id, 'id', 1)
-              .having((e) => e.year, 'year', 1)
-              .having((e) => e.count, 'count', 1),
-          isA<LawYearEntity>()
-              .having((e) => e.id, 'id', 2)
-              .having((e) => e.year, 'year', 2)
-              .having((e) => e.count, 'count', 1)
-        ],
+        isA<Map<String, List<LawYearEntity>>>()
+            .having((map) => map.length, 'length', 1)
+            .having((map) => map.keys, 'keys', ['1']).having(
+          (map) => map['1'],
+          'value at key 1',
+          [
+            isA<LawYearEntity>()
+                .having((e) => e.id, 'id', 0)
+                .having((e) => e.year, 'year', 1)
+                .having((e) => e.count, 'count', 1),
+            isA<LawYearEntity>()
+                .having((e) => e.id, 'id', 0)
+                .having((e) => e.year, 'year', 2)
+                .having((e) => e.count, 'count', 1)
+          ],
+        )
       ]);
     });
 
@@ -248,11 +260,11 @@ void main() {
       when(mockBulkLawsRepository.decodeFile(
               argThat(isA<File>().having((e) => e.path, 'path', '1'))))
           .thenAnswer((_) => Future.value(
-              [LawEntity(1, '1', 1, null, null, null, null, null, null)]));
+              [LawEntity(1, '1', 1, null, null, null, null, '1', null)]));
       when(mockBulkLawsRepository.decodeFile(
               argThat(isA<File>().having((e) => e.path, 'path', '2'))))
           .thenAnswer((_) => Future.value(
-              [LawEntity(2, '2', 2, null, null, null, null, null, null)]));
+              [LawEntity(2, '2', 2, null, null, null, null, '1', null)]));
       when(mockLawRepository.addAll(any)).thenAnswer((_) => Future.value(null));
       when(mockLawYearRepository.addAll(any))
           .thenAnswer((_) => Future.value(null));
@@ -313,16 +325,22 @@ void main() {
       ]);
 
       expect(verify(mockLawYearRepository.addAll(captureAny)).captured, [
-        [
-          isA<LawYearEntity>()
-              .having((e) => e.id, 'id', 2)
-              .having((e) => e.year, 'year', 2)
-              .having((e) => e.count, 'count', 1),
-          isA<LawYearEntity>()
-              .having((e) => e.id, 'id', 1)
-              .having((e) => e.year, 'year', 1)
-              .having((e) => e.count, 'count', 1),
-        ],
+        isA<Map<String, List<LawYearEntity>>>()
+            .having((map) => map.length, 'length', 1)
+            .having((map) => map.keys, 'keys', ['1']).having(
+          (map) => map['1'],
+          'value at key 1',
+          [
+            isA<LawYearEntity>()
+                .having((e) => e.id, 'id', 0)
+                .having((e) => e.year, 'year', 2)
+                .having((e) => e.count, 'count', 1),
+            isA<LawYearEntity>()
+                .having((e) => e.id, 'id', 0)
+                .having((e) => e.year, 'year', 1)
+                .having((e) => e.count, 'count', 1)
+          ],
+        ),
       ]);
     });
 

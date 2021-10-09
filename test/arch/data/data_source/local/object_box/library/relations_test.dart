@@ -1,8 +1,9 @@
 import 'package:objectbox/src/relations/to_many.dart';
 import 'package:test/test.dart';
 
-import '../../../../../../objectbox.g.dart';
 import 'entity.dart';
+import 'entity2.dart';
+import '../../../../../../objectbox.g.dart';
 import 'test_env.dart';
 
 void main() {
@@ -366,6 +367,15 @@ void main() {
       expect(b[1]!.testEntities.map(strings), sameAsList(['bar2']));
     });
 
+    test('put on ToMany side before loading', () {
+      // Test [ToMany._addedBeforeLoad] field - there was previously an issue
+      // causing the backlinked item to be shown twice in ToMany.
+      final b = RelatedEntityB();
+      b.testEntities.add(TestEntity());
+      boxB.put(b);
+      expect(b.testEntities.length, 1);
+    });
+
     test('query', () {
       final qb = boxB.query();
       qb.backlink(TestEntity_.relB, TestEntity_.tString.startsWith('bar'));
@@ -443,6 +453,29 @@ void main() {
       query.close();
     });
   });
+
+  test('trees', () {
+    final box = env.store.box<TreeNode>();
+    final root = TreeNode('R');
+    root.children.addAll([TreeNode('R.1'), TreeNode('R.2')]);
+    root.children[1].children.add(TreeNode('R.2.1'));
+    box.put(root);
+    expect(box.count(), 4);
+    final read = box.get(1)!;
+    root.expectSameAs(read);
+  });
+
+  test('cycles', () {
+    final a = RelatedEntityA();
+    final b = RelatedEntityB();
+    a.relB.target = b;
+    b.relA.target = a;
+    env.store.box<RelatedEntityA>().put(a);
+
+    final readB = env.store.box<RelatedEntityB>().get(b.id!)!;
+    expect(a.relB.targetId, readB.id!);
+    expect(readB.relA.target!.id, a.id);
+  });
 }
 
 int toInt(dynamic e) => e.tInt as int;
@@ -455,4 +488,17 @@ void check<E>(ToMany<E> rel,
   expect(relT.items.map(toInt), unorderedEquals(items));
   expect(relT.added.map(toInt), unorderedEquals(added));
   expect(relT.removed.map(toInt), unorderedEquals(removed));
+}
+
+extension TreeNodeEquals on TreeNode {
+  void expectSameAs(TreeNode other) {
+    printOnFailure('Comparing tree nodes $path and ${other.path}');
+    expect(id, other.id);
+    expect(path, other.path);
+    expect(parent.targetId, other.parent.targetId);
+    expect(children.length, other.children.length);
+    for (var i = 0; i < children.length; i++) {
+      children[i].expectSameAs(other.children[i]);
+    }
+  }
 }

@@ -7,8 +7,10 @@ class LawYearEntity extends Equatable {
   @Id(assignable: false)
   int id = 0;
   @Index()
-  late int year;
+  int year = 0;
   int count = 0;
+  @Index()
+  String category = "";
 
   @override
   List<Object?> get props => [

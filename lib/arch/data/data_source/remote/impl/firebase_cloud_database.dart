@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_database_platform_interface/firebase_database_platform_interface.dart';
 import 'package:flinq/flinq.dart';
 import 'package:hukum_pro/arch/data/data_source/remote/contract/law_menu_order_remote_datasource.dart';
 import 'package:hukum_pro/arch/data/data_source/remote/contract/version_remote_datasource.dart';
@@ -40,6 +41,9 @@ class FirebaseCloudDatabase
     } on DatabaseError catch (e) {
       throw DataFetchFailureException(
           DefinedException(null, null, '00C-${e.code}', e.message), null);
+    } on DatabaseErrorPlatform catch (e) {
+      throw DataFetchFailureException(
+          DefinedException(null, null, '00C-${e.code}', e.message), null);
     }
   }
 
@@ -75,6 +79,9 @@ class FirebaseCloudDatabase
     } on FirebaseException catch (e) {
       throw DataFetchFailureException(e, null);
     } on DatabaseError catch (e) {
+      throw DataFetchFailureException(
+          DefinedException(null, null, '00C-${e.code}', e.message), null);
+    } on DatabaseErrorPlatform catch (e) {
       throw DataFetchFailureException(
           DefinedException(null, null, '00C-${e.code}', e.message), null);
     }

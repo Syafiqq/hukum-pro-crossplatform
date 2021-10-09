@@ -24,7 +24,7 @@ class SplashView extends StatelessWidget {
                   Alignment.center,
               child: Image(
                 image: AssetImage('res/images/ic_hukum_pro_logo_2_192.png'),
-                color: Color(0xFF313131),
+                color: AppColor.textOnLightPrimary,
                 width: 128,
                 height: 128,
               ),
@@ -32,7 +32,10 @@ class SplashView extends StatelessWidget {
           ),
           Text(
             'Hukum Pro',
-            style: AppFontTitle.extraBold.font(28, Color(0xFF313131)),
+            style: AppFontTitle.extraBold.font(
+              28,
+              color: AppColor.textOnLightPrimary,
+            ),
           ),
           Container(
             height: 36,
@@ -113,7 +116,10 @@ class SplashView extends StatelessWidget {
         ),
         Text(
           text,
-          style: AppFontSubtitle.semiBold.font(10, AppColor.textOnLightPrimary),
+          style: AppFontSubtitle.semiBold.font(
+            10,
+            color: AppColor.textOnLightPrimary,
+          ),
         ),
       ],
     );

@@ -5,7 +5,8 @@ abstract class LawRepository {
 
   Future<void> addAll(List<LawEntity> laws);
 
-  Future<List<LawEntity>> getByYear(int year, int limit, int page);
+  Future<List<LawEntity>> getByYear(
+      String category, int year, int limit, int page);
 
   Future<LawEntity?> getById(int id);
 

@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hukum_pro/arch/data/data_source/local/contract/law_year_local_datasource.dart';
 import 'package:hukum_pro/arch/data/data_source/local/entity/law_year_entity.dart'
-as DataLawYearEntity;
+    as DataLawYearEntity;
 import 'package:hukum_pro/arch/data/repository/law_year_repository_impl.dart';
 import 'package:hukum_pro/arch/domain/entity/law/law_year_entity.dart';
 import 'package:hukum_pro/arch/domain/repository/law_year_repository.dart';
@@ -42,22 +42,27 @@ void main() {
         when(mockLawYearLocalDatasource.addLawYears(any))
             .thenAnswer((realInvocation) => Future.value(null));
 
-        await repository.addAll(entities);
+        await repository.addAll({'1': entities});
 
-        verify(mockLawYearLocalDatasource.addLawYears(
-                entities.map((e) => e.toData()).toList(growable: false)))
+        verify(mockLawYearLocalDatasource.addLawYears([0, 1]
+                .map((e) => DataLawYearEntity.LawYearEntity()
+                  ..id = 0
+                  ..year = 1
+                  ..count = 1
+                  ..category = '1')
+                .toList(growable: false)))
             .called(1);
       });
     });
 
     group('get', () {
       test('it should call datasource getLawYearsWithPagination', () async {
-        when(mockLawYearLocalDatasource.getLawYearsWithPagination(any, any))
+        when(mockLawYearLocalDatasource.getLawYearsWithPagination(any, any, any))
             .thenAnswer((realInvocation) => Future.value([]));
 
-        await repository.get(1, 1);
+        await repository.get('1', 1, 1);
 
-        verify(mockLawYearLocalDatasource.getLawYearsWithPagination(1, 1))
+        verify(mockLawYearLocalDatasource.getLawYearsWithPagination('1', 1, 1))
             .called(1);
       });
     });
