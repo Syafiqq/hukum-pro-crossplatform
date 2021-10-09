@@ -2,12 +2,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hukum_pro/arch/domain/repository/law_repository.dart';
 import 'package:hukum_pro/arch/domain/service/active_law_service.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_menu_cubit.dart';
-import 'package:hukum_pro/arch/presentation/view_model/cubit/load_per_law_year_cubit.dart';
+import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_per_year_cubit.dart';
 import 'package:hukum_pro/arch/presentation/view_model/state/law_per_year_load_state.dart';
 import 'package:hukum_pro/arch/presentation/view_model/state/law_year_load_state.dart';
 import 'package:mockito/annotations.dart';
 
-import 'load_per_law_year_cubit_test.mocks.dart';
+import 'load_law_per_year_cubit_test.mocks.dart';
 
 @GenerateMocks([], customMocks: [
   MockSpec<LawRepository>(
