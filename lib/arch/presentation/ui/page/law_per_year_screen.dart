@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hukum_pro/arch/presentation/ui/view/law/law_per_year_list_view.dart';
 
 class LawPerYearScreen extends StatelessWidget {
   @override
@@ -21,7 +22,7 @@ class _LawPerYearScreenStatefulState extends State<_LawPerYearScreenStateful> {
       appBar: AppBar(
         title: Text(_title),
       ),
-      body: Container(),
+      body: LawPerYearListView(),
     );
   }
 }
