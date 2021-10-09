@@ -77,9 +77,12 @@ class LoadLawYearCubit extends Cubit<LawYearLoadState> {
   }
 
   Future<void> loadMore() async {
-    if (!(state.state == LawYearLoadUiState.loadSuccess ||
-        state.state == LawYearLoadUiState.loadFailed ||
-        state.state == LawYearLoadUiState.loading)) return;
+    if (![
+      LawYearLoadUiState.loadSuccess,
+      LawYearLoadUiState.loadFailed,
+    ].contains(state.state)) {
+      return;
+    }
 
     if (!state.hasMore) return;
 
