@@ -1,0 +1,15 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:hukum_pro/arch/presentation/entity/law_per_year_data_presenter.dart';
+
+import 'law_year_load_state.dart';
+
+part 'law_per_year_load_state.freezed.dart';
+
+@freezed
+class LawPerYearLoadState with _$LawPerYearLoadState {
+  factory LawPerYearLoadState({
+    @Default(LawYearLoadUiState.initial) LawYearLoadUiState state,
+    @Default([]) List<LawPerYearDataPresenter> laws,
+    @Default(true) bool hasMore,
+  }) = _LawPerYearLoadState;
+}
