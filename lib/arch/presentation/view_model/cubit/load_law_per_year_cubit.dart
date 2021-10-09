@@ -3,6 +3,7 @@ import 'package:hukum_pro/arch/domain/entity/law/law_entity.dart';
 import 'package:hukum_pro/arch/domain/repository/law_repository.dart';
 import 'package:hukum_pro/arch/domain/service/active_law_service.dart';
 import 'package:hukum_pro/arch/presentation/entity/law_per_year_data_presenter.dart';
+import 'package:hukum_pro/arch/presentation/state/load_more_data_fetcher_state.dart';
 import 'package:hukum_pro/arch/presentation/view_model/state/law_per_year_load_state.dart';
 import 'package:hukum_pro/arch/presentation/view_model/state/law_year_load_state.dart';
 
@@ -22,7 +23,7 @@ class LoadLawPerYearCubit extends Cubit<LawPerYearLoadState> {
     this._activeLawService,
   ) : super(
           LawPerYearLoadState(
-            state: LawYearLoadUiState.initial,
+            state: LoadMoreDataFetcherState.initial,
             laws: List.empty(
               growable: true,
             ),
@@ -32,10 +33,10 @@ class LoadLawPerYearCubit extends Cubit<LawPerYearLoadState> {
 
   Future<void> resetAndLoad() async {
     if (![
-      LawYearLoadUiState.initial,
-      LawYearLoadUiState.loadSuccess,
-      LawYearLoadUiState.loadFailed,
-      LawYearLoadUiState.reset,
+      LoadMoreDataFetcherState.initial,
+      LoadMoreDataFetcherState.loadSuccess,
+      LoadMoreDataFetcherState.loadFailed,
+      LoadMoreDataFetcherState.reset,
     ].contains(state.state)) {
       return;
     }
@@ -51,12 +52,12 @@ class LoadLawPerYearCubit extends Cubit<LawPerYearLoadState> {
     _lawYear = lawYear;
     emit(
       state.copyWith(
-        state: LawYearLoadUiState.reset,
+        state: LoadMoreDataFetcherState.reset,
         laws: [],
         hasMore: true,
       ),
     );
-    emit(state.copyWith(state: LawYearLoadUiState.loading));
+    emit(state.copyWith(state: LoadMoreDataFetcherState.loading));
 
     try {
       final rawLawPerYears = await _lawYearRepository.getByYear(
@@ -73,28 +74,28 @@ class LoadLawPerYearCubit extends Cubit<LawPerYearLoadState> {
 
       emit(
         state.copyWith(
-          state: LawYearLoadUiState.loadSuccess,
+          state: LoadMoreDataFetcherState.loadSuccess,
           laws: [...state.laws, ...laws],
           hasMore: hasMore,
         ),
       );
     } on Exception catch (e) {
       print(e);
-      emit(state.copyWith(state: LawYearLoadUiState.loadFailed));
+      emit(state.copyWith(state: LoadMoreDataFetcherState.loadFailed));
     }
   }
 
   Future<void> loadMore() async {
     if (![
-      LawYearLoadUiState.loadSuccess,
-      LawYearLoadUiState.loadFailed,
+      LoadMoreDataFetcherState.loadSuccess,
+      LoadMoreDataFetcherState.loadFailed,
     ].contains(state.state)) {
       return;
     }
 
     if (!state.hasMore) return;
 
-    emit(state.copyWith(state: LawYearLoadUiState.loadMore));
+    emit(state.copyWith(state: LoadMoreDataFetcherState.loadMore));
 
     try {
       final rawLawPerYears = await _lawYearRepository.getByYear(
@@ -115,14 +116,14 @@ class LoadLawPerYearCubit extends Cubit<LawPerYearLoadState> {
       _page += 1;
       emit(
         state.copyWith(
-          state: LawYearLoadUiState.loadSuccess,
+          state: LoadMoreDataFetcherState.loadSuccess,
           laws: [...currentLawPerYear, ...laws],
           hasMore: hasMore,
         ),
       );
     } on Exception catch (e) {
       print(e);
-      emit(state.copyWith(state: LawYearLoadUiState.loadFailed));
+      emit(state.copyWith(state: LoadMoreDataFetcherState.loadFailed));
     }
   }
 

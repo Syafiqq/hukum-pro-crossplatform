@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hukum_pro/arch/domain/entity/law/law_year_entity.dart';
 import 'package:hukum_pro/arch/presentation/entity/law_year_list_data_presenter.dart';
+import 'package:hukum_pro/arch/presentation/state/load_more_data_fetcher_state.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_year_cubit.dart';
 import 'package:hukum_pro/arch/presentation/view_model/state/law_year_load_state.dart';
 import 'package:hukum_pro/common/ui/app_color.dart';
@@ -59,10 +60,10 @@ class _LawYearListStatefulViewState extends State<_LawYearListStatefulView> {
       },
       builder: (context, state) {
         switch (state.state) {
-          case LawYearLoadUiState.loading:
+          case LoadMoreDataFetcherState.loading:
             return buildSpinner(context);
-          case LawYearLoadUiState.loadSuccess:
-          case LawYearLoadUiState.loadMore:
+          case LoadMoreDataFetcherState.loadSuccess:
+          case LoadMoreDataFetcherState.loadMore:
             return ListView.separated(
               itemCount: state.lawYears.length,
               itemBuilder: (BuildContext context, int index) {

@@ -2,6 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hukum_pro/arch/domain/repository/law_repository.dart';
 import 'package:hukum_pro/arch/domain/service/active_law_service.dart';
+import 'package:hukum_pro/arch/presentation/state/load_more_data_fetcher_state.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_menu_cubit.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_per_year_cubit.dart';
 import 'package:hukum_pro/arch/presentation/view_model/state/law_per_year_load_state.dart';
@@ -37,7 +38,7 @@ void main() {
               .having(
                 (state) => state.state,
                 'state',
-                LawYearLoadUiState.initial,
+                LoadMoreDataFetcherState.initial,
               )
               .having(
                 (state) => state.laws,
@@ -71,17 +72,17 @@ void main() {
                     isA<LawPerYearLoadState>().having(
                       (state) => state.state,
                       'state',
-                      LawYearLoadUiState.reset,
+                      LoadMoreDataFetcherState.reset,
                     ),
                     isA<LawPerYearLoadState>().having(
                       (state) => state.state,
                       'state',
-                      LawYearLoadUiState.loading,
+                      LoadMoreDataFetcherState.loading,
                     ),
                     isA<LawPerYearLoadState>().having(
                       (state) => state.state,
                       'state',
-                      LawYearLoadUiState.loadSuccess,
+                      LoadMoreDataFetcherState.loadSuccess,
                     ),
                   ],
         );
@@ -108,7 +109,7 @@ void main() {
           () {
         testSuccessFlow(
           initial: LawPerYearLoadState(
-            state: LawYearLoadUiState.initial,
+            state: LoadMoreDataFetcherState.initial,
             laws: [],
             hasMore: true,
           ),
@@ -120,7 +121,7 @@ void main() {
           () {
         testSuccessFlow(
           initial: LawPerYearLoadState(
-            state: LawYearLoadUiState.loadSuccess,
+            state: LoadMoreDataFetcherState.loadSuccess,
             laws: [],
             hasMore: true,
           ),
@@ -132,7 +133,7 @@ void main() {
           () {
         testSuccessFlow(
           initial: LawPerYearLoadState(
-            state: LawYearLoadUiState.loadFailed,
+            state: LoadMoreDataFetcherState.loadFailed,
             laws: [],
             hasMore: true,
           ),
@@ -142,7 +143,7 @@ void main() {
       test('it should produce (loading -> load success) from reset', () {
         testSuccessFlow(
           initial: LawPerYearLoadState(
-            state: LawYearLoadUiState.reset,
+            state: LoadMoreDataFetcherState.reset,
             laws: [],
             hasMore: true,
           ),
@@ -150,12 +151,12 @@ void main() {
             isA<LawPerYearLoadState>().having(
               (state) => state.state,
               'state',
-              LawYearLoadUiState.loading,
+              LoadMoreDataFetcherState.loading,
             ),
             isA<LawPerYearLoadState>().having(
               (state) => state.state,
               'state',
-              LawYearLoadUiState.loadSuccess,
+              LoadMoreDataFetcherState.loadSuccess,
             ),
           ],
         );
@@ -164,7 +165,7 @@ void main() {
       test('it should do nothing from loading', () {
         testEmptyFlow(
           initial: LawPerYearLoadState(
-            state: LawYearLoadUiState.loading,
+            state: LoadMoreDataFetcherState.loading,
             laws: [],
             hasMore: true,
           ),
@@ -174,7 +175,7 @@ void main() {
       test('it should do nothing from loadMore', () {
         testEmptyFlow(
           initial: LawPerYearLoadState(
-            state: LawYearLoadUiState.loadMore,
+            state: LoadMoreDataFetcherState.loadMore,
             laws: [],
             hasMore: true,
           ),
@@ -247,12 +248,12 @@ void main() {
                     isA<LawPerYearLoadState>().having(
                       (state) => state.state,
                       'state',
-                      LawYearLoadUiState.loadMore,
+                      LoadMoreDataFetcherState.loadMore,
                     ),
                     isA<LawPerYearLoadState>().having(
                       (state) => state.state,
                       'state',
-                      LawYearLoadUiState.loadSuccess,
+                      LoadMoreDataFetcherState.loadSuccess,
                     ),
                   ],
         );
@@ -278,7 +279,7 @@ void main() {
       test('it should produce empty from initial', () {
         testEmptyFlow(
           initial: LawPerYearLoadState(
-            state: LawYearLoadUiState.initial,
+            state: LoadMoreDataFetcherState.initial,
             laws: [],
             hasMore: true,
           ),
@@ -288,7 +289,7 @@ void main() {
       test('it should produce (loading -> load success) from loadSuccess', () {
         testSuccessFlow(
           initial: LawPerYearLoadState(
-            state: LawYearLoadUiState.loadSuccess,
+            state: LoadMoreDataFetcherState.loadSuccess,
             laws: [],
             hasMore: true,
           ),
@@ -298,7 +299,7 @@ void main() {
       test('it should produce (loading -> load success) from loadFailed', () {
         testSuccessFlow(
           initial: LawPerYearLoadState(
-            state: LawYearLoadUiState.loadFailed,
+            state: LoadMoreDataFetcherState.loadFailed,
             laws: [],
             hasMore: true,
           ),
@@ -308,7 +309,7 @@ void main() {
       test('it should produce (loading -> load success) from reset', () {
         testEmptyFlow(
           initial: LawPerYearLoadState(
-            state: LawYearLoadUiState.reset,
+            state: LoadMoreDataFetcherState.reset,
             laws: [],
             hasMore: true,
           ),
@@ -318,7 +319,7 @@ void main() {
       test('it should do nothing from loading', () {
         testEmptyFlow(
           initial: LawPerYearLoadState(
-            state: LawYearLoadUiState.loading,
+            state: LoadMoreDataFetcherState.loading,
             laws: [],
             hasMore: true,
           ),
@@ -328,7 +329,7 @@ void main() {
       test('it should do nothing from loadMore', () {
         testEmptyFlow(
           initial: LawPerYearLoadState(
-            state: LawYearLoadUiState.loadMore,
+            state: LoadMoreDataFetcherState.loadMore,
             laws: [],
             hasMore: true,
           ),
@@ -338,7 +339,7 @@ void main() {
       test('it should do nothing from if no more incoming data', () {
         testEmptyFlow(
           initial: LawPerYearLoadState(
-            state: LawYearLoadUiState.loadSuccess,
+            state: LoadMoreDataFetcherState.loadSuccess,
             laws: [],
             hasMore: false,
           ),
