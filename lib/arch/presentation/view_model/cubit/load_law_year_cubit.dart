@@ -20,16 +20,23 @@ class LoadLawYearCubit extends Cubit<LawYearLoadState> {
     this._activeLawService,
   ) : super(
           LawYearLoadState(
-              state: LawYearLoadUiState.initial,
-              lawYears: List.empty(
-                growable: true,
-              ),
-              hasMore: true),
+            state: LawYearLoadUiState.initial,
+            lawYears: List.empty(
+              growable: true,
+            ),
+            hasMore: true,
+          ),
         );
 
   Future<void> resetAndLoad() async {
-    if (!(state.state == LawYearLoadUiState.initial ||
-        state.state == LawYearLoadUiState.loading)) return;
+    if (![
+      LawYearLoadUiState.initial,
+      LawYearLoadUiState.loadSuccess,
+      LawYearLoadUiState.loadFailed,
+      LawYearLoadUiState.reset,
+    ].contains(state.state)) {
+      return;
+    }
 
     final lawId = _activeLawService.getActiveLawId();
     if (lawId == null) {

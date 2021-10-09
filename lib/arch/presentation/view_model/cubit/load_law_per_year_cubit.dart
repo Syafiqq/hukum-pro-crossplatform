@@ -31,8 +31,14 @@ class LoadLawPerYearCubit extends Cubit<LawPerYearLoadState> {
         );
 
   Future<void> resetAndLoad() async {
-    if (!(state.state == LawYearLoadUiState.initial ||
-        state.state == LawYearLoadUiState.loading)) return;
+    if (![
+      LawYearLoadUiState.initial,
+      LawYearLoadUiState.loadSuccess,
+      LawYearLoadUiState.loadFailed,
+      LawYearLoadUiState.reset,
+    ].contains(state.state)) {
+      return;
+    }
 
     final lawId = _activeLawService.getActiveLawId();
     final lawYear = _activeLawService.getActiveYear();
