@@ -32,7 +32,6 @@ class LoadLawPerYearCubit extends Cubit<LawPerYearLoadState> {
         );
 
   Future<void> resetAndLoad() async {
-    print('CurrentLog - resetAndLoad');
     if (![
       LoadMoreDataFetcherState.initial,
       LoadMoreDataFetcherState.loadSuccess,
