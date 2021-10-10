@@ -42,9 +42,8 @@ class LoadLawPerYearCubit extends Cubit<LawPerYearLoadState> {
       return;
     }
 
-    final lawId = _activeLawService.getActiveLawId();
-    final lawYear = _activeLawService.getActiveYear();
-    print('CurrentLog - resetAndLoad - ${lawId} - ${lawYear}');
+    final lawId = (await _activeLawService.getActiveLawMenu())?.id;
+    final lawYear = (await _activeLawService.getActiveLawYear())?.year;
     if (lawId == null || lawYear == null) {
       return;
     }

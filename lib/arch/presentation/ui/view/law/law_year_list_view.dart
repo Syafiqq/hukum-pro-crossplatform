@@ -110,8 +110,8 @@ class _LawYearListStatefulViewState extends State<_LawYearListStatefulView> {
                         ],
                       ),
                       onTap: () {
-                        // TODO: Move to Law Per Year
-                        // TODO: Move to screen as coordinator layout
+                        BlocProvider.of<LoadLawYearCubit>(context)
+                            .selectYear(of: state.lawYears[index]);
                         Navigator.push(
                           context,
                           MaterialPageRoute(

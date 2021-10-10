@@ -24,6 +24,10 @@ class ServiceModule {
     final KiwiContainer container = KiwiContainer();
 
     container.registerSingleton<ActiveLawService>(
-        (c) => ActiveLawServiceImpl(c<LawMenuOrderRepository>()));
+      (c) => ActiveLawServiceImpl(
+        c<LawMenuOrderRepository>(),
+        c<LawYearRepository>(),
+      ),
+    );
   }
 }

@@ -39,7 +39,7 @@ class LoadLawYearCubit extends Cubit<LawYearLoadState> {
       return;
     }
 
-    final lawId = _activeLawService.getActiveLawId();
+    final lawId = (await _activeLawService.getActiveLawMenu())?.id;
     if (lawId == null) {
       return;
     }
@@ -115,11 +115,15 @@ class LoadLawYearCubit extends Cubit<LawYearLoadState> {
     }
   }
 
+  void selectYear({required LawYearListDataPresenter of}) {
+    _activeLawService.setActiveLawYear(ofId: of.id);
+  }
+
   List<LawYearListDataPresenter> _rawDataMapper(List<LawYearEntity> years) {
     return years
         .map(
           (year) => LawYearListDataPresenter(
-            id: "${year.id}",
+            id: year.id,
             type: LawYearListDataPresenterType.law,
             year: "${year.year}",
             count: "${year.count}",
@@ -130,7 +134,7 @@ class LoadLawYearCubit extends Cubit<LawYearLoadState> {
 
   LawYearListDataPresenter createLoadMore() {
     return LawYearListDataPresenter(
-      id: "${++startingStaticId}",
+      id: ++startingStaticId,
       type: LawYearListDataPresenterType.loadMore,
       year: "",
       count: "",

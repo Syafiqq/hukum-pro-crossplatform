@@ -1,9 +1,10 @@
 import 'package:hukum_pro/arch/domain/entity/law/law_menu_order_entity.dart';
+import 'package:hukum_pro/arch/domain/entity/law/law_year_entity.dart';
 
 abstract class ActiveLawService {
-  String? getActiveLawId();
-  int? getActiveYear();
   Future<LawMenuOrderEntity?> getActiveLawMenu();
+  Future<LawYearEntity?> getActiveLawYear();
 
-  changeLawId({required String to});
+  setActiveLawMenu({required String ofId});
+  setActiveLawYear({required int ofId});
 }

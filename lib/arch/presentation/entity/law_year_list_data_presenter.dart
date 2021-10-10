@@ -6,7 +6,7 @@ enum LawYearListDataPresenterType {
 }
 
 class LawYearListDataPresenter extends Equatable {
-  final String id;
+  final int id;
   final LawYearListDataPresenterType type;
   final String year;
   final String count;
