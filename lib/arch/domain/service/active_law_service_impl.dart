@@ -2,6 +2,7 @@ import 'package:hukum_pro/arch/domain/entity/law/law_menu_order_entity.dart';
 import 'package:hukum_pro/arch/domain/entity/law/law_year_entity.dart';
 import 'package:hukum_pro/arch/domain/repository/law_menu_order_repository.dart';
 import 'package:hukum_pro/arch/domain/repository/law_year_repository.dart';
+import 'package:flinq/flinq.dart';
 
 import 'active_law_service.dart';
 
@@ -46,7 +47,8 @@ class ActiveLawServiceImpl implements ActiveLawService {
       return entity;
     }
     _activeLawMenuEntity = await _lawMenuOrderRepository.fetchFromLocal().then(
-          (menus) => menus.firstWhere((menu) => menu.id == _activeLawMenuId),
+          (menus) =>
+              menus.firstOrNullWhere((menu) => menu.id == _activeLawMenuId),
         );
     return _activeLawMenuEntity;
   }
