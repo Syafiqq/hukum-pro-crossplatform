@@ -32,6 +32,7 @@ class LoadLawPerYearCubit extends Cubit<LawPerYearLoadState> {
         );
 
   Future<void> resetAndLoad() async {
+    print('CurrentLog - resetAndLoad');
     if (![
       LoadMoreDataFetcherState.initial,
       LoadMoreDataFetcherState.loadSuccess,
@@ -43,6 +44,7 @@ class LoadLawPerYearCubit extends Cubit<LawPerYearLoadState> {
 
     final lawId = _activeLawService.getActiveLawId();
     final lawYear = _activeLawService.getActiveYear();
+    print('CurrentLog - resetAndLoad - ${lawId} - ${lawYear}');
     if (lawId == null || lawYear == null) {
       return;
     }
