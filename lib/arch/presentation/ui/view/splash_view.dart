@@ -9,12 +9,19 @@ import 'package:hukum_pro/common/ui/button_cta_type.dart';
 import 'package:hukum_pro/di/impl/kiwi_object_resolver.dart';
 
 class SplashView extends StatelessWidget {
+  late final Function? _onInitializeSuccess;
+
+  SplashView({Key? key, required Function? onInitializeSuccess})
+      : super(key: key) {
+    this._onInitializeSuccess = onInitializeSuccess;
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => KiwiObjectResolver.getInstance()
           .getCheckLocalVersionAndInitializeCubit()
-            ..checkVersion(),
+        ..checkVersion(),
       child: Column(
         children: [
           Expanded(
@@ -43,6 +50,9 @@ class SplashView extends StatelessWidget {
                 CheckLocalVersionAndInitializeUiState>(
               listener: (context, state) {
                 state.maybeWhen(
+                  versionPresent: (_) {
+                    _onInitializeSuccess?.call(context);
+                  },
                   checkVersionFailed: () {
                     CommonDialog.show(context,
                             description: 'Failed to check version',
@@ -76,6 +86,9 @@ class SplashView extends StatelessWidget {
                           .read<CheckLocalVersionAndInitializeCubit>()
                           .initializeApp(version),
                     );
+                  },
+                  initializeAppSuccess: () {
+                    _onInitializeSuccess?.call(context);
                   },
                   orElse: () {},
                 );

@@ -56,7 +56,11 @@ class FirebaseCloudDatabase
           .orderByKey()
           .once();
       final rawMenusSnapshot = snapshot.value;
-      final rawMenus = rawMenusSnapshot is Map ? rawMenusSnapshot.values : null;
+      final rawMenus = rawMenusSnapshot is Map
+          ? rawMenusSnapshot.values
+          : rawMenusSnapshot is Iterable
+              ? rawMenusSnapshot
+              : null;
 
       if (rawMenus is! Iterable) {
         throw ParseFailedException(Iterable, null, null);

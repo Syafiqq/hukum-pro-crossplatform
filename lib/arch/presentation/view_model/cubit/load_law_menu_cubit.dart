@@ -78,7 +78,7 @@ class LoadLawMenuCubit extends Cubit<LawMenuNavigationUiState> {
       if (menus.where((menu) => menu.isSelected).isEmpty) {
         var index = -1;
 
-        final savedLawId = _activeLawService.getActiveLawId();
+        final savedLawId = (await _activeLawService.getActiveLawMenu())?.id;
         if (savedLawId != null) {
           index = menus.indexWhere((menu) => menu.id == savedLawId);
         }
@@ -90,7 +90,7 @@ class LoadLawMenuCubit extends Cubit<LawMenuNavigationUiState> {
 
         if (index >= 0) {
           menus[index].isSelected = true;
-          _activeLawService.changeLawId(to: menus[index].id);
+          _activeLawService.setActiveLawMenu(ofId: menus[index].id);
         }
       }
 
@@ -104,11 +104,11 @@ class LoadLawMenuCubit extends Cubit<LawMenuNavigationUiState> {
     }
   }
 
-  void selectMenu({ofId: String}) {
+  void selectMenu({of: LawMenuOrderDataPresenter}) {
     if (!(state is MenuLoadSuccess)) return;
     var menus = (state as MenuLoadSuccess).menus;
 
-    final index = menus.indexWhere((menu) => menu.id == ofId);
+    final index = menus.indexWhere((menu) => menu.id == of.id);
 
     if (index < 0) {
       return;
@@ -118,7 +118,7 @@ class LoadLawMenuCubit extends Cubit<LawMenuNavigationUiState> {
       menu.isSelected = false;
     });
     menus[index].isSelected = true;
-    _activeLawService.changeLawId(to: menus[index].id);
+    _activeLawService.setActiveLawMenu(ofId: menus[index].id);
 
     emit(LawMenuNavigationUiState.loadSuccess(
       menus,

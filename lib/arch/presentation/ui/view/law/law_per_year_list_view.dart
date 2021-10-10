@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hukum_pro/arch/domain/entity/law/law_year_entity.dart';
-import 'package:hukum_pro/arch/presentation/entity/law_menu_order_data_presenter.dart';
-import 'package:hukum_pro/arch/presentation/entity/law_year_list_data_presenter.dart';
+import 'package:hukum_pro/arch/presentation/entity/law_per_year_data_presenter.dart';
 import 'package:hukum_pro/arch/presentation/state/load_more_data_fetcher_state.dart';
-import 'package:hukum_pro/arch/presentation/ui/page/law_per_year_screen.dart';
-import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_menu_cubit.dart';
-import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_year_cubit.dart';
-import 'package:hukum_pro/arch/presentation/view_model/state/law_menu_navigation_state.dart';
+import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_per_year_cubit.dart';
+import 'package:hukum_pro/arch/presentation/view_model/state/law_per_year_load_state.dart';
 import 'package:hukum_pro/arch/presentation/view_model/state/law_year_load_state.dart';
 import 'package:hukum_pro/common/ui/app_color.dart';
 import 'package:hukum_pro/common/ui/app_font.dart';
@@ -15,70 +11,34 @@ import 'package:hukum_pro/di/impl/kiwi_object_resolver.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 
 //
-class LawYearListView extends StatelessWidget {
-  late final Function? _onRequestOpenPerYearPage;
-
-  LawYearListView({Key? key, required Function? onRequestOpenPerYearPage})
-      : super(key: key) {
-    this._onRequestOpenPerYearPage = onRequestOpenPerYearPage;
-  }
-
+//
+class LawPerYearListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (BuildContext context) {
-        final cubit = KiwiObjectResolver.getInstance().getLoadLawYearCubit();
-        cubit.resetAndLoad();
-        return cubit;
+        return KiwiObjectResolver.getInstance().getLoadLawPerYearCubit()
+          ..resetAndLoad();
       },
-      child: BlocListener<LoadLawMenuCubit, LawMenuNavigationUiState>(
-        listener: (context, state) {
-          state.maybeWhen(
-            loadSuccess: (_, selected) {
-              if (selected?.type == LawMenuOrderDataPresenterType.law) {
-                BlocProvider.of<LoadLawYearCubit>(context).resetAndLoad();
-              }
-            },
-            orElse: () => {},
-          );
-        },
-        child: SafeArea(
-          child: Container(
-            color: Colors.white,
-            child: _LawYearListStatefulView(
-              onRequestOpenPerYearPage: _onRequestOpenPerYearPage,
-            ),
-          ),
+      child: SafeArea(
+        child: Container(
+          color: Colors.white,
+          child: _LawPerYearListStatefulView(),
         ),
       ),
     );
   }
 }
 
-class _LawYearListStatefulView extends StatefulWidget {
-  late final Function? _onRequestOpenPerYearPage;
-
-  _LawYearListStatefulView(
-      {Key? key, required Function? onRequestOpenPerYearPage})
-      : super(key: key) {
-    this._onRequestOpenPerYearPage = onRequestOpenPerYearPage;
-  }
-
+class _LawPerYearListStatefulView extends StatefulWidget {
   @override
-  _LawYearListStatefulViewState createState() => _LawYearListStatefulViewState(
-        onRequestOpenPerYearPage: _onRequestOpenPerYearPage,
-      );
+  _LawPerYearListStatefulViewState createState() =>
+      _LawPerYearListStatefulViewState();
 }
 
-class _LawYearListStatefulViewState extends State<_LawYearListStatefulView> {
+class _LawPerYearListStatefulViewState
+    extends State<_LawPerYearListStatefulView> {
   final _scrollController = ScrollController();
-
-  late final Function? _onRequestOpenPerYearPage;
-
-  _LawYearListStatefulViewState({required Function? onRequestOpenPerYearPage})
-      : super() {
-    this._onRequestOpenPerYearPage = onRequestOpenPerYearPage;
-  }
 
   @override
   void initState() {
@@ -96,7 +56,7 @@ class _LawYearListStatefulViewState extends State<_LawYearListStatefulView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<LoadLawYearCubit, LawYearLoadState>(
+    return BlocConsumer<LoadLawPerYearCubit, LawPerYearLoadState>(
       listener: (context, state) {
         // TODO: Show Failed dialog
       },
@@ -107,13 +67,13 @@ class _LawYearListStatefulViewState extends State<_LawYearListStatefulView> {
           case LoadMoreDataFetcherState.loadSuccess:
           case LoadMoreDataFetcherState.loadMore:
             return ListView.separated(
-              itemCount: state.lawYears.length,
+              itemCount: state.laws.length,
               itemBuilder: (BuildContext context, int index) {
-                switch (state.lawYears[index].type) {
-                  case LawYearListDataPresenterType.law:
+                switch (state.laws[index].type) {
+                  case LawPerYearDataPresenterType.law:
                     return ListTile(
                       title: Text(
-                        'Tahun ${state.lawYears[index].year}'.toUpperCase(),
+                        state.laws[index].name.toUpperCase(),
                         style: AppFontContent.regular.font(
                           16,
                         ),
@@ -121,13 +81,6 @@ class _LawYearListStatefulViewState extends State<_LawYearListStatefulView> {
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(
-                            '${state.lawYears[index].count}'.toUpperCase(),
-                            style: AppFontContent.medium.font(
-                              16,
-                            ),
-                          ),
-                          SizedBox(width: 8),
                           Icon(
                             Icons.chevron_right,
                             color: AppColor.secondaryLight,
@@ -135,12 +88,10 @@ class _LawYearListStatefulViewState extends State<_LawYearListStatefulView> {
                         ],
                       ),
                       onTap: () {
-                        BlocProvider.of<LoadLawYearCubit>(context)
-                            .selectYear(of: state.lawYears[index]);
-                        _onRequestOpenPerYearPage?.call();
+                        // TODO: Move to Law Detail
                       },
                     );
-                  case LawYearListDataPresenterType.loadMore:
+                  case LawPerYearDataPresenterType.loadMore:
                     return Container(
                       padding: EdgeInsets.fromLTRB(16, 8, 10, 8),
                       child: Center(
@@ -183,7 +134,7 @@ class _LawYearListStatefulViewState extends State<_LawYearListStatefulView> {
   }
 
   void _onScroll() {
-    if (_isBottom) context.read<LoadLawYearCubit>().loadMore();
+    if (_isBottom) context.read<LoadLawPerYearCubit>().loadMore();
   }
 
   bool get _isBottom {

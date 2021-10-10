@@ -1,10 +1,14 @@
 // Import the firebase_core plugin
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:hukum_pro/arch/presentation/ui/page/splash_screen.dart';
 import 'package:hukum_pro/di/root_injector.dart';
 import 'package:path_provider/path_provider.dart';
 
+import 'arch/presentation/ui/view/splash_view.dart';
+
 void main() {
+  RootInjector().build();
   WidgetsFlutterBinding.ensureInitialized();
   runApp(App());
 }
@@ -27,50 +31,31 @@ class _AppState extends State<App> {
   Future<void> _initializeApp() async {
     // Firebase
     await Firebase.initializeApp();
-
-    final dir = await getApplicationSupportDirectory();
-    print(dir.path);
-
-    // DI
-    RootInjector().build();
-
-    await Future.delayed(Duration(seconds: 1));
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      // Initialize FlutterFire:
       future: _initializeApp(),
       builder: (context, snapshot) {
-        // Check for errors
         if (snapshot.hasError) {
-          print('hasError = ${snapshot.hasError}');
+          print('error');
           print(snapshot.error);
+          return Container(color: Colors.red);
         }
 
-        // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
-          print('hasData = ${snapshot.hasData}');
-          print(snapshot.data);
-          print(Firebase.app());
-        }
-
-        // Otherwise, show something whilst waiting for initialization to complete
-        print('Loading');
-        return Container(
-          decoration: BoxDecoration(color: Colors.white),
-          child: Center(
-            child: Text(
-              'Hello World',
-              textDirection: TextDirection.ltr,
-              style: TextStyle(
-                fontSize: 32,
-                color: Colors.black87,
-              ),
+          return MaterialApp(
+            title: 'Flutter Demo',
+            theme: ThemeData(
+              primarySwatch: Colors.amber,
             ),
-          ),
-        );
+            home: Scaffold(
+              body: SplashScreen(),
+            ),
+          );
+        }
+        return Container(color: Colors.white);
       },
     );
   }
