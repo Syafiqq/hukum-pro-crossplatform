@@ -1,6 +1,7 @@
 // Import the firebase_core plugin
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:hukum_pro/arch/presentation/ui/page/splash_screen.dart';
 import 'package:hukum_pro/di/root_injector.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -28,49 +29,31 @@ class _AppState extends State<App> {
     // Firebase
     await Firebase.initializeApp();
 
-    final dir = await getApplicationSupportDirectory();
-    print(dir.path);
-
     // DI
     RootInjector().build();
-
-    await Future.delayed(Duration(seconds: 1));
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      // Initialize FlutterFire:
       future: _initializeApp(),
       builder: (context, snapshot) {
-        // Check for errors
         if (snapshot.hasError) {
-          print('hasError = ${snapshot.hasError}');
-          print(snapshot.error);
+          return Center(
+            child: Text('Error'),
+          );
         }
 
-        // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
-          print('hasData = ${snapshot.hasData}');
-          print(snapshot.data);
-          print(Firebase.app());
-        }
-
-        // Otherwise, show something whilst waiting for initialization to complete
-        print('Loading');
-        return Container(
-          decoration: BoxDecoration(color: Colors.white),
-          child: Center(
-            child: Text(
-              'Hello World',
-              textDirection: TextDirection.ltr,
-              style: TextStyle(
-                fontSize: 32,
-                color: Colors.black87,
-              ),
+          return MaterialApp(
+            title: 'Hukum Pro',
+            theme: ThemeData(
+              primarySwatch: Colors.amber,
             ),
-          ),
-        );
+            home: SplashScreen(),
+          );
+        }
+        return Container(color: Colors.white);
       },
     );
   }
