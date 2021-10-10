@@ -82,7 +82,7 @@ class SplashView extends StatelessWidget {
                     );
                   },
                   initializeAppSuccess: () {
-                    _onInitializeSuccess?.call();
+                    _onInitializeSuccess?.call(context);
                   },
                   orElse: () {},
                 );
