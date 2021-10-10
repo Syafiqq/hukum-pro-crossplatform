@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hukum_pro/arch/domain/service/active_law_service_impl.dart';
 import 'package:hukum_pro/arch/presentation/entity/law_menu_order_data_presenter.dart';
 import 'package:hukum_pro/arch/presentation/ui/component/dialog/common_dialog.dart';
+import 'package:hukum_pro/arch/presentation/ui/page/law_per_year_screen.dart';
 import 'package:hukum_pro/arch/presentation/ui/view/law/law_menu_navigation_view.dart';
 import 'package:hukum_pro/arch/presentation/ui/view/law/law_year_list_view.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_menu_cubit.dart';
@@ -103,7 +104,16 @@ class _LawScreenStatefulState extends State<_LawScreenStateful> {
                     LawMenuOrderDataPresenterType.search) {
                   return Container();
                 } else if (selected.type == LawMenuOrderDataPresenterType.law) {
-                  return LawYearListView();
+                  return LawYearListView(
+                    onRequestOpenPerYearPage: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LawPerYearScreen(),
+                        ),
+                      );
+                    },
+                  );
                 }
                 return buildEmptyStateView(context);
               },

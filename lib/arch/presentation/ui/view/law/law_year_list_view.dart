@@ -16,6 +16,13 @@ import 'package:loading_indicator/loading_indicator.dart';
 
 //
 class LawYearListView extends StatelessWidget {
+  late final Function? _onRequestOpenPerYearPage;
+
+  LawYearListView({Key? key, required Function? onRequestOpenPerYearPage})
+      : super(key: key) {
+    this._onRequestOpenPerYearPage = onRequestOpenPerYearPage;
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -38,7 +45,9 @@ class LawYearListView extends StatelessWidget {
         child: SafeArea(
           child: Container(
             color: Colors.white,
-            child: _LawYearListStatefulView(),
+            child: _LawYearListStatefulView(
+              onRequestOpenPerYearPage: _onRequestOpenPerYearPage,
+            ),
           ),
         ),
       ),
@@ -47,13 +56,29 @@ class LawYearListView extends StatelessWidget {
 }
 
 class _LawYearListStatefulView extends StatefulWidget {
+  late final Function? _onRequestOpenPerYearPage;
+
+  _LawYearListStatefulView(
+      {Key? key, required Function? onRequestOpenPerYearPage})
+      : super(key: key) {
+    this._onRequestOpenPerYearPage = onRequestOpenPerYearPage;
+  }
+
   @override
-  _LawYearListStatefulViewState createState() =>
-      _LawYearListStatefulViewState();
+  _LawYearListStatefulViewState createState() => _LawYearListStatefulViewState(
+        onRequestOpenPerYearPage: _onRequestOpenPerYearPage,
+      );
 }
 
 class _LawYearListStatefulViewState extends State<_LawYearListStatefulView> {
   final _scrollController = ScrollController();
+
+  late final Function? _onRequestOpenPerYearPage;
+
+  _LawYearListStatefulViewState({required Function? onRequestOpenPerYearPage})
+      : super() {
+    this._onRequestOpenPerYearPage = onRequestOpenPerYearPage;
+  }
 
   @override
   void initState() {
@@ -112,12 +137,7 @@ class _LawYearListStatefulViewState extends State<_LawYearListStatefulView> {
                       onTap: () {
                         BlocProvider.of<LoadLawYearCubit>(context)
                             .selectYear(of: state.lawYears[index]);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => LawPerYearScreen(),
-                          ),
-                        );
+                        _onRequestOpenPerYearPage?.call();
                       },
                     );
                   case LawYearListDataPresenterType.loadMore:
