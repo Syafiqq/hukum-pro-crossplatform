@@ -5,7 +5,10 @@ import 'package:hukum_pro/arch/presentation/ui/page/splash_screen.dart';
 import 'package:hukum_pro/di/root_injector.dart';
 import 'package:path_provider/path_provider.dart';
 
+import 'arch/presentation/ui/view/splash_view.dart';
+
 void main() {
+  RootInjector().build();
   WidgetsFlutterBinding.ensureInitialized();
   runApp(App());
 }
@@ -28,9 +31,6 @@ class _AppState extends State<App> {
   Future<void> _initializeApp() async {
     // Firebase
     await Firebase.initializeApp();
-
-    // DI
-    RootInjector().build();
   }
 
   @override
@@ -39,18 +39,20 @@ class _AppState extends State<App> {
       future: _initializeApp(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return Center(
-            child: Text('Error'),
-          );
+          print('error');
+          print(snapshot.error);
+          return Container(color: Colors.red);
         }
 
         if (snapshot.connectionState == ConnectionState.done) {
           return MaterialApp(
-            title: 'Hukum Pro',
+            title: 'Flutter Demo',
             theme: ThemeData(
               primarySwatch: Colors.amber,
             ),
-            home: SplashScreen(),
+            home: Scaffold(
+              body: SplashScreen(),
+            ),
           );
         }
         return Container(color: Colors.white);
