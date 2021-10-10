@@ -18,7 +18,11 @@ class DiskPathProvider implements BulkLawsLocalDatasource {
     try {
       final directory = await getTemporaryDirectory();
       final path = '${directory.path}/dump/bulk-laws/$id';
-      return names.map((p) => File('$path/$p')).toList();
+      final files = names.map((p) => File('$path/$p')).toList();
+      for (var file in files) {
+        file.create(recursive: true);
+      }
+      return files;
     } on MissingPlatformDirectoryException catch (e) {
       throw DataLocationNotFoundException(e, null);
     }
