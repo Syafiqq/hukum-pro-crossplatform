@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hukum_pro/arch/domain/entity/law/law_year_entity.dart';
+import 'package:hukum_pro/arch/presentation/entity/law_menu_order_data_presenter.dart';
 import 'package:hukum_pro/arch/presentation/entity/law_year_list_data_presenter.dart';
 import 'package:hukum_pro/arch/presentation/state/load_more_data_fetcher_state.dart';
+import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_menu_cubit.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_year_cubit.dart';
+import 'package:hukum_pro/arch/presentation/view_model/state/law_menu_navigation_state.dart';
 import 'package:hukum_pro/arch/presentation/view_model/state/law_year_load_state.dart';
 import 'package:hukum_pro/common/ui/app_color.dart';
 import 'package:hukum_pro/common/ui/app_font.dart';
@@ -16,13 +19,26 @@ class LawYearListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (BuildContext context) {
-        return KiwiObjectResolver.getInstance().getLoadLawYearCubit()
-          ..resetAndLoad();
+        final cubit = KiwiObjectResolver.getInstance().getLoadLawYearCubit();
+        cubit.resetAndLoad();
+        return cubit;
       },
-      child: SafeArea(
-        child: Container(
-          color: Colors.white,
-          child: _LawYearListStatefulView(),
+      child: BlocListener<LoadLawMenuCubit, LawMenuNavigationUiState>(
+        listener: (context, state) {
+          state.maybeWhen(
+            loadSuccess: (_, selected) {
+              if (selected?.type == LawMenuOrderDataPresenterType.law) {
+                BlocProvider.of<LoadLawYearCubit>(context).resetAndLoad();
+              }
+            },
+            orElse: () => {},
+          );
+        },
+        child: SafeArea(
+          child: Container(
+            color: Colors.white,
+            child: _LawYearListStatefulView(),
+          ),
         ),
       ),
     );
