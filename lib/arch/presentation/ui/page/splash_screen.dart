@@ -5,11 +5,13 @@ import 'package:hukum_pro/arch/presentation/ui/view/splash_view.dart';
 class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SplashView((BuildContext context) {
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => LawScreen()),
-          ModalRoute.withName("/dashboard"));
-    });
+    return SplashView(
+      onInitializeSuccess: (BuildContext context) {
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => LawScreen()),
+            ModalRoute.withName("/dashboard"));
+      },
+    );
   }
 }

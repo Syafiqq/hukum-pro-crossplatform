@@ -9,9 +9,12 @@ import 'package:hukum_pro/common/ui/button_cta_type.dart';
 import 'package:hukum_pro/di/impl/kiwi_object_resolver.dart';
 
 class SplashView extends StatelessWidget {
-  final Function? _onInitializeSuccess;
+  late final Function? _onInitializeSuccess;
 
-  SplashView(this._onInitializeSuccess);
+  SplashView({Key? key, required Function? onInitializeSuccess})
+      : super(key: key) {
+    this._onInitializeSuccess = onInitializeSuccess;
+  }
 
   @override
   Widget build(BuildContext context) {
