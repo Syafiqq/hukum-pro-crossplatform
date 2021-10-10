@@ -103,7 +103,10 @@ class _LawYearListStatefulViewState extends State<_LawYearListStatefulView> {
                             ),
                           ),
                           SizedBox(width: 8),
-                          Icon(Icons.chevron_right)
+                          Icon(
+                            Icons.chevron_right,
+                            color: AppColor.secondaryLight,
+                          )
                         ],
                       ),
                       onTap: () {

@@ -9,6 +9,7 @@ import 'package:hukum_pro/common/ui/app_color.dart';
 import 'package:hukum_pro/common/ui/app_font.dart';
 import 'package:hukum_pro/di/impl/kiwi_object_resolver.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+
 //
 //
 class LawPerYearListView extends StatelessWidget {
@@ -79,7 +80,12 @@ class _LawPerYearListStatefulViewState
                       ),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
-                        children: [Icon(Icons.chevron_right)],
+                        children: [
+                          Icon(
+                            Icons.chevron_right,
+                            color: AppColor.secondaryLight,
+                          )
+                        ],
                       ),
                       onTap: () {
                         // TODO: Move to Law Detail
