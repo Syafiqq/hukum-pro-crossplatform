@@ -47,6 +47,9 @@ class SplashView extends StatelessWidget {
                 CheckLocalVersionAndInitializeUiState>(
               listener: (context, state) {
                 state.maybeWhen(
+                  versionPresent: (_) {
+                    _onInitializeSuccess?.call(context);
+                  },
                   checkVersionFailed: () {
                     CommonDialog.show(context,
                             description: 'Failed to check version',

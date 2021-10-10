@@ -2,6 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hukum_pro/arch/domain/entity/misc/version_entity.dart';
 import 'package:hukum_pro/arch/domain/entity/version/check_local_version_state.dart';
+import 'package:hukum_pro/arch/domain/repository/version_repository.dart';
 import 'package:hukum_pro/arch/domain/use_case/check_version_first_time_use_case.dart';
 import 'package:hukum_pro/arch/domain/use_case/reinitialize_whole_data_use_case.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/check_local_version_and_initialize_cubit.dart';
@@ -17,21 +18,26 @@ import 'check_local_version_and_initialize_cubit_test.mocks.dart';
       as: #BaseMockCheckVersionFirstTimeUseCase, returnNullOnMissingStub: true),
   MockSpec<ReinitializeWholeDataUseCase>(
       as: #BaseMockReinitializeWholeDataUseCase, returnNullOnMissingStub: true),
+  MockSpec<VersionRepository>(
+      as: #BaseMockVersionRepository, returnNullOnMissingStub: true),
 ])
 void main() {
   group('$CheckLocalVersionAndInitializeCubit', () {
     late BaseMockCheckVersionFirstTimeUseCase mockCheckVersionFirstTimeUseCase;
     late BaseMockReinitializeWholeDataUseCase mockReinitializeWholeDataUseCase;
+    late BaseMockVersionRepository mockVersionRepository;
 
     setUp(() {
       mockCheckVersionFirstTimeUseCase = BaseMockCheckVersionFirstTimeUseCase();
       mockReinitializeWholeDataUseCase = BaseMockReinitializeWholeDataUseCase();
+      mockVersionRepository = BaseMockVersionRepository();
     });
 
     test('it produce initial state', () {
       var cubit = CheckLocalVersionAndInitializeCubit(
         mockCheckVersionFirstTimeUseCase,
         mockReinitializeWholeDataUseCase,
+        mockVersionRepository,
       );
       expect(
         cubit.state,
@@ -47,6 +53,7 @@ void main() {
           var cubit = CheckLocalVersionAndInitializeCubit(
             mockCheckVersionFirstTimeUseCase,
             mockReinitializeWholeDataUseCase,
+            mockVersionRepository,
           );
           cubit.emit(CheckLocalVersionAndInitializeUiState.versionLoading());
           return cubit;
@@ -65,6 +72,7 @@ void main() {
           return CheckLocalVersionAndInitializeCubit(
             mockCheckVersionFirstTimeUseCase,
             mockReinitializeWholeDataUseCase,
+            mockVersionRepository,
           );
         },
         act: (cubit) => cubit.checkVersion(),
@@ -92,6 +100,7 @@ void main() {
           return CheckLocalVersionAndInitializeCubit(
             mockCheckVersionFirstTimeUseCase,
             mockReinitializeWholeDataUseCase,
+            mockVersionRepository,
           );
         },
         act: (cubit) => cubit.checkVersion(),
@@ -120,6 +129,7 @@ void main() {
           return CheckLocalVersionAndInitializeCubit(
             mockCheckVersionFirstTimeUseCase,
             mockReinitializeWholeDataUseCase,
+            mockVersionRepository,
           );
         },
         act: (cubit) => cubit.checkVersion(),
@@ -146,6 +156,7 @@ void main() {
           return CheckLocalVersionAndInitializeCubit(
             mockCheckVersionFirstTimeUseCase,
             mockReinitializeWholeDataUseCase,
+            mockVersionRepository,
           );
         },
         act: (cubit) => cubit.checkVersion(),
@@ -164,6 +175,7 @@ void main() {
           return CheckLocalVersionAndInitializeCubit(
             mockCheckVersionFirstTimeUseCase,
             mockReinitializeWholeDataUseCase,
+            mockVersionRepository,
           );
         },
         act: (cubit) => cubit.initializeApp(VersionEntity(null, null, null)),
@@ -177,6 +189,7 @@ void main() {
           var cubit = CheckLocalVersionAndInitializeCubit(
             mockCheckVersionFirstTimeUseCase,
             mockReinitializeWholeDataUseCase,
+            mockVersionRepository,
           );
           cubit.emit(CheckLocalVersionAndInitializeUiState.versionLoading());
           return cubit;
@@ -192,6 +205,7 @@ void main() {
           var cubit = CheckLocalVersionAndInitializeCubit(
             mockCheckVersionFirstTimeUseCase,
             mockReinitializeWholeDataUseCase,
+            mockVersionRepository,
           );
           cubit.emit(
               CheckLocalVersionAndInitializeUiState.initializeAppLoading());
@@ -210,6 +224,7 @@ void main() {
           var cubit = CheckLocalVersionAndInitializeCubit(
             mockCheckVersionFirstTimeUseCase,
             mockReinitializeWholeDataUseCase,
+            mockVersionRepository,
           );
           cubit.emit(
               CheckLocalVersionAndInitializeUiState.versionNotExistButRemote(
@@ -232,6 +247,7 @@ void main() {
           var cubit = CheckLocalVersionAndInitializeCubit(
             mockCheckVersionFirstTimeUseCase,
             mockReinitializeWholeDataUseCase,
+            mockVersionRepository,
           );
           cubit.emit(
               CheckLocalVersionAndInitializeUiState.versionNotExistButRemote(
