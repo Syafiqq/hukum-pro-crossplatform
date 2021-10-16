@@ -62,8 +62,6 @@ void main() {
                 .thenAnswer((_) => Future.value([]));
             when(mockActiveLawService.getActiveLawYear())
                 .thenAnswer((_) => Future.value(LawYearEntity(1, 1, 1)));
-            when(mockActiveLawService.getActiveLawMenu()).thenAnswer(
-                (_) => Future.value(LawMenuOrderEntity('1', '1', 1)));
 
             var cubit =
                 LoadLawPerYearCubit(mockLawRepository, mockActiveLawService);
@@ -99,8 +97,6 @@ void main() {
                 .thenAnswer((_) => Future.value([]));
             when(mockActiveLawService.getActiveLawYear())
                 .thenAnswer((_) => Future.value(LawYearEntity(1, 1, 1)));
-            when(mockActiveLawService.getActiveLawMenu()).thenAnswer(
-                (_) => Future.value(LawMenuOrderEntity('1', '1', 1)));
             var cubit =
                 LoadLawPerYearCubit(mockLawRepository, mockActiveLawService);
             cubit.emit(initial);
@@ -242,8 +238,6 @@ void main() {
                 .thenAnswer((_) => Future.value([]));
             when(mockActiveLawService.getActiveLawYear())
                 .thenAnswer((_) => Future.value(LawYearEntity(1, 1, 1)));
-            when(mockActiveLawService.getActiveLawMenu()).thenAnswer(
-                (_) => Future.value(LawMenuOrderEntity('1', '1', 1)));
 
             var cubit =
                 LoadLawPerYearCubit(mockLawRepository, mockActiveLawService);
@@ -274,8 +268,6 @@ void main() {
                 .thenAnswer((_) => Future.value([]));
             when(mockActiveLawService.getActiveLawYear())
                 .thenAnswer((_) => Future.value(LawYearEntity(1, 1, 1)));
-            when(mockActiveLawService.getActiveLawMenu()).thenAnswer(
-                (_) => Future.value(LawMenuOrderEntity('1', '1', 1)));
             var cubit =
                 LoadLawPerYearCubit(mockLawRepository, mockActiveLawService);
             cubit.emit(initial);
