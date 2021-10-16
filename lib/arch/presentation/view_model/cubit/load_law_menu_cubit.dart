@@ -11,6 +11,8 @@ class LoadLawMenuCubit extends Cubit<LawMenuNavigationUiState> {
 
   LawMenuOrderEntity? _activeMenu;
 
+  LawMenuOrderEntity? get activeMenu => _activeMenu;
+
   late List<LawMenuOrderEntity> _rawLaws;
 
   LoadLawMenuCubit(

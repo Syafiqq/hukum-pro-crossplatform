@@ -26,17 +26,25 @@ class LawYearListView extends StatelessWidget {
     return BlocProvider(
       create: (BuildContext context) {
         final cubit = KiwiObjectResolver.getInstance().getLoadLawYearCubit();
+
+        final selected = BlocProvider.of<LoadLawMenuCubit>(context).activeMenu;
+        if (selected == null) {
+          return cubit;
+        }
+        final menuId = selected.id;
+        cubit.resetAndLoad(menuId: menuId);
+
         return cubit;
       },
       child: BlocListener<LoadLawMenuCubit, LawMenuNavigationUiState>(
         listener: (context, state) {
           state.maybeWhen(
             loadSuccess: (_, selected) {
-              if (selected?.type == LawMenuOrderDataPresenterType.law) {
-                final menuId = selected?.id;
-                if (menuId == null) {
-                  return;
-                }
+              if (selected == null) {
+                return;
+              }
+              if (selected.type == LawMenuOrderDataPresenterType.law) {
+                final menuId = selected.id;
                 BlocProvider.of<LoadLawYearCubit>(context)
                     .resetAndLoad(menuId: menuId);
               }
