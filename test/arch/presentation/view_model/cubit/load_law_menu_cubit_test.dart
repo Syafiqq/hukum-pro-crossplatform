@@ -19,16 +19,13 @@ import 'load_law_menu_cubit_test.mocks.dart';
 void main() {
   group('$LoadLawMenuCubit', () {
     late BaseMockLawMenuOrderRepository mockLawMenuOrderRepository;
-    late BaseMockActiveLawService mockActiveLawService;
 
     setUp(() {
       mockLawMenuOrderRepository = BaseMockLawMenuOrderRepository();
-      mockActiveLawService = BaseMockActiveLawService();
     });
 
     test('it produce initial state', () {
-      var cubit =
-          LoadLawMenuCubit(mockLawMenuOrderRepository, mockActiveLawService);
+      var cubit = LoadLawMenuCubit(mockLawMenuOrderRepository);
       expect(
         cubit.state,
         isA<InitialState>(),
@@ -39,8 +36,7 @@ void main() {
       blocTest<LoadLawMenuCubit, LawMenuNavigationUiState>(
         'it should do nothing',
         build: () {
-          var cubit = LoadLawMenuCubit(
-              mockLawMenuOrderRepository, mockActiveLawService);
+          var cubit = LoadLawMenuCubit(mockLawMenuOrderRepository);
           cubit.emit(LawMenuNavigationUiState.loading());
           return cubit;
         },
@@ -53,8 +49,7 @@ void main() {
         build: () {
           when(mockLawMenuOrderRepository.fetchFromLocal())
               .thenAnswer((_) => Future.value([]));
-          return LoadLawMenuCubit(
-              mockLawMenuOrderRepository, mockActiveLawService);
+          return LoadLawMenuCubit(mockLawMenuOrderRepository);
         },
         act: (cubit) => cubit.load(),
         expect: () => <Matcher>[
@@ -69,8 +64,7 @@ void main() {
           when(mockLawMenuOrderRepository.fetchFromLocal()).thenAnswer(
               (_) => Future.error(DefinedException(null, null, null, null)));
 
-          return LoadLawMenuCubit(
-              mockLawMenuOrderRepository, mockActiveLawService);
+          return LoadLawMenuCubit(mockLawMenuOrderRepository);
         },
         act: (cubit) => cubit.load(),
         expect: () => <Matcher>[isA<MenuLoading>(), isA<MenuLoadFailed>()],

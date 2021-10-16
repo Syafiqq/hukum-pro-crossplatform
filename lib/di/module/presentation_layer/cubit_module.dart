@@ -33,7 +33,6 @@ class CubitModule {
     container.registerFactory<LoadLawMenuCubit>(
       (c) => LoadLawMenuCubit(
         c.resolve<LawMenuOrderRepository>(),
-        c.resolve<ActiveLawService>(),
       ),
     );
     container.registerFactory<LoadLawYearCubit>(

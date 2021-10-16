@@ -8,11 +8,13 @@ import 'package:flinq/flinq.dart';
 
 class LoadLawMenuCubit extends Cubit<LawMenuNavigationUiState> {
   final LawMenuOrderRepository _lawMenuOrderRepository;
-  final ActiveLawService _activeLawService;
+
+  LawMenuOrderEntity? _activeMenu;
+
+  late List<LawMenuOrderEntity> _rawLaws;
 
   LoadLawMenuCubit(
     this._lawMenuOrderRepository,
-    this._activeLawService,
   ) : super(LawMenuNavigationUiState.initial());
 
   Future<void> load() async {
@@ -23,6 +25,8 @@ class LoadLawMenuCubit extends Cubit<LawMenuNavigationUiState> {
     try {
       var rawLaws = await _lawMenuOrderRepository.fetchFromLocal();
       rawLaws.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+      this._rawLaws = rawLaws;
+
       var startingStaticId = 1000;
 
       List<LawMenuOrderDataPresenter> menus = [];
@@ -78,7 +82,7 @@ class LoadLawMenuCubit extends Cubit<LawMenuNavigationUiState> {
       if (menus.where((menu) => menu.isSelected).isEmpty) {
         var index = -1;
 
-        final savedLawId = (await _activeLawService.getActiveLawMenu())?.id;
+        final savedLawId = _activeMenu?.id;
         if (savedLawId != null) {
           index = menus.indexWhere((menu) => menu.id == savedLawId);
         }
@@ -90,7 +94,8 @@ class LoadLawMenuCubit extends Cubit<LawMenuNavigationUiState> {
 
         if (index >= 0) {
           menus[index].isSelected = true;
-          _activeLawService.setActiveLawMenu(ofId: menus[index].id);
+          _activeMenu =
+              _rawLaws.firstOrNullWhere((law) => law.id == menus[index].id);
         }
       }
 
@@ -104,7 +109,7 @@ class LoadLawMenuCubit extends Cubit<LawMenuNavigationUiState> {
     }
   }
 
-  void selectMenu({of: LawMenuOrderDataPresenter}) {
+  void selectMenu({of: LawMenuOrderDataPresenter}) async {
     if (!(state is MenuLoadSuccess)) return;
     var menus = (state as MenuLoadSuccess).menus;
 
@@ -118,7 +123,7 @@ class LoadLawMenuCubit extends Cubit<LawMenuNavigationUiState> {
       menu.isSelected = false;
     });
     menus[index].isSelected = true;
-    _activeLawService.setActiveLawMenu(ofId: menus[index].id);
+    _activeMenu = _rawLaws.firstOrNullWhere((law) => law.id == menus[index].id);
 
     emit(LawMenuNavigationUiState.loadSuccess(
       menus,
