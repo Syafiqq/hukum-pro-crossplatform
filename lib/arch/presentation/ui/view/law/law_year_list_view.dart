@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hukum_pro/arch/presentation/entity/law_menu_order_data_presenter.dart';
 import 'package:hukum_pro/arch/presentation/entity/law_year_list_data_presenter.dart';
 import 'package:hukum_pro/arch/presentation/state/load_more_data_fetcher_state.dart';
-import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_menu_cubit.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_year_cubit.dart';
-import 'package:hukum_pro/arch/presentation/view_model/state/law_menu_navigation_state.dart';
 import 'package:hukum_pro/arch/presentation/view_model/state/law_year_load_state.dart';
 import 'package:hukum_pro/common/ui/app_color.dart';
 import 'package:hukum_pro/common/ui/app_font.dart';
@@ -15,7 +12,7 @@ import 'package:loading_indicator/loading_indicator.dart';
 //
 class LawYearListView extends StatelessWidget {
   late final Function(String, int)? _onRequestOpenPerYearPage;
-  late final String _menuId;
+  late final LoadLawYearCubit _loadLawYearCubit;
 
   LawYearListView(
       {Key? key,
@@ -23,39 +20,20 @@ class LawYearListView extends StatelessWidget {
       required Function(String, int)? onRequestOpenPerYearPage})
       : super(key: key) {
     this._onRequestOpenPerYearPage = onRequestOpenPerYearPage;
-    this._menuId = menuId;
+    this._loadLawYearCubit =
+        KiwiObjectResolver.getInstance().getLoadLawYearCubit();
+    _loadLawYearCubit.resetAndLoad(menuId: menuId);
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (BuildContext context) {
-        final cubit = KiwiObjectResolver.getInstance().getLoadLawYearCubit();
-        cubit.resetAndLoad(menuId: _menuId);
-        return cubit;
-      },
-      child: BlocListener<LoadLawMenuCubit, LawMenuNavigationUiState>(
-        listener: (context, state) {
-          state.maybeWhen(
-            loadSuccess: (_, selected) {
-              if (selected == null) {
-                return;
-              }
-              if (selected.type == LawMenuOrderDataPresenterType.law) {
-                final menuId = selected.id;
-                BlocProvider.of<LoadLawYearCubit>(context)
-                    .resetAndLoad(menuId: menuId);
-              }
-            },
-            orElse: () => {},
-          );
-        },
-        child: SafeArea(
-          child: Container(
-            color: Colors.white,
-            child: _LawYearListStatefulView(
-              onItemTapped: _onRequestOpenPerYearPage,
-            ),
+    return BlocProvider.value(
+      value: _loadLawYearCubit,
+      child: SafeArea(
+        child: Container(
+          color: Colors.white,
+          child: _LawYearListStatefulView(
+            onItemTapped: _onRequestOpenPerYearPage,
           ),
         ),
       ),
