@@ -6,6 +6,7 @@ import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_per_year_c
 import 'package:hukum_pro/common/ui/app_color.dart';
 import 'package:hukum_pro/di/impl/kiwi_object_resolver.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+
 //
 //
 class LawPerYearScreen extends StatefulWidget {
@@ -43,10 +44,8 @@ class _LawPerYearScreenState extends State<LawPerYearScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (BuildContext context) {
-        return KiwiObjectResolver.getInstance().getLoadLawPerYearCubit();
-      },
+    return BlocProvider.value(
+      value: lawPerYearCubit,
       child: Scaffold(
         appBar: AppBar(
           title: FutureBuilder<LawMenuOrderEntity?>(
