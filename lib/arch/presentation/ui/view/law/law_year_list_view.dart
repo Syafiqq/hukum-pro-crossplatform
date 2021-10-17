@@ -15,11 +15,15 @@ import 'package:loading_indicator/loading_indicator.dart';
 //
 class LawYearListView extends StatelessWidget {
   late final Function(String, int)? _onRequestOpenPerYearPage;
+  late final String _menuId;
 
   LawYearListView(
-      {Key? key, required Function(String, int)? onRequestOpenPerYearPage})
+      {Key? key,
+      required String menuId,
+      required Function(String, int)? onRequestOpenPerYearPage})
       : super(key: key) {
     this._onRequestOpenPerYearPage = onRequestOpenPerYearPage;
+    this._menuId = menuId;
   }
 
   @override
@@ -27,14 +31,7 @@ class LawYearListView extends StatelessWidget {
     return BlocProvider(
       create: (BuildContext context) {
         final cubit = KiwiObjectResolver.getInstance().getLoadLawYearCubit();
-
-        final selected = BlocProvider.of<LoadLawMenuCubit>(context).activeMenu;
-        if (selected == null) {
-          return cubit;
-        }
-        final menuId = selected.id;
-        cubit.resetAndLoad(menuId: menuId);
-
+        cubit.resetAndLoad(menuId: _menuId);
         return cubit;
       },
       child: BlocListener<LoadLawMenuCubit, LawMenuNavigationUiState>(

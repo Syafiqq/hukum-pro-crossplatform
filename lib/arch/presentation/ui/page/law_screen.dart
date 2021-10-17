@@ -105,6 +105,7 @@ class _LawScreenStatefulState extends State<_LawScreenStateful> {
                   return Container();
                 } else if (selected.type == LawMenuOrderDataPresenterType.law) {
                   return LawYearListView(
+                    menuId: selected.id,
                     onRequestOpenPerYearPage: (String menuId, int year) {
                       Navigator.push(
                         context,
