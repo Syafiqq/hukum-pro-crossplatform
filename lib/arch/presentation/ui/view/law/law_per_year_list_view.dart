@@ -15,16 +15,10 @@ import 'package:loading_indicator/loading_indicator.dart';
 class LawPerYearListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (BuildContext context) {
-        return KiwiObjectResolver.getInstance().getLoadLawPerYearCubit()
-          ..resetAndLoad();
-      },
-      child: SafeArea(
-        child: Container(
-          color: Colors.white,
-          child: _LawPerYearListStatefulView(),
-        ),
+    return SafeArea(
+      child: Container(
+        color: Colors.white,
+        child: _LawPerYearListStatefulView(),
       ),
     );
   }

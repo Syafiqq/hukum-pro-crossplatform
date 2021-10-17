@@ -10,7 +10,6 @@ var _kPageSize = 20;
 
 class LoadLawPerYearCubit extends Cubit<LawPerYearLoadState> {
   final LawRepository _lawYearRepository;
-  final ActiveLawService _activeLawService;
 
   var _startingStaticId = 1000;
   int _page = 0;
@@ -19,7 +18,6 @@ class LoadLawPerYearCubit extends Cubit<LawPerYearLoadState> {
 
   LoadLawPerYearCubit(
     this._lawYearRepository,
-    this._activeLawService,
   ) : super(
           LawPerYearLoadState(
             state: LoadMoreDataFetcherState.initial,

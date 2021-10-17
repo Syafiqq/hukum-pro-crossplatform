@@ -110,7 +110,10 @@ class _LawScreenStatefulState extends State<_LawScreenStateful> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => LawPerYearScreen(),
+                          builder: (context) => LawPerYearScreen(
+                            menuId: menuId,
+                            year: year,
+                          ),
                         ),
                       );
                     },

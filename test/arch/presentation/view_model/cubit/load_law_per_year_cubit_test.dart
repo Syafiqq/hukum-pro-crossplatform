@@ -17,23 +17,18 @@ import 'load_law_per_year_cubit_test.mocks.dart';
 @GenerateMocks([], customMocks: [
   MockSpec<LawRepository>(
       as: #BaseMockLawRepository, returnNullOnMissingStub: true),
-  MockSpec<ActiveLawService>(
-      as: #BaseMockActiveLawService, returnNullOnMissingStub: true),
 ])
 void main() {
   group('$LoadLawMenuCubit', () {
     late BaseMockLawRepository mockLawRepository;
-    late BaseMockActiveLawService mockActiveLawService;
 
     setUp(() {
       mockLawRepository = BaseMockLawRepository();
-      mockActiveLawService = BaseMockActiveLawService();
     });
 
     group('initial', () {
       test('it produce initial state', () {
-        var cubit =
-            LoadLawPerYearCubit(mockLawRepository, mockActiveLawService);
+        var cubit = LoadLawPerYearCubit(mockLawRepository);
         expect(
           cubit.state,
           isA<LawPerYearLoadState>()
@@ -60,15 +55,12 @@ void main() {
           build: () {
             when(mockLawRepository.getByYear(any, any, any, any))
                 .thenAnswer((_) => Future.value([]));
-            when(mockActiveLawService.getActiveLawYear())
-                .thenAnswer((_) => Future.value(LawYearEntity(1, 1, 1)));
 
-            var cubit =
-                LoadLawPerYearCubit(mockLawRepository, mockActiveLawService);
+            var cubit = LoadLawPerYearCubit(mockLawRepository);
             cubit.emit(initial);
             return cubit;
           },
-          act: (cubit) => cubit.resetAndLoad(),
+          act: (cubit) => cubit.resetAndLoad(menuId: '1', year: 1),
           expect: expectOverride ??
               () => <Matcher>[
                     isA<LawPerYearLoadState>().having(
@@ -95,14 +87,11 @@ void main() {
           build: () {
             when(mockLawRepository.getByYear(any, any, any, any))
                 .thenAnswer((_) => Future.value([]));
-            when(mockActiveLawService.getActiveLawYear())
-                .thenAnswer((_) => Future.value(LawYearEntity(1, 1, 1)));
-            var cubit =
-                LoadLawPerYearCubit(mockLawRepository, mockActiveLawService);
+            var cubit = LoadLawPerYearCubit(mockLawRepository);
             cubit.emit(initial);
             return cubit;
           },
-          act: (cubit) => cubit.resetAndLoad(),
+          act: (cubit) => cubit.resetAndLoad(menuId: '1', year: 1),
           expect: () => <Matcher>[],
         );
       }
@@ -189,11 +178,10 @@ void main() {
           build: () {
             when(mockLawRepository.getByYear(any, any, any, any))
                 .thenAnswer((_) => Future.value([]));
-            var cubit =
-                LoadLawPerYearCubit(mockLawRepository, mockActiveLawService);
+            var cubit = LoadLawPerYearCubit(mockLawRepository);
             return cubit;
           },
-          act: (cubit) => cubit.resetAndLoad(),
+          act: (cubit) => cubit.resetAndLoad(menuId: '1', year: 1),
           expect: () => <Matcher>[],
         );
       });
@@ -203,11 +191,10 @@ void main() {
           build: () {
             when(mockLawRepository.getByYear(any, any, any, any))
                 .thenAnswer((_) => Future.value([]));
-            var cubit =
-                LoadLawPerYearCubit(mockLawRepository, mockActiveLawService);
+            var cubit = LoadLawPerYearCubit(mockLawRepository);
             return cubit;
           },
-          act: (cubit) => cubit.resetAndLoad(),
+          act: (cubit) => cubit.resetAndLoad(menuId: '1', year: 1),
           expect: () => <Matcher>[],
         );
       });
@@ -217,11 +204,10 @@ void main() {
           build: () {
             when(mockLawRepository.getByYear(any, any, any, any))
                 .thenAnswer((_) => Future.value([]));
-            var cubit =
-                LoadLawPerYearCubit(mockLawRepository, mockActiveLawService);
+            var cubit = LoadLawPerYearCubit(mockLawRepository);
             return cubit;
           },
-          act: (cubit) => cubit.resetAndLoad(),
+          act: (cubit) => cubit.resetAndLoad(menuId: '1', year: 1),
           expect: () => <Matcher>[],
         );
       });
@@ -236,11 +222,8 @@ void main() {
           build: () {
             when(mockLawRepository.getByYear(any, any, any, any))
                 .thenAnswer((_) => Future.value([]));
-            when(mockActiveLawService.getActiveLawYear())
-                .thenAnswer((_) => Future.value(LawYearEntity(1, 1, 1)));
 
-            var cubit =
-                LoadLawPerYearCubit(mockLawRepository, mockActiveLawService);
+            var cubit = LoadLawPerYearCubit(mockLawRepository);
             cubit.emit(initial);
             return cubit;
           },
@@ -266,10 +249,7 @@ void main() {
           build: () {
             when(mockLawRepository.getByYear(any, any, any, any))
                 .thenAnswer((_) => Future.value([]));
-            when(mockActiveLawService.getActiveLawYear())
-                .thenAnswer((_) => Future.value(LawYearEntity(1, 1, 1)));
-            var cubit =
-                LoadLawPerYearCubit(mockLawRepository, mockActiveLawService);
+            var cubit = LoadLawPerYearCubit(mockLawRepository);
             cubit.emit(initial);
             return cubit;
           },
@@ -353,8 +333,7 @@ void main() {
           build: () {
             when(mockLawRepository.getByYear(any, any, any, any))
                 .thenAnswer((_) => Future.value([]));
-            var cubit =
-                LoadLawPerYearCubit(mockLawRepository, mockActiveLawService);
+            var cubit = LoadLawPerYearCubit(mockLawRepository);
             return cubit;
           },
           act: (cubit) => cubit.loadMore(),
@@ -367,8 +346,7 @@ void main() {
           build: () {
             when(mockLawRepository.getByYear(any, any, any, any))
                 .thenAnswer((_) => Future.value([]));
-            var cubit =
-                LoadLawPerYearCubit(mockLawRepository, mockActiveLawService);
+            var cubit = LoadLawPerYearCubit(mockLawRepository);
             return cubit;
           },
           act: (cubit) => cubit.loadMore(),
@@ -381,8 +359,7 @@ void main() {
           build: () {
             when(mockLawRepository.getByYear(any, any, any, any))
                 .thenAnswer((_) => Future.value([]));
-            var cubit =
-                LoadLawPerYearCubit(mockLawRepository, mockActiveLawService);
+            var cubit = LoadLawPerYearCubit(mockLawRepository);
             return cubit;
           },
           act: (cubit) => cubit.loadMore(),

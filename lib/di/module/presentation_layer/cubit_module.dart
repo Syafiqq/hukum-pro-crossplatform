@@ -42,7 +42,6 @@ class CubitModule {
     container.registerFactory<LoadLawPerYearCubit>(
       (c) => LoadLawPerYearCubit(
         c.resolve<LawRepository>(),
-        c.resolve<ActiveLawService>(),
       ),
     );
   }
