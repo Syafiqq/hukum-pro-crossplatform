@@ -2,14 +2,14 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hukum_pro/arch/domain/service/active_law_service_impl.dart';
 import 'package:hukum_pro/arch/presentation/entity/law_menu_order_data_presenter.dart';
 import 'package:hukum_pro/arch/presentation/ui/component/dialog/common_dialog.dart';
 import 'package:hukum_pro/arch/presentation/ui/page/law_per_year_screen.dart';
 import 'package:hukum_pro/arch/presentation/ui/view/law/law_menu_navigation_view.dart';
 import 'package:hukum_pro/arch/presentation/ui/view/law/law_year_list_view.dart';
-import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_menu_cubit.dart';
-import 'package:hukum_pro/arch/presentation/view_model/state/law_menu_navigation_state.dart';
+import 'package:hukum_pro/arch/presentation/view_model/cubit/law_menu_navigation_list_cubit.dart';
+import 'package:hukum_pro/arch/presentation/view_model/cubit/law_year_list_cubit.dart';
+import 'package:hukum_pro/arch/presentation/view_model/state/law_menu_navigation_list_state.dart';
 import 'package:hukum_pro/common/ui/app_color.dart';
 import 'package:hukum_pro/common/ui/button_cta_type.dart';
 import 'package:hukum_pro/di/impl/kiwi_object_resolver.dart';
@@ -19,11 +19,18 @@ class LawScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<LoadLawMenuCubit>(
+        BlocProvider<LawMenuNavigationListCubit>(
           lazy: false,
           create: (BuildContext context) {
-            return KiwiObjectResolver.getInstance().getLoadLawMenuCubit()
+            return KiwiObjectResolver.getInstance()
+                .getLawMenuNavigationListCubit()
               ..load();
+          },
+        ),
+        BlocProvider<LawYearListCubit>(
+          lazy: true,
+          create: (BuildContext context) {
+            return KiwiObjectResolver.getInstance().getLawYearListCubit();
           },
         ),
       ],
@@ -42,7 +49,7 @@ class _LawScreenStatefulState extends State<_LawScreenStateful> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<LoadLawMenuCubit, LawMenuNavigationUiState>(
+    return BlocListener<LawMenuNavigationListCubit, LawMenuNavigationListState>(
       listener: (context, state) {
         state.maybeWhen(
           loadFailed: () {
@@ -57,7 +64,7 @@ class _LawScreenStatefulState extends State<_LawScreenStateful> {
                     isClosable: false,
                     dismissOnTouchOutside: false)
                 .then(
-              (value) => context.read<LoadLawMenuCubit>().load(),
+              (value) => context.read<LawMenuNavigationListCubit>().load(),
             );
           },
           loadSuccess: (_, selected) {
@@ -94,7 +101,23 @@ class _LawScreenStatefulState extends State<_LawScreenStateful> {
             ),
           ),
         ),
-        body: BlocBuilder<LoadLawMenuCubit, LawMenuNavigationUiState>(
+        body: BlocConsumer<LawMenuNavigationListCubit,
+            LawMenuNavigationListState>(
+          listener: (context, state) {
+            state.maybeWhen(
+                loadSuccess: (_, selected) {
+                  if (selected == null) {}
+                  if (selected?.type == LawMenuOrderDataPresenterType.law) {
+                    final menuId = selected?.id;
+                    if (menuId == null) {
+                      return;
+                    }
+                    BlocProvider.of<LawYearListCubit>(context)
+                        .resetAndLoad(menuId: menuId);
+                  }
+                },
+                orElse: () => {});
+          },
           builder: (context, state) {
             return state.maybeWhen(
               loadSuccess: (_, selected) {
@@ -105,11 +128,14 @@ class _LawScreenStatefulState extends State<_LawScreenStateful> {
                   return Container();
                 } else if (selected.type == LawMenuOrderDataPresenterType.law) {
                   return LawYearListView(
-                    onRequestOpenPerYearPage: () {
+                    onRequestOpenPerYearPage: (String menuId, int year) {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => LawPerYearScreen(),
+                          builder: (context) => LawPerYearScreen(
+                            menuId: menuId,
+                            year: year,
+                          ),
                         ),
                       );
                     },

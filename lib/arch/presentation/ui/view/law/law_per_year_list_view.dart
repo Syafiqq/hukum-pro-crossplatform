@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hukum_pro/arch/presentation/entity/law_per_year_data_presenter.dart';
 import 'package:hukum_pro/arch/presentation/state/load_more_data_fetcher_state.dart';
-import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_per_year_cubit.dart';
-import 'package:hukum_pro/arch/presentation/view_model/state/law_per_year_load_state.dart';
-import 'package:hukum_pro/arch/presentation/view_model/state/law_year_load_state.dart';
+import 'package:hukum_pro/arch/presentation/view_model/cubit/law_per_year_list_cubit.dart';
+import 'package:hukum_pro/arch/presentation/view_model/state/law_per_year_list_state.dart';
+import 'package:hukum_pro/arch/presentation/view_model/state/law_year_list_state.dart';
 import 'package:hukum_pro/common/ui/app_color.dart';
 import 'package:hukum_pro/common/ui/app_font.dart';
 import 'package:hukum_pro/di/impl/kiwi_object_resolver.dart';
@@ -15,16 +15,10 @@ import 'package:loading_indicator/loading_indicator.dart';
 class LawPerYearListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (BuildContext context) {
-        return KiwiObjectResolver.getInstance().getLoadLawPerYearCubit()
-          ..resetAndLoad();
-      },
-      child: SafeArea(
-        child: Container(
-          color: Colors.white,
-          child: _LawPerYearListStatefulView(),
-        ),
+    return SafeArea(
+      child: Container(
+        color: Colors.white,
+        child: _LawPerYearListStatefulView(),
       ),
     );
   }
@@ -56,7 +50,7 @@ class _LawPerYearListStatefulViewState
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<LoadLawPerYearCubit, LawPerYearLoadState>(
+    return BlocConsumer<LawPerYearListCubit, LawPerYearListLoadState>(
       listener: (context, state) {
         // TODO: Show Failed dialog
       },
@@ -134,7 +128,7 @@ class _LawPerYearListStatefulViewState
   }
 
   void _onScroll() {
-    if (_isBottom) context.read<LoadLawPerYearCubit>().loadMore();
+    if (_isBottom) context.read<LawPerYearListCubit>().loadMore();
   }
 
   bool get _isBottom {

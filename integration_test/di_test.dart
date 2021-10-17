@@ -20,16 +20,14 @@ import 'package:hukum_pro/arch/domain/repository/law_menu_order_repository.dart'
 import 'package:hukum_pro/arch/domain/repository/law_repository.dart';
 import 'package:hukum_pro/arch/domain/repository/law_year_repository.dart';
 import 'package:hukum_pro/arch/domain/repository/version_repository.dart';
-import 'package:hukum_pro/arch/domain/service/active_law_service.dart';
 import 'package:hukum_pro/arch/domain/use_case/check_version_first_time_use_case.dart';
 import 'package:hukum_pro/arch/domain/use_case/reinitialize_whole_data_use_case.dart';
 import 'package:hukum_pro/arch/infrastructure/app/platform_identifier.dart';
 import 'package:hukum_pro/arch/infrastructure/local_database/object_box/store_provider.dart';
-import 'package:hukum_pro/arch/presentation/view_model/cubit/check_local_version_and_initialize_cubit.dart';
-import 'package:hukum_pro/arch/presentation/view_model/cubit/law_year_page_title_cubit.dart';
-import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_menu_cubit.dart';
-import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_per_year_cubit.dart';
-import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_year_cubit.dart';
+import 'package:hukum_pro/arch/presentation/view_model/cubit/initialize_app_cubit.dart';
+import 'package:hukum_pro/arch/presentation/view_model/cubit/law_menu_navigation_list_cubit.dart';
+import 'package:hukum_pro/arch/presentation/view_model/cubit/law_per_year_list_cubit.dart';
+import 'package:hukum_pro/arch/presentation/view_model/cubit/law_year_list_cubit.dart';
 import 'package:hukum_pro/di/contract/object_resolver.dart';
 import 'package:hukum_pro/di/root_injector.dart';
 import 'package:hukum_pro/objectbox.g.dart';
@@ -79,12 +77,10 @@ void main() {
     expect(container.resolve<VersionRepository>(), isNotNull);
     expect(container.resolve<CheckVersionFirstTimeUseCase>(), isNotNull);
     expect(container.resolve<ReinitializeWholeDataUseCase>(), isNotNull);
-    expect(container.resolve<CheckLocalVersionAndInitializeCubit>(), isNotNull);
-    expect(container.resolve<LoadLawMenuCubit>(), isNotNull);
-    expect(container.resolve<LoadLawYearCubit>(), isNotNull);
-    expect(container.resolve<LoadLawPerYearCubit>(), isNotNull);
-    expect(container.resolve<LawYearPageTitleCubit>(), isNotNull);
-    expect(container.resolve<ActiveLawService>(), isNotNull);
+    expect(container.resolve<InitializeAppCubit>(), isNotNull);
+    expect(container.resolve<LawMenuNavigationListCubit>(), isNotNull);
+    expect(container.resolve<LawYearListCubit>(), isNotNull);
+    expect(container.resolve<LawPerYearListCubit>(), isNotNull);
     checkKiwi();
   });
 }
@@ -149,18 +145,14 @@ void checkKiwi() {
   checkObject(container.resolve<CheckVersionFirstTimeUseCase>());
   checkObject(container.resolve<ReinitializeWholeDataUseCase>());
   checkObject(container.resolve<ReinitializeWholeDataUseCase>());
-  checkObject(container.resolve<CheckLocalVersionAndInitializeCubit>());
-  checkObject(container.resolve<CheckLocalVersionAndInitializeCubit>());
-  checkObject(container.resolve<LoadLawMenuCubit>());
-  checkObject(container.resolve<LoadLawMenuCubit>());
-  checkObject(container.resolve<LoadLawYearCubit>());
-  checkObject(container.resolve<LoadLawYearCubit>());
-  checkObject(container.resolve<LoadLawPerYearCubit>());
-  checkObject(container.resolve<LoadLawPerYearCubit>());
-  checkObject(container.resolve<LawYearPageTitleCubit>());
-  checkObject(container.resolve<LawYearPageTitleCubit>());
-  checkObject(container.resolve<ActiveLawService>());
-  checkObject(container.resolve<ActiveLawService>());
+  checkObject(container.resolve<InitializeAppCubit>());
+  checkObject(container.resolve<InitializeAppCubit>());
+  checkObject(container.resolve<LawMenuNavigationListCubit>());
+  checkObject(container.resolve<LawMenuNavigationListCubit>());
+  checkObject(container.resolve<LawYearListCubit>());
+  checkObject(container.resolve<LawYearListCubit>());
+  checkObject(container.resolve<LawPerYearListCubit>());
+  checkObject(container.resolve<LawPerYearListCubit>());
 }
 
 void checkObject(Object x) {

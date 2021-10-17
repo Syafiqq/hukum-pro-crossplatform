@@ -1,53 +1,57 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hukum_pro/arch/domain/entity/law/law_menu_order_entity.dart';
 import 'package:hukum_pro/arch/domain/repository/law_menu_order_repository.dart';
-import 'package:hukum_pro/arch/domain/service/active_law_service.dart';
 import 'package:hukum_pro/arch/presentation/entity/law_menu_order_data_presenter.dart';
-import 'package:hukum_pro/arch/presentation/view_model/state/law_menu_navigation_state.dart';
+import 'package:hukum_pro/arch/presentation/view_model/state/law_menu_navigation_list_state.dart';
 import 'package:flinq/flinq.dart';
 
-class LoadLawMenuCubit extends Cubit<LawMenuNavigationUiState> {
+class LawMenuNavigationListCubit extends Cubit<LawMenuNavigationListState> {
   final LawMenuOrderRepository _lawMenuOrderRepository;
-  final ActiveLawService _activeLawService;
+  var _startingStaticId = 1000;
 
-  LoadLawMenuCubit(
+  LawMenuOrderEntity? _activeMenu;
+
+  LawMenuOrderEntity? get activeMenu => _activeMenu;
+
+  late List<LawMenuOrderEntity> _rawLaws;
+
+  LawMenuNavigationListCubit(
     this._lawMenuOrderRepository,
-    this._activeLawService,
-  ) : super(LawMenuNavigationUiState.initial());
+  ) : super(LawMenuNavigationListState.initial());
 
   Future<void> load() async {
     if (!(state is InitialState || state is MenuLoadFailed)) return;
 
-    emit(LawMenuNavigationUiState.loading());
+    emit(LawMenuNavigationListState.loading());
 
     try {
       var rawLaws = await _lawMenuOrderRepository.fetchFromLocal();
       rawLaws.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
-      var startingStaticId = 1000;
+      this._rawLaws = rawLaws;
 
       List<LawMenuOrderDataPresenter> menus = [];
 
       menus.addAll([
         LawMenuOrderDataPresenter(
-          "${++startingStaticId}",
+          "${++_startingStaticId}",
           LawMenuOrderDataPresenterType.header,
           "",
           false,
         ),
         LawMenuOrderDataPresenter(
-          "${++startingStaticId}",
+          "${++_startingStaticId}",
           LawMenuOrderDataPresenterType.divider,
           "",
           false,
         ),
         LawMenuOrderDataPresenter(
-          "${++startingStaticId}",
+          "${++_startingStaticId}",
           LawMenuOrderDataPresenterType.search,
           "Pencarian",
           false,
         ),
         LawMenuOrderDataPresenter(
-          "${++startingStaticId}",
+          "${++_startingStaticId}",
           LawMenuOrderDataPresenterType.divider,
           "",
           false,
@@ -56,19 +60,19 @@ class LoadLawMenuCubit extends Cubit<LawMenuNavigationUiState> {
       menus.addAll(_rawDataMapper(rawLaws));
       menus.addAll([
         LawMenuOrderDataPresenter(
-          "${++startingStaticId}",
+          "${++_startingStaticId}",
           LawMenuOrderDataPresenterType.divider,
           "",
           false,
         ),
         LawMenuOrderDataPresenter(
-          "${++startingStaticId}",
+          "${++_startingStaticId}",
           LawMenuOrderDataPresenterType.sync,
           "Sinkron",
           false,
         ),
         LawMenuOrderDataPresenter(
-          "${++startingStaticId}",
+          "${++_startingStaticId}",
           LawMenuOrderDataPresenterType.divider,
           "",
           false,
@@ -78,7 +82,7 @@ class LoadLawMenuCubit extends Cubit<LawMenuNavigationUiState> {
       if (menus.where((menu) => menu.isSelected).isEmpty) {
         var index = -1;
 
-        final savedLawId = (await _activeLawService.getActiveLawMenu())?.id;
+        final savedLawId = _activeMenu?.id;
         if (savedLawId != null) {
           index = menus.indexWhere((menu) => menu.id == savedLawId);
         }
@@ -90,21 +94,22 @@ class LoadLawMenuCubit extends Cubit<LawMenuNavigationUiState> {
 
         if (index >= 0) {
           menus[index].isSelected = true;
-          _activeLawService.setActiveLawMenu(ofId: menus[index].id);
+          _activeMenu =
+              _rawLaws.firstOrNullWhere((law) => law.id == menus[index].id);
         }
       }
 
-      emit(LawMenuNavigationUiState.loadSuccess(
+      emit(LawMenuNavigationListState.loadSuccess(
         menus,
         menus.firstOrNullWhere((menu) => menu.isSelected),
       ));
     } on Exception catch (e) {
       print(e);
-      emit(LawMenuNavigationUiState.loadFailed());
+      emit(LawMenuNavigationListState.loadFailed());
     }
   }
 
-  void selectMenu({of: LawMenuOrderDataPresenter}) {
+  void selectMenu({of: LawMenuOrderDataPresenter}) async {
     if (!(state is MenuLoadSuccess)) return;
     var menus = (state as MenuLoadSuccess).menus;
 
@@ -118,9 +123,9 @@ class LoadLawMenuCubit extends Cubit<LawMenuNavigationUiState> {
       menu.isSelected = false;
     });
     menus[index].isSelected = true;
-    _activeLawService.setActiveLawMenu(ofId: menus[index].id);
+    _activeMenu = _rawLaws.firstOrNullWhere((law) => law.id == menus[index].id);
 
-    emit(LawMenuNavigationUiState.loadSuccess(
+    emit(LawMenuNavigationListState.loadSuccess(
       menus,
       menus.firstOrNullWhere((menu) => menu.isSelected),
     ));

@@ -1,9 +1,8 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hukum_pro/arch/domain/repository/law_menu_order_repository.dart';
-import 'package:hukum_pro/arch/domain/service/active_law_service.dart';
-import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_menu_cubit.dart';
-import 'package:hukum_pro/arch/presentation/view_model/state/law_menu_navigation_state.dart';
+import 'package:hukum_pro/arch/presentation/view_model/cubit/law_menu_navigation_list_cubit.dart';
+import 'package:hukum_pro/arch/presentation/view_model/state/law_menu_navigation_list_state.dart';
 import 'package:hukum_pro/common/exception/defined_exception.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -13,22 +12,17 @@ import 'load_law_menu_cubit_test.mocks.dart';
 @GenerateMocks([], customMocks: [
   MockSpec<LawMenuOrderRepository>(
       as: #BaseMockLawMenuOrderRepository, returnNullOnMissingStub: true),
-  MockSpec<ActiveLawService>(
-      as: #BaseMockActiveLawService, returnNullOnMissingStub: true),
 ])
 void main() {
-  group('$LoadLawMenuCubit', () {
+  group('$LawMenuNavigationListCubit', () {
     late BaseMockLawMenuOrderRepository mockLawMenuOrderRepository;
-    late BaseMockActiveLawService mockActiveLawService;
 
     setUp(() {
       mockLawMenuOrderRepository = BaseMockLawMenuOrderRepository();
-      mockActiveLawService = BaseMockActiveLawService();
     });
 
     test('it produce initial state', () {
-      var cubit =
-          LoadLawMenuCubit(mockLawMenuOrderRepository, mockActiveLawService);
+      var cubit = LawMenuNavigationListCubit(mockLawMenuOrderRepository);
       expect(
         cubit.state,
         isA<InitialState>(),
@@ -36,25 +30,23 @@ void main() {
     });
 
     group('load', () {
-      blocTest<LoadLawMenuCubit, LawMenuNavigationUiState>(
+      blocTest<LawMenuNavigationListCubit, LawMenuNavigationListState>(
         'it should do nothing',
         build: () {
-          var cubit = LoadLawMenuCubit(
-              mockLawMenuOrderRepository, mockActiveLawService);
-          cubit.emit(LawMenuNavigationUiState.loading());
+          var cubit = LawMenuNavigationListCubit(mockLawMenuOrderRepository);
+          cubit.emit(LawMenuNavigationListState.loading());
           return cubit;
         },
         act: (cubit) => cubit.load(),
         expect: () => isEmpty,
       );
 
-      blocTest<LoadLawMenuCubit, LawMenuNavigationUiState>(
+      blocTest<LawMenuNavigationListCubit, LawMenuNavigationListState>(
         'it should produce initial -> loading -> load success',
         build: () {
           when(mockLawMenuOrderRepository.fetchFromLocal())
               .thenAnswer((_) => Future.value([]));
-          return LoadLawMenuCubit(
-              mockLawMenuOrderRepository, mockActiveLawService);
+          return LawMenuNavigationListCubit(mockLawMenuOrderRepository);
         },
         act: (cubit) => cubit.load(),
         expect: () => <Matcher>[
@@ -63,14 +55,13 @@ void main() {
         ],
       );
 
-      blocTest<LoadLawMenuCubit, LawMenuNavigationUiState>(
+      blocTest<LawMenuNavigationListCubit, LawMenuNavigationListState>(
         'it should produce initial -> loading -> load failed',
         build: () {
           when(mockLawMenuOrderRepository.fetchFromLocal()).thenAnswer(
               (_) => Future.error(DefinedException(null, null, null, null)));
 
-          return LoadLawMenuCubit(
-              mockLawMenuOrderRepository, mockActiveLawService);
+          return LawMenuNavigationListCubit(mockLawMenuOrderRepository);
         },
         act: (cubit) => cubit.load(),
         expect: () => <Matcher>[isA<MenuLoading>(), isA<MenuLoadFailed>()],

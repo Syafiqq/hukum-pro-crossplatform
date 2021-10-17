@@ -5,8 +5,8 @@ import 'package:hukum_pro/arch/domain/entity/version/check_local_version_state.d
 import 'package:hukum_pro/arch/domain/repository/version_repository.dart';
 import 'package:hukum_pro/arch/domain/use_case/check_version_first_time_use_case.dart';
 import 'package:hukum_pro/arch/domain/use_case/reinitialize_whole_data_use_case.dart';
-import 'package:hukum_pro/arch/presentation/view_model/cubit/check_local_version_and_initialize_cubit.dart';
-import 'package:hukum_pro/arch/presentation/view_model/state/check_local_version_and_initialize_state.dart';
+import 'package:hukum_pro/arch/presentation/view_model/cubit/initialize_app_cubit.dart';
+import 'package:hukum_pro/arch/presentation/view_model/state/initialize_app_state.dart';
 import 'package:hukum_pro/common/exception/defined_exception.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -22,7 +22,7 @@ import 'check_local_version_and_initialize_cubit_test.mocks.dart';
       as: #BaseMockVersionRepository, returnNullOnMissingStub: true),
 ])
 void main() {
-  group('$CheckLocalVersionAndInitializeCubit', () {
+  group('$InitializeAppCubit', () {
     late BaseMockCheckVersionFirstTimeUseCase mockCheckVersionFirstTimeUseCase;
     late BaseMockReinitializeWholeDataUseCase mockReinitializeWholeDataUseCase;
     late BaseMockVersionRepository mockVersionRepository;
@@ -34,7 +34,7 @@ void main() {
     });
 
     test('it produce initial state', () {
-      var cubit = CheckLocalVersionAndInitializeCubit(
+      var cubit = InitializeAppCubit(
         mockCheckVersionFirstTimeUseCase,
         mockReinitializeWholeDataUseCase,
         mockVersionRepository,
@@ -46,30 +46,30 @@ void main() {
     });
 
     group('checkVersion', () {
-      blocTest<CheckLocalVersionAndInitializeCubit,
-          CheckLocalVersionAndInitializeUiState>(
+      blocTest<InitializeAppCubit,
+          InitializeAppState>(
         'it should do nothing',
         build: () {
-          var cubit = CheckLocalVersionAndInitializeCubit(
+          var cubit = InitializeAppCubit(
             mockCheckVersionFirstTimeUseCase,
             mockReinitializeWholeDataUseCase,
             mockVersionRepository,
           );
-          cubit.emit(CheckLocalVersionAndInitializeUiState.versionLoading());
+          cubit.emit(InitializeAppState.versionLoading());
           return cubit;
         },
         act: (cubit) => cubit.checkVersion(),
         expect: () => isEmpty,
       );
 
-      blocTest<CheckLocalVersionAndInitializeCubit,
-          CheckLocalVersionAndInitializeUiState>(
+      blocTest<InitializeAppCubit,
+          InitializeAppState>(
         'it should produce initial -> loading -> version present',
         build: () {
           when(mockCheckVersionFirstTimeUseCase.execute()).thenAnswer((_) =>
               Future.value(CheckLocalVersionState.localPresent(
                   VersionEntity(null, null, null))));
-          return CheckLocalVersionAndInitializeCubit(
+          return InitializeAppCubit(
             mockCheckVersionFirstTimeUseCase,
             mockReinitializeWholeDataUseCase,
             mockVersionRepository,
@@ -88,8 +88,8 @@ void main() {
         ],
       );
 
-      blocTest<CheckLocalVersionAndInitializeCubit,
-          CheckLocalVersionAndInitializeUiState>(
+      blocTest<InitializeAppCubit,
+          InitializeAppState>(
         'it should produce initial -> loading -> not present',
         build: () {
           when(mockCheckVersionFirstTimeUseCase.execute()).thenAnswer((_) =>
@@ -97,7 +97,7 @@ void main() {
                   VersionEntity(null, null, null))));
           when(mockReinitializeWholeDataUseCase.execute(any))
               .thenAnswer((_) => Future.value(null));
-          return CheckLocalVersionAndInitializeCubit(
+          return InitializeAppCubit(
             mockCheckVersionFirstTimeUseCase,
             mockReinitializeWholeDataUseCase,
             mockVersionRepository,
@@ -118,15 +118,15 @@ void main() {
         ],
       );
 
-      blocTest<CheckLocalVersionAndInitializeCubit,
-          CheckLocalVersionAndInitializeUiState>(
+      blocTest<InitializeAppCubit,
+          InitializeAppState>(
         'it should produce initial -> loading -> not present',
         build: () {
           when(mockCheckVersionFirstTimeUseCase.execute()).thenAnswer((_) =>
               Future.value(CheckLocalVersionState.needInitializeVersion(
                   VersionEntity(null, null, null))));
 
-          return CheckLocalVersionAndInitializeCubit(
+          return InitializeAppCubit(
             mockCheckVersionFirstTimeUseCase,
             mockReinitializeWholeDataUseCase,
             mockVersionRepository,
@@ -147,13 +147,13 @@ void main() {
         ],
       );
 
-      blocTest<CheckLocalVersionAndInitializeCubit,
-          CheckLocalVersionAndInitializeUiState>(
+      blocTest<InitializeAppCubit,
+          InitializeAppState>(
         'it should produce initial -> loading -> failure',
         build: () {
           when(mockCheckVersionFirstTimeUseCase.execute()).thenAnswer(
               (_) => Future.error(DefinedException(null, null, null, null)));
-          return CheckLocalVersionAndInitializeCubit(
+          return InitializeAppCubit(
             mockCheckVersionFirstTimeUseCase,
             mockReinitializeWholeDataUseCase,
             mockVersionRepository,
@@ -168,11 +168,11 @@ void main() {
     });
 
     group('reinitializeApp', () {
-      blocTest<CheckLocalVersionAndInitializeCubit,
-          CheckLocalVersionAndInitializeUiState>(
+      blocTest<InitializeAppCubit,
+          InitializeAppState>(
         'it should do nothing at initial state',
         build: () {
-          return CheckLocalVersionAndInitializeCubit(
+          return InitializeAppCubit(
             mockCheckVersionFirstTimeUseCase,
             mockReinitializeWholeDataUseCase,
             mockVersionRepository,
@@ -182,52 +182,52 @@ void main() {
         expect: () => isEmpty,
       );
 
-      blocTest<CheckLocalVersionAndInitializeCubit,
-          CheckLocalVersionAndInitializeUiState>(
+      blocTest<InitializeAppCubit,
+          InitializeAppState>(
         'it should do nothing when check version',
         build: () {
-          var cubit = CheckLocalVersionAndInitializeCubit(
+          var cubit = InitializeAppCubit(
             mockCheckVersionFirstTimeUseCase,
             mockReinitializeWholeDataUseCase,
             mockVersionRepository,
           );
-          cubit.emit(CheckLocalVersionAndInitializeUiState.versionLoading());
+          cubit.emit(InitializeAppState.versionLoading());
           return cubit;
         },
         act: (cubit) => cubit.initializeApp(VersionEntity(null, null, null)),
         expect: () => isEmpty,
       );
 
-      blocTest<CheckLocalVersionAndInitializeCubit,
-          CheckLocalVersionAndInitializeUiState>(
+      blocTest<InitializeAppCubit,
+          InitializeAppState>(
         'it should do nothing initialize has been being processed',
         build: () {
-          var cubit = CheckLocalVersionAndInitializeCubit(
+          var cubit = InitializeAppCubit(
             mockCheckVersionFirstTimeUseCase,
             mockReinitializeWholeDataUseCase,
             mockVersionRepository,
           );
           cubit.emit(
-              CheckLocalVersionAndInitializeUiState.initializeAppLoading());
+              InitializeAppState.initializeAppLoading());
           return cubit;
         },
         act: (cubit) => cubit.initializeApp(VersionEntity(null, null, null)),
         expect: () => isEmpty,
       );
 
-      blocTest<CheckLocalVersionAndInitializeCubit,
-          CheckLocalVersionAndInitializeUiState>(
+      blocTest<InitializeAppCubit,
+          InitializeAppState>(
         'it should produce loading initialize -> success',
         build: () {
           when(mockReinitializeWholeDataUseCase.execute(any))
               .thenAnswer((_) => Future.value(null));
-          var cubit = CheckLocalVersionAndInitializeCubit(
+          var cubit = InitializeAppCubit(
             mockCheckVersionFirstTimeUseCase,
             mockReinitializeWholeDataUseCase,
             mockVersionRepository,
           );
           cubit.emit(
-              CheckLocalVersionAndInitializeUiState.versionNotExistButRemote(
+              InitializeAppState.versionNotExistButRemote(
                   VersionEntity(null, null, null)));
           return cubit;
         },
@@ -238,19 +238,19 @@ void main() {
         ],
       );
 
-      blocTest<CheckLocalVersionAndInitializeCubit,
-          CheckLocalVersionAndInitializeUiState>(
+      blocTest<InitializeAppCubit,
+          InitializeAppState>(
         'it should produce loading initialize -> failed',
         build: () {
           when(mockReinitializeWholeDataUseCase.execute(any)).thenAnswer(
               (_) => Future.error(DefinedException(null, null, null, null)));
-          var cubit = CheckLocalVersionAndInitializeCubit(
+          var cubit = InitializeAppCubit(
             mockCheckVersionFirstTimeUseCase,
             mockReinitializeWholeDataUseCase,
             mockVersionRepository,
           );
           cubit.emit(
-              CheckLocalVersionAndInitializeUiState.versionNotExistButRemote(
+              InitializeAppState.versionNotExistButRemote(
                   VersionEntity(null, null, null)));
           return cubit;
         },
