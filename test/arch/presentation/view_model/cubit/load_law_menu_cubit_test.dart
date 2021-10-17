@@ -1,7 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hukum_pro/arch/domain/repository/law_menu_order_repository.dart';
-import 'package:hukum_pro/arch/domain/service/active_law_service.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_menu_cubit.dart';
 import 'package:hukum_pro/arch/presentation/view_model/state/law_menu_navigation_state.dart';
 import 'package:hukum_pro/common/exception/defined_exception.dart';
@@ -13,8 +12,6 @@ import 'load_law_menu_cubit_test.mocks.dart';
 @GenerateMocks([], customMocks: [
   MockSpec<LawMenuOrderRepository>(
       as: #BaseMockLawMenuOrderRepository, returnNullOnMissingStub: true),
-  MockSpec<ActiveLawService>(
-      as: #BaseMockActiveLawService, returnNullOnMissingStub: true),
 ])
 void main() {
   group('$LoadLawMenuCubit', () {
