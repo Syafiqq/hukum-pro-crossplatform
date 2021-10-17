@@ -4,7 +4,7 @@ import 'package:hukum_pro/arch/presentation/state/load_more_data_fetcher_state.d
 
 import 'law_year_load_state.dart';
 
-part 'law_per_year_load_state.freezed.dart';
+part 'law_per_year_list_state.freezed.dart';
 
 @freezed
 class LawPerYearListLoadState with _$LawPerYearListLoadState {

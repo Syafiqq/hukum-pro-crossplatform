@@ -7,7 +7,7 @@ import 'package:hukum_pro/arch/domain/repository/law_repository.dart';
 import 'package:hukum_pro/arch/presentation/state/load_more_data_fetcher_state.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_menu_cubit.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/law_per_year_list_cubit.dart';
-import 'package:hukum_pro/arch/presentation/view_model/state/law_per_year_load_state.dart';
+import 'package:hukum_pro/arch/presentation/view_model/state/law_per_year_list_state.dart';
 import 'package:hukum_pro/arch/presentation/view_model/state/law_year_load_state.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
