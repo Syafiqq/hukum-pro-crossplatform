@@ -7,7 +7,7 @@ import 'package:hukum_pro/arch/domain/use_case/reinitialize_whole_data_use_case.
 import 'package:hukum_pro/arch/presentation/view_model/cubit/check_local_version_and_initialize_cubit.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_menu_cubit.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/law_per_year_list_cubit.dart';
-import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_year_cubit.dart';
+import 'package:hukum_pro/arch/presentation/view_model/cubit/law_year_list_cubit.dart';
 import 'package:kiwi/kiwi.dart';
 
 class CubitModule {
@@ -33,8 +33,8 @@ class CubitModule {
         c.resolve<LawMenuOrderRepository>(),
       ),
     );
-    container.registerFactory<LoadLawYearCubit>(
-      (c) => LoadLawYearCubit(
+    container.registerFactory<LawYearListCubit>(
+      (c) => LawYearListCubit(
         c.resolve<LawYearRepository>(),
       ),
     );

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hukum_pro/arch/presentation/entity/law_year_list_data_presenter.dart';
 import 'package:hukum_pro/arch/presentation/state/load_more_data_fetcher_state.dart';
-import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_year_cubit.dart';
-import 'package:hukum_pro/arch/presentation/view_model/state/law_year_load_state.dart';
+import 'package:hukum_pro/arch/presentation/view_model/cubit/law_year_list_cubit.dart';
+import 'package:hukum_pro/arch/presentation/view_model/state/law_year_list_state.dart';
 import 'package:hukum_pro/common/ui/app_color.dart';
 import 'package:hukum_pro/common/ui/app_font.dart';
 import 'package:hukum_pro/di/impl/kiwi_object_resolver.dart';
@@ -12,7 +12,7 @@ import 'package:loading_indicator/loading_indicator.dart';
 //
 class LawYearListView extends StatelessWidget {
   late final Function(String, int)? _onRequestOpenPerYearPage;
-  late final LoadLawYearCubit _loadLawYearCubit;
+  late final LawYearListCubit _loadLawYearCubit;
 
   LawYearListView(
       {Key? key,
@@ -21,7 +21,7 @@ class LawYearListView extends StatelessWidget {
       : super(key: key) {
     this._onRequestOpenPerYearPage = onRequestOpenPerYearPage;
     this._loadLawYearCubit =
-        KiwiObjectResolver.getInstance().getLoadLawYearCubit();
+        KiwiObjectResolver.getInstance().getLawYearListCubit();
     _loadLawYearCubit.resetAndLoad(menuId: menuId);
   }
 
@@ -82,7 +82,7 @@ class _LawYearListStatefulViewState extends State<_LawYearListStatefulView> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<LoadLawYearCubit, LawYearLoadState>(
+    return BlocConsumer<LawYearListCubit, LawYearListState>(
       listener: (context, state) {
         // TODO: Show Failed dialog
       },
@@ -123,7 +123,7 @@ class _LawYearListStatefulViewState extends State<_LawYearListStatefulView> {
                       onTap: () {
                         final year = state.lawYears[index].year;
                         final menuId =
-                            BlocProvider.of<LoadLawYearCubit>(context).menuId;
+                            BlocProvider.of<LawYearListCubit>(context).menuId;
 
                         _onItemTapped?.call(menuId, year);
                       },
@@ -171,7 +171,7 @@ class _LawYearListStatefulViewState extends State<_LawYearListStatefulView> {
   }
 
   void _onScroll() {
-    if (_isBottom) context.read<LoadLawYearCubit>().loadMore();
+    if (_isBottom) context.read<LawYearListCubit>().loadMore();
   }
 
   bool get _isBottom {

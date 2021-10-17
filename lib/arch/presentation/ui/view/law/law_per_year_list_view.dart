@@ -4,7 +4,7 @@ import 'package:hukum_pro/arch/presentation/entity/law_per_year_data_presenter.d
 import 'package:hukum_pro/arch/presentation/state/load_more_data_fetcher_state.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/law_per_year_list_cubit.dart';
 import 'package:hukum_pro/arch/presentation/view_model/state/law_per_year_list_state.dart';
-import 'package:hukum_pro/arch/presentation/view_model/state/law_year_load_state.dart';
+import 'package:hukum_pro/arch/presentation/view_model/state/law_year_list_state.dart';
 import 'package:hukum_pro/common/ui/app_color.dart';
 import 'package:hukum_pro/common/ui/app_font.dart';
 import 'package:hukum_pro/di/impl/kiwi_object_resolver.dart';

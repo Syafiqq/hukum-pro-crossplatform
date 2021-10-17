@@ -27,7 +27,7 @@ import 'package:hukum_pro/arch/infrastructure/local_database/object_box/store_pr
 import 'package:hukum_pro/arch/presentation/view_model/cubit/check_local_version_and_initialize_cubit.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_menu_cubit.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/law_per_year_list_cubit.dart';
-import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_year_cubit.dart';
+import 'package:hukum_pro/arch/presentation/view_model/cubit/law_year_list_cubit.dart';
 import 'package:hukum_pro/di/contract/object_resolver.dart';
 import 'package:hukum_pro/di/root_injector.dart';
 import 'package:hukum_pro/objectbox.g.dart';
@@ -79,7 +79,7 @@ void main() {
     expect(container.resolve<ReinitializeWholeDataUseCase>(), isNotNull);
     expect(container.resolve<CheckLocalVersionAndInitializeCubit>(), isNotNull);
     expect(container.resolve<LoadLawMenuCubit>(), isNotNull);
-    expect(container.resolve<LoadLawYearCubit>(), isNotNull);
+    expect(container.resolve<LawYearListCubit>(), isNotNull);
     expect(container.resolve<LawPerYearListCubit>(), isNotNull);
     checkKiwi();
   });
@@ -149,8 +149,8 @@ void checkKiwi() {
   checkObject(container.resolve<CheckLocalVersionAndInitializeCubit>());
   checkObject(container.resolve<LoadLawMenuCubit>());
   checkObject(container.resolve<LoadLawMenuCubit>());
-  checkObject(container.resolve<LoadLawYearCubit>());
-  checkObject(container.resolve<LoadLawYearCubit>());
+  checkObject(container.resolve<LawYearListCubit>());
+  checkObject(container.resolve<LawYearListCubit>());
   checkObject(container.resolve<LawPerYearListCubit>());
   checkObject(container.resolve<LawPerYearListCubit>());
 }

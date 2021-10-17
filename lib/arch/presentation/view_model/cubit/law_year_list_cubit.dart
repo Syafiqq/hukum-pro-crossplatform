@@ -3,11 +3,11 @@ import 'package:hukum_pro/arch/domain/entity/law/law_year_entity.dart';
 import 'package:hukum_pro/arch/domain/repository/law_year_repository.dart';
 import 'package:hukum_pro/arch/presentation/entity/law_year_list_data_presenter.dart';
 import 'package:hukum_pro/arch/presentation/state/load_more_data_fetcher_state.dart';
-import 'package:hukum_pro/arch/presentation/view_model/state/law_year_load_state.dart';
+import 'package:hukum_pro/arch/presentation/view_model/state/law_year_list_state.dart';
 
 var _kPageSize = 20;
 
-class LoadLawYearCubit extends Cubit<LawYearLoadState> {
+class LawYearListCubit extends Cubit<LawYearListState> {
   final LawYearRepository _lawYearRepository;
 
   var _startingStaticId = 1000;
@@ -16,9 +16,9 @@ class LoadLawYearCubit extends Cubit<LawYearLoadState> {
   late String _menuId;
   String get menuId => _menuId;
 
-  LoadLawYearCubit(this._lawYearRepository)
+  LawYearListCubit(this._lawYearRepository)
       : super(
-          LawYearLoadState(
+          LawYearListState(
             state: LoadMoreDataFetcherState.initial,
             lawYears: List.empty(
               growable: true,
