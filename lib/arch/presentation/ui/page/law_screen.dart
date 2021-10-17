@@ -8,6 +8,7 @@ import 'package:hukum_pro/arch/presentation/ui/page/law_per_year_screen.dart';
 import 'package:hukum_pro/arch/presentation/ui/view/law/law_menu_navigation_view.dart';
 import 'package:hukum_pro/arch/presentation/ui/view/law/law_year_list_view.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/law_menu_navigation_list_cubit.dart';
+import 'package:hukum_pro/arch/presentation/view_model/cubit/law_year_list_cubit.dart';
 import 'package:hukum_pro/arch/presentation/view_model/state/law_menu_navigation_list_state.dart';
 import 'package:hukum_pro/common/ui/app_color.dart';
 import 'package:hukum_pro/common/ui/button_cta_type.dart';
@@ -21,8 +22,15 @@ class LawScreen extends StatelessWidget {
         BlocProvider<LawMenuNavigationListCubit>(
           lazy: false,
           create: (BuildContext context) {
-            return KiwiObjectResolver.getInstance().getLawMenuNavigationListCubit()
+            return KiwiObjectResolver.getInstance()
+                .getLawMenuNavigationListCubit()
               ..load();
+          },
+        ),
+        BlocProvider<LawYearListCubit>(
+          lazy: true,
+          create: (BuildContext context) {
+            return KiwiObjectResolver.getInstance().getLawYearListCubit();
           },
         ),
       ],
@@ -93,7 +101,8 @@ class _LawScreenStatefulState extends State<_LawScreenStateful> {
             ),
           ),
         ),
-        body: BlocBuilder<LawMenuNavigationListCubit, LawMenuNavigationListState>(
+        body:
+            BlocBuilder<LawMenuNavigationListCubit, LawMenuNavigationListState>(
           builder: (context, state) {
             return state.maybeWhen(
               loadSuccess: (_, selected) {
