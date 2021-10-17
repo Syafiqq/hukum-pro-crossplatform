@@ -114,7 +114,7 @@ class LoadLawYearCubit extends Cubit<LawYearLoadState> {
           (year) => LawYearListDataPresenter(
             id: year.id,
             type: LawYearListDataPresenterType.law,
-            year: "${year.year}",
+            year: year.year,
             count: "${year.count}",
           ),
         )
@@ -125,7 +125,7 @@ class LoadLawYearCubit extends Cubit<LawYearLoadState> {
     return LawYearListDataPresenter(
       id: ++_startingStaticId,
       type: LawYearListDataPresenterType.loadMore,
-      year: "",
+      year: 0,
       count: "",
     );
   }

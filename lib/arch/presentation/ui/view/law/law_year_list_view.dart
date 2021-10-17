@@ -121,7 +121,7 @@ class _LawYearListStatefulViewState extends State<_LawYearListStatefulView> {
                         ],
                       ),
                       onTap: () {
-                        final year = state.lawYears[index].id;
+                        final year = state.lawYears[index].year;
                         final menuId =
                             BlocProvider.of<LoadLawYearCubit>(context).menuId;
 

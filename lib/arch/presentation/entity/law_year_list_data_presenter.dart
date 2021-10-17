@@ -8,7 +8,7 @@ enum LawYearListDataPresenterType {
 class LawYearListDataPresenter extends Equatable {
   final int id;
   final LawYearListDataPresenterType type;
-  final String year;
+  final int year;
   final String count;
 
   const LawYearListDataPresenter({
