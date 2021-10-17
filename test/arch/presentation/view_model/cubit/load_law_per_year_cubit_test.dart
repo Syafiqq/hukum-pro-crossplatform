@@ -200,6 +200,7 @@ void main() {
 
             var cubit = LawPerYearListCubit(
                 mockLawRepository, mockLawMenuOrderRepository);
+            cubit.reset(menuId: '1', year: 1);
             cubit.emit(initial);
             return cubit;
           },
@@ -230,6 +231,7 @@ void main() {
                 (_) => Future.value([LawMenuOrderEntity('1', '1', 1)]));
             var cubit = LawPerYearListCubit(
                 mockLawRepository, mockLawMenuOrderRepository);
+            cubit.reset(menuId: '1', year: 1);
             cubit.emit(initial);
             return cubit;
           },

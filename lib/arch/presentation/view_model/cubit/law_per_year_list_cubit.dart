@@ -30,7 +30,7 @@ class LawPerYearListCubit extends Cubit<LawPerYearListLoadState> {
           ),
         );
 
-  Future<void> resetAndLoad({required String menuId, required int year}) async {
+  void reset({required String menuId, required int year}) {
     if (![
       LoadMoreDataFetcherState.initial,
       LoadMoreDataFetcherState.loadSuccess,
@@ -50,6 +50,19 @@ class LawPerYearListCubit extends Cubit<LawPerYearListLoadState> {
         hasMore: true,
       ),
     );
+  }
+
+  Future<void> resetAndLoad({required String menuId, required int year}) async {
+    if (![
+      LoadMoreDataFetcherState.initial,
+      LoadMoreDataFetcherState.loadSuccess,
+      LoadMoreDataFetcherState.loadFailed,
+      LoadMoreDataFetcherState.reset,
+    ].contains(state.state)) {
+      return;
+    }
+
+    reset(menuId: menuId, year: year);
     emit(state.copyWith(state: LoadMoreDataFetcherState.loading));
 
     try {
