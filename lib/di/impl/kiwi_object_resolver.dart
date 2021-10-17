@@ -1,6 +1,5 @@
 import 'package:hukum_pro/arch/domain/service/active_law_service.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/check_local_version_and_initialize_cubit.dart';
-import 'package:hukum_pro/arch/presentation/view_model/cubit/law_year_page_title_cubit.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_menu_cubit.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_per_year_cubit.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_year_cubit.dart';
@@ -30,10 +29,6 @@ class KiwiObjectResolver implements ObjectResolver {
   @override
   LoadLawYearCubit getLoadLawYearCubit() =>
       KiwiContainer().resolve<LoadLawYearCubit>();
-
-  @override
-  LawYearPageTitleCubit getLawYearTitleCubit() =>
-      KiwiContainer().resolve<LawYearPageTitleCubit>();
 
   @override
   LoadLawPerYearCubit getLoadLawPerYearCubit() =>

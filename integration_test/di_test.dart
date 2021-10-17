@@ -26,7 +26,6 @@ import 'package:hukum_pro/arch/domain/use_case/reinitialize_whole_data_use_case.
 import 'package:hukum_pro/arch/infrastructure/app/platform_identifier.dart';
 import 'package:hukum_pro/arch/infrastructure/local_database/object_box/store_provider.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/check_local_version_and_initialize_cubit.dart';
-import 'package:hukum_pro/arch/presentation/view_model/cubit/law_year_page_title_cubit.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_menu_cubit.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_per_year_cubit.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_year_cubit.dart';
@@ -83,7 +82,6 @@ void main() {
     expect(container.resolve<LoadLawMenuCubit>(), isNotNull);
     expect(container.resolve<LoadLawYearCubit>(), isNotNull);
     expect(container.resolve<LoadLawPerYearCubit>(), isNotNull);
-    expect(container.resolve<LawYearPageTitleCubit>(), isNotNull);
     expect(container.resolve<ActiveLawService>(), isNotNull);
     checkKiwi();
   });
@@ -157,8 +155,6 @@ void checkKiwi() {
   checkObject(container.resolve<LoadLawYearCubit>());
   checkObject(container.resolve<LoadLawPerYearCubit>());
   checkObject(container.resolve<LoadLawPerYearCubit>());
-  checkObject(container.resolve<LawYearPageTitleCubit>());
-  checkObject(container.resolve<LawYearPageTitleCubit>());
   checkObject(container.resolve<ActiveLawService>());
   checkObject(container.resolve<ActiveLawService>());
 }
