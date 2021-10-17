@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hukum_pro/arch/domain/entity/law/law_menu_order_entity.dart';
 import 'package:hukum_pro/arch/presentation/ui/view/law/law_per_year_list_view.dart';
-import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_per_year_cubit.dart';
+import 'package:hukum_pro/arch/presentation/view_model/cubit/law_per_year_list_cubit.dart';
 import 'package:hukum_pro/common/ui/app_color.dart';
 import 'package:hukum_pro/di/impl/kiwi_object_resolver.dart';
 import 'package:loading_indicator/loading_indicator.dart';
@@ -27,7 +27,7 @@ class LawPerYearScreen extends StatefulWidget {
 }
 
 class _LawPerYearScreenState extends State<LawPerYearScreen> {
-  late final LoadLawPerYearCubit lawPerYearCubit;
+  late final LawPerYearListCubit lawPerYearCubit;
 
   @override
   void initState() {

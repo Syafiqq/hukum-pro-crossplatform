@@ -6,7 +6,7 @@ import 'package:hukum_pro/arch/domain/repository/law_menu_order_repository.dart'
 import 'package:hukum_pro/arch/domain/repository/law_repository.dart';
 import 'package:hukum_pro/arch/presentation/state/load_more_data_fetcher_state.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_menu_cubit.dart';
-import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_per_year_cubit.dart';
+import 'package:hukum_pro/arch/presentation/view_model/cubit/law_per_year_list_cubit.dart';
 import 'package:hukum_pro/arch/presentation/view_model/state/law_per_year_load_state.dart';
 import 'package:hukum_pro/arch/presentation/view_model/state/law_year_load_state.dart';
 import 'package:mockito/annotations.dart';
@@ -33,10 +33,10 @@ void main() {
     group('initial', () {
       test('it produce initial state', () {
         var cubit =
-            LoadLawPerYearCubit(mockLawRepository, mockLawMenuOrderRepository);
+            LawPerYearListCubit(mockLawRepository, mockLawMenuOrderRepository);
         expect(
           cubit.state,
-          isA<LawPerYearLoadState>()
+          isA<LawPerYearListLoadState>()
               .having(
                 (state) => state.state,
                 'state',
@@ -53,17 +53,17 @@ void main() {
 
     group('resetAndLoad', () {
       Future<void> testSuccessFlow({
-        required LawPerYearLoadState initial,
+        required LawPerYearListLoadState initial,
         dynamic Function()? expectOverride,
       }) async {
-        testBloc<LoadLawPerYearCubit, LawPerYearLoadState>(
+        testBloc<LawPerYearListCubit, LawPerYearListLoadState>(
           build: () {
             when(mockLawRepository.getByYear(any, any, any, any))
                 .thenAnswer((_) => Future.value([]));
             when(mockLawMenuOrderRepository.fetchFromLocal()).thenAnswer(
                 (_) => Future.value([LawMenuOrderEntity('1', '1', 1)]));
 
-            var cubit = LoadLawPerYearCubit(
+            var cubit = LawPerYearListCubit(
                 mockLawRepository, mockLawMenuOrderRepository);
             cubit.emit(initial);
             return cubit;
@@ -71,17 +71,17 @@ void main() {
           act: (cubit) => cubit.resetAndLoad(menuId: '1', year: 1),
           expect: expectOverride ??
               () => <Matcher>[
-                    isA<LawPerYearLoadState>().having(
+                    isA<LawPerYearListLoadState>().having(
                       (state) => state.state,
                       'state',
                       LoadMoreDataFetcherState.reset,
                     ),
-                    isA<LawPerYearLoadState>().having(
+                    isA<LawPerYearListLoadState>().having(
                       (state) => state.state,
                       'state',
                       LoadMoreDataFetcherState.loading,
                     ),
-                    isA<LawPerYearLoadState>().having(
+                    isA<LawPerYearListLoadState>().having(
                       (state) => state.state,
                       'state',
                       LoadMoreDataFetcherState.loadSuccess,
@@ -90,14 +90,14 @@ void main() {
         );
       }
 
-      Future<void> testEmptyFlow({required LawPerYearLoadState initial}) async {
-        testBloc<LoadLawPerYearCubit, LawPerYearLoadState>(
+      Future<void> testEmptyFlow({required LawPerYearListLoadState initial}) async {
+        testBloc<LawPerYearListCubit, LawPerYearListLoadState>(
           build: () {
             when(mockLawRepository.getByYear(any, any, any, any))
                 .thenAnswer((_) => Future.value([]));
             when(mockLawMenuOrderRepository.fetchFromLocal()).thenAnswer(
                 (_) => Future.value([LawMenuOrderEntity('1', '1', 1)]));
-            var cubit = LoadLawPerYearCubit(
+            var cubit = LawPerYearListCubit(
                 mockLawRepository, mockLawMenuOrderRepository);
             cubit.emit(initial);
             return cubit;
@@ -110,7 +110,7 @@ void main() {
       test('it should produce (reset -> loading -> load success) from initial',
           () {
         testSuccessFlow(
-          initial: LawPerYearLoadState(
+          initial: LawPerYearListLoadState(
             state: LoadMoreDataFetcherState.initial,
             laws: [],
             hasMore: true,
@@ -122,7 +122,7 @@ void main() {
           'it should produce (reset -> loading -> load success) from loadSuccess',
           () {
         testSuccessFlow(
-          initial: LawPerYearLoadState(
+          initial: LawPerYearListLoadState(
             state: LoadMoreDataFetcherState.loadSuccess,
             laws: [],
             hasMore: true,
@@ -134,7 +134,7 @@ void main() {
           'it should produce (reset -> loading -> load success) from loadFailed',
           () {
         testSuccessFlow(
-          initial: LawPerYearLoadState(
+          initial: LawPerYearListLoadState(
             state: LoadMoreDataFetcherState.loadFailed,
             laws: [],
             hasMore: true,
@@ -144,18 +144,18 @@ void main() {
 
       test('it should produce (loading -> load success) from reset', () {
         testSuccessFlow(
-          initial: LawPerYearLoadState(
+          initial: LawPerYearListLoadState(
             state: LoadMoreDataFetcherState.reset,
             laws: [],
             hasMore: true,
           ),
           expectOverride: () => <Matcher>[
-            isA<LawPerYearLoadState>().having(
+            isA<LawPerYearListLoadState>().having(
               (state) => state.state,
               'state',
               LoadMoreDataFetcherState.loading,
             ),
-            isA<LawPerYearLoadState>().having(
+            isA<LawPerYearListLoadState>().having(
               (state) => state.state,
               'state',
               LoadMoreDataFetcherState.loadSuccess,
@@ -166,7 +166,7 @@ void main() {
 
       test('it should do nothing from loading', () {
         testEmptyFlow(
-          initial: LawPerYearLoadState(
+          initial: LawPerYearListLoadState(
             state: LoadMoreDataFetcherState.loading,
             laws: [],
             hasMore: true,
@@ -176,7 +176,7 @@ void main() {
 
       test('it should do nothing from loadMore', () {
         testEmptyFlow(
-          initial: LawPerYearLoadState(
+          initial: LawPerYearListLoadState(
             state: LoadMoreDataFetcherState.loadMore,
             laws: [],
             hasMore: true,
@@ -185,11 +185,11 @@ void main() {
       });
 
       test('it should do nothing if no year present', () {
-        testBloc<LoadLawPerYearCubit, LawPerYearLoadState>(
+        testBloc<LawPerYearListCubit, LawPerYearListLoadState>(
           build: () {
             when(mockLawRepository.getByYear(any, any, any, any))
                 .thenAnswer((_) => Future.value([]));
-            var cubit = LoadLawPerYearCubit(
+            var cubit = LawPerYearListCubit(
                 mockLawRepository, mockLawMenuOrderRepository);
             return cubit;
           },
@@ -199,11 +199,11 @@ void main() {
       });
 
       test('it should do nothing if no law id present', () {
-        testBloc<LoadLawPerYearCubit, LawPerYearLoadState>(
+        testBloc<LawPerYearListCubit, LawPerYearListLoadState>(
           build: () {
             when(mockLawRepository.getByYear(any, any, any, any))
                 .thenAnswer((_) => Future.value([]));
-            var cubit = LoadLawPerYearCubit(
+            var cubit = LawPerYearListCubit(
                 mockLawRepository, mockLawMenuOrderRepository);
             return cubit;
           },
@@ -213,11 +213,11 @@ void main() {
       });
 
       test('it should do nothing if no law id and year present', () {
-        testBloc<LoadLawPerYearCubit, LawPerYearLoadState>(
+        testBloc<LawPerYearListCubit, LawPerYearListLoadState>(
           build: () {
             when(mockLawRepository.getByYear(any, any, any, any))
                 .thenAnswer((_) => Future.value([]));
-            var cubit = LoadLawPerYearCubit(
+            var cubit = LawPerYearListCubit(
                 mockLawRepository, mockLawMenuOrderRepository);
             return cubit;
           },
@@ -229,17 +229,17 @@ void main() {
 
     group('loadMore', () {
       Future<void> testSuccessFlow({
-        required LawPerYearLoadState initial,
+        required LawPerYearListLoadState initial,
         dynamic Function()? expectOverride,
       }) async {
-        testBloc<LoadLawPerYearCubit, LawPerYearLoadState>(
+        testBloc<LawPerYearListCubit, LawPerYearListLoadState>(
           build: () {
             when(mockLawRepository.getByYear(any, any, any, any))
                 .thenAnswer((_) => Future.value([]));
             when(mockLawMenuOrderRepository.fetchFromLocal()).thenAnswer(
                 (_) => Future.value([LawMenuOrderEntity('1', '1', 1)]));
 
-            var cubit = LoadLawPerYearCubit(
+            var cubit = LawPerYearListCubit(
                 mockLawRepository, mockLawMenuOrderRepository);
             cubit.emit(initial);
             return cubit;
@@ -247,12 +247,12 @@ void main() {
           act: (cubit) => cubit.loadMore(),
           expect: expectOverride ??
               () => <Matcher>[
-                    isA<LawPerYearLoadState>().having(
+                    isA<LawPerYearListLoadState>().having(
                       (state) => state.state,
                       'state',
                       LoadMoreDataFetcherState.loadMore,
                     ),
-                    isA<LawPerYearLoadState>().having(
+                    isA<LawPerYearListLoadState>().having(
                       (state) => state.state,
                       'state',
                       LoadMoreDataFetcherState.loadSuccess,
@@ -261,14 +261,14 @@ void main() {
         );
       }
 
-      Future<void> testEmptyFlow({required LawPerYearLoadState initial}) async {
-        testBloc<LoadLawPerYearCubit, LawPerYearLoadState>(
+      Future<void> testEmptyFlow({required LawPerYearListLoadState initial}) async {
+        testBloc<LawPerYearListCubit, LawPerYearListLoadState>(
           build: () {
             when(mockLawRepository.getByYear(any, any, any, any))
                 .thenAnswer((_) => Future.value([]));
             when(mockLawMenuOrderRepository.fetchFromLocal()).thenAnswer(
                 (_) => Future.value([LawMenuOrderEntity('1', '1', 1)]));
-            var cubit = LoadLawPerYearCubit(
+            var cubit = LawPerYearListCubit(
                 mockLawRepository, mockLawMenuOrderRepository);
             cubit.emit(initial);
             return cubit;
@@ -280,7 +280,7 @@ void main() {
 
       test('it should produce empty from initial', () {
         testEmptyFlow(
-          initial: LawPerYearLoadState(
+          initial: LawPerYearListLoadState(
             state: LoadMoreDataFetcherState.initial,
             laws: [],
             hasMore: true,
@@ -290,7 +290,7 @@ void main() {
 
       test('it should produce (loading -> load success) from loadSuccess', () {
         testSuccessFlow(
-          initial: LawPerYearLoadState(
+          initial: LawPerYearListLoadState(
             state: LoadMoreDataFetcherState.loadSuccess,
             laws: [],
             hasMore: true,
@@ -300,7 +300,7 @@ void main() {
 
       test('it should produce (loading -> load success) from loadFailed', () {
         testSuccessFlow(
-          initial: LawPerYearLoadState(
+          initial: LawPerYearListLoadState(
             state: LoadMoreDataFetcherState.loadFailed,
             laws: [],
             hasMore: true,
@@ -310,7 +310,7 @@ void main() {
 
       test('it should produce (loading -> load success) from reset', () {
         testEmptyFlow(
-          initial: LawPerYearLoadState(
+          initial: LawPerYearListLoadState(
             state: LoadMoreDataFetcherState.reset,
             laws: [],
             hasMore: true,
@@ -320,7 +320,7 @@ void main() {
 
       test('it should do nothing from loading', () {
         testEmptyFlow(
-          initial: LawPerYearLoadState(
+          initial: LawPerYearListLoadState(
             state: LoadMoreDataFetcherState.loading,
             laws: [],
             hasMore: true,
@@ -330,7 +330,7 @@ void main() {
 
       test('it should do nothing from loadMore', () {
         testEmptyFlow(
-          initial: LawPerYearLoadState(
+          initial: LawPerYearListLoadState(
             state: LoadMoreDataFetcherState.loadMore,
             laws: [],
             hasMore: true,
@@ -340,7 +340,7 @@ void main() {
 
       test('it should do nothing from if no more incoming data', () {
         testEmptyFlow(
-          initial: LawPerYearLoadState(
+          initial: LawPerYearListLoadState(
             state: LoadMoreDataFetcherState.loadSuccess,
             laws: [],
             hasMore: false,
@@ -349,11 +349,11 @@ void main() {
       });
 
       test('it should do nothing if no year present', () {
-        testBloc<LoadLawPerYearCubit, LawPerYearLoadState>(
+        testBloc<LawPerYearListCubit, LawPerYearListLoadState>(
           build: () {
             when(mockLawRepository.getByYear(any, any, any, any))
                 .thenAnswer((_) => Future.value([]));
-            var cubit = LoadLawPerYearCubit(
+            var cubit = LawPerYearListCubit(
                 mockLawRepository, mockLawMenuOrderRepository);
             return cubit;
           },
@@ -363,11 +363,11 @@ void main() {
       });
 
       test('it should do nothing if no law id present', () {
-        testBloc<LoadLawPerYearCubit, LawPerYearLoadState>(
+        testBloc<LawPerYearListCubit, LawPerYearListLoadState>(
           build: () {
             when(mockLawRepository.getByYear(any, any, any, any))
                 .thenAnswer((_) => Future.value([]));
-            var cubit = LoadLawPerYearCubit(
+            var cubit = LawPerYearListCubit(
                 mockLawRepository, mockLawMenuOrderRepository);
             return cubit;
           },
@@ -377,11 +377,11 @@ void main() {
       });
 
       test('it should do nothing if no law id and year present', () {
-        testBloc<LoadLawPerYearCubit, LawPerYearLoadState>(
+        testBloc<LawPerYearListCubit, LawPerYearListLoadState>(
           build: () {
             when(mockLawRepository.getByYear(any, any, any, any))
                 .thenAnswer((_) => Future.value([]));
-            var cubit = LoadLawPerYearCubit(
+            var cubit = LawPerYearListCubit(
                 mockLawRepository, mockLawMenuOrderRepository);
             return cubit;
           },

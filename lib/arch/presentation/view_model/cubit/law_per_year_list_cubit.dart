@@ -10,7 +10,7 @@ import 'package:flinq/flinq.dart';
 
 var _kPageSize = 20;
 
-class LoadLawPerYearCubit extends Cubit<LawPerYearLoadState> {
+class LawPerYearListCubit extends Cubit<LawPerYearListLoadState> {
   final LawRepository _lawYearRepository;
   final LawMenuOrderRepository _lawMenuOrderRepository;
 
@@ -19,9 +19,9 @@ class LoadLawPerYearCubit extends Cubit<LawPerYearLoadState> {
   late String _menuId;
   int _lawYear = 0;
 
-  LoadLawPerYearCubit(this._lawYearRepository, this._lawMenuOrderRepository)
+  LawPerYearListCubit(this._lawYearRepository, this._lawMenuOrderRepository)
       : super(
-          LawPerYearLoadState(
+          LawPerYearListLoadState(
             state: LoadMoreDataFetcherState.initial,
             laws: List.empty(
               growable: true,

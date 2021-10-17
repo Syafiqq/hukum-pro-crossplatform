@@ -7,10 +7,10 @@ import 'law_year_load_state.dart';
 part 'law_per_year_load_state.freezed.dart';
 
 @freezed
-class LawPerYearLoadState with _$LawPerYearLoadState {
-  factory LawPerYearLoadState({
+class LawPerYearListLoadState with _$LawPerYearListLoadState {
+  factory LawPerYearListLoadState({
     @Default(LoadMoreDataFetcherState.initial) LoadMoreDataFetcherState state,
     @Default([]) List<LawPerYearDataPresenter> laws,
     @Default(true) bool hasMore,
-  }) = _LawPerYearLoadState;
+  }) = _LawPerYearListLoadState;
 }

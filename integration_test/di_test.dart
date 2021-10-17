@@ -26,7 +26,7 @@ import 'package:hukum_pro/arch/infrastructure/app/platform_identifier.dart';
 import 'package:hukum_pro/arch/infrastructure/local_database/object_box/store_provider.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/check_local_version_and_initialize_cubit.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_menu_cubit.dart';
-import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_per_year_cubit.dart';
+import 'package:hukum_pro/arch/presentation/view_model/cubit/law_per_year_list_cubit.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_year_cubit.dart';
 import 'package:hukum_pro/di/contract/object_resolver.dart';
 import 'package:hukum_pro/di/root_injector.dart';
@@ -80,7 +80,7 @@ void main() {
     expect(container.resolve<CheckLocalVersionAndInitializeCubit>(), isNotNull);
     expect(container.resolve<LoadLawMenuCubit>(), isNotNull);
     expect(container.resolve<LoadLawYearCubit>(), isNotNull);
-    expect(container.resolve<LoadLawPerYearCubit>(), isNotNull);
+    expect(container.resolve<LawPerYearListCubit>(), isNotNull);
     checkKiwi();
   });
 }
@@ -151,8 +151,8 @@ void checkKiwi() {
   checkObject(container.resolve<LoadLawMenuCubit>());
   checkObject(container.resolve<LoadLawYearCubit>());
   checkObject(container.resolve<LoadLawYearCubit>());
-  checkObject(container.resolve<LoadLawPerYearCubit>());
-  checkObject(container.resolve<LoadLawPerYearCubit>());
+  checkObject(container.resolve<LawPerYearListCubit>());
+  checkObject(container.resolve<LawPerYearListCubit>());
 }
 
 void checkObject(Object x) {
