@@ -8,6 +8,7 @@ import 'package:flinq/flinq.dart';
 
 class LoadLawMenuCubit extends Cubit<LawMenuNavigationUiState> {
   final LawMenuOrderRepository _lawMenuOrderRepository;
+  var _startingStaticId = 1000;
 
   LawMenuOrderEntity? _activeMenu;
 
@@ -29,31 +30,29 @@ class LoadLawMenuCubit extends Cubit<LawMenuNavigationUiState> {
       rawLaws.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
       this._rawLaws = rawLaws;
 
-      var startingStaticId = 1000;
-
       List<LawMenuOrderDataPresenter> menus = [];
 
       menus.addAll([
         LawMenuOrderDataPresenter(
-          "${++startingStaticId}",
+          "${++_startingStaticId}",
           LawMenuOrderDataPresenterType.header,
           "",
           false,
         ),
         LawMenuOrderDataPresenter(
-          "${++startingStaticId}",
+          "${++_startingStaticId}",
           LawMenuOrderDataPresenterType.divider,
           "",
           false,
         ),
         LawMenuOrderDataPresenter(
-          "${++startingStaticId}",
+          "${++_startingStaticId}",
           LawMenuOrderDataPresenterType.search,
           "Pencarian",
           false,
         ),
         LawMenuOrderDataPresenter(
-          "${++startingStaticId}",
+          "${++_startingStaticId}",
           LawMenuOrderDataPresenterType.divider,
           "",
           false,
@@ -62,19 +61,19 @@ class LoadLawMenuCubit extends Cubit<LawMenuNavigationUiState> {
       menus.addAll(_rawDataMapper(rawLaws));
       menus.addAll([
         LawMenuOrderDataPresenter(
-          "${++startingStaticId}",
+          "${++_startingStaticId}",
           LawMenuOrderDataPresenterType.divider,
           "",
           false,
         ),
         LawMenuOrderDataPresenter(
-          "${++startingStaticId}",
+          "${++_startingStaticId}",
           LawMenuOrderDataPresenterType.sync,
           "Sinkron",
           false,
         ),
         LawMenuOrderDataPresenter(
-          "${++startingStaticId}",
+          "${++_startingStaticId}",
           LawMenuOrderDataPresenterType.divider,
           "",
           false,

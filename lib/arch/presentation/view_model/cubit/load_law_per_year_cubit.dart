@@ -13,7 +13,7 @@ class LoadLawPerYearCubit extends Cubit<LawPerYearLoadState> {
   final LawRepository _lawYearRepository;
   final ActiveLawService _activeLawService;
 
-  var startingStaticId = 1000;
+  var _startingStaticId = 1000;
   int _page = 0;
   String _lawId = "";
   int _lawYear = 0;
@@ -141,7 +141,7 @@ class LoadLawPerYearCubit extends Cubit<LawPerYearLoadState> {
 
   LawPerYearDataPresenter createLoadMore() {
     return LawPerYearDataPresenter(
-        id: "${++startingStaticId}",
+        id: "${++_startingStaticId}",
         type: LawPerYearDataPresenterType.loadMore,
         name: "");
   }
