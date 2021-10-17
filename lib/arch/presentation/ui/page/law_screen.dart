@@ -101,8 +101,23 @@ class _LawScreenStatefulState extends State<_LawScreenStateful> {
             ),
           ),
         ),
-        body:
-            BlocBuilder<LawMenuNavigationListCubit, LawMenuNavigationListState>(
+        body: BlocConsumer<LawMenuNavigationListCubit,
+            LawMenuNavigationListState>(
+          listener: (context, state) {
+            state.maybeWhen(
+                loadSuccess: (_, selected) {
+                  if (selected == null) {}
+                  if (selected?.type == LawMenuOrderDataPresenterType.law) {
+                    final menuId = selected?.id;
+                    if (menuId == null) {
+                      return;
+                    }
+                    BlocProvider.of<LawYearListCubit>(context)
+                        .resetAndLoad(menuId: menuId);
+                  }
+                },
+                orElse: () => {});
+          },
           builder: (context, state) {
             return state.maybeWhen(
               loadSuccess: (_, selected) {
@@ -113,7 +128,6 @@ class _LawScreenStatefulState extends State<_LawScreenStateful> {
                   return Container();
                 } else if (selected.type == LawMenuOrderDataPresenterType.law) {
                   return LawYearListView(
-                    menuId: selected.id,
                     onRequestOpenPerYearPage: (String menuId, int year) {
                       Navigator.push(
                         context,

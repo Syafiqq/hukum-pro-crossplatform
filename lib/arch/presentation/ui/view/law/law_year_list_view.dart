@@ -6,35 +6,25 @@ import 'package:hukum_pro/arch/presentation/view_model/cubit/law_year_list_cubit
 import 'package:hukum_pro/arch/presentation/view_model/state/law_year_list_state.dart';
 import 'package:hukum_pro/common/ui/app_color.dart';
 import 'package:hukum_pro/common/ui/app_font.dart';
-import 'package:hukum_pro/di/impl/kiwi_object_resolver.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 
 //
 class LawYearListView extends StatelessWidget {
   late final Function(String, int)? _onRequestOpenPerYearPage;
-  late final LawYearListCubit _loadLawYearCubit;
 
   LawYearListView(
-      {Key? key,
-      required String menuId,
-      required Function(String, int)? onRequestOpenPerYearPage})
+      {Key? key, required Function(String, int)? onRequestOpenPerYearPage})
       : super(key: key) {
     this._onRequestOpenPerYearPage = onRequestOpenPerYearPage;
-    this._loadLawYearCubit =
-        KiwiObjectResolver.getInstance().getLawYearListCubit();
-    _loadLawYearCubit.resetAndLoad(menuId: menuId);
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: _loadLawYearCubit,
-      child: SafeArea(
-        child: Container(
-          color: Colors.white,
-          child: _LawYearListStatefulView(
-            onItemTapped: _onRequestOpenPerYearPage,
-          ),
+    return SafeArea(
+      child: Container(
+        color: Colors.white,
+        child: _LawYearListStatefulView(
+          onItemTapped: _onRequestOpenPerYearPage,
         ),
       ),
     );
