@@ -49,8 +49,7 @@ class _LawPerYearScreenState extends State<LawPerYearScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: FutureBuilder<LawMenuOrderEntity?>(
-            future: Future.value(
-                null), // a previously-obtained Future<String> or null
+            future: lawPerYearCubit.getCurrentMenu(), // a previously-obtained Future<String> or null
             builder: (
               BuildContext context,
               AsyncSnapshot<LawMenuOrderEntity?> snapshot,

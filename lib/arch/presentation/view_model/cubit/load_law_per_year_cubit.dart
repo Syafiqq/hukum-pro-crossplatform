@@ -1,24 +1,27 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hukum_pro/arch/domain/entity/law/law_entity.dart';
+import 'package:hukum_pro/arch/domain/entity/law/law_menu_order_entity.dart';
+import 'package:hukum_pro/arch/domain/repository/law_menu_order_repository.dart';
 import 'package:hukum_pro/arch/domain/repository/law_repository.dart';
 import 'package:hukum_pro/arch/domain/service/active_law_service.dart';
 import 'package:hukum_pro/arch/presentation/entity/law_per_year_data_presenter.dart';
 import 'package:hukum_pro/arch/presentation/state/load_more_data_fetcher_state.dart';
 import 'package:hukum_pro/arch/presentation/view_model/state/law_per_year_load_state.dart';
+import 'package:flinq/flinq.dart';
 
 var _kPageSize = 20;
 
 class LoadLawPerYearCubit extends Cubit<LawPerYearLoadState> {
   final LawRepository _lawYearRepository;
+  final LawMenuOrderRepository _lawMenuOrderRepository;
 
   var _startingStaticId = 1000;
   int _page = 0;
-  String _menuId = "";
+  late String _menuId;
   int _lawYear = 0;
 
-  LoadLawPerYearCubit(
-    this._lawYearRepository,
-  ) : super(
+  LoadLawPerYearCubit(this._lawYearRepository, this._lawMenuOrderRepository)
+      : super(
           LawPerYearLoadState(
             state: LoadMoreDataFetcherState.initial,
             laws: List.empty(
@@ -135,5 +138,10 @@ class LoadLawPerYearCubit extends Cubit<LawPerYearLoadState> {
         id: "${++_startingStaticId}",
         type: LawPerYearDataPresenterType.loadMore,
         name: "");
+  }
+
+  Future<LawMenuOrderEntity?> getCurrentMenu() async {
+    final menus = await _lawMenuOrderRepository.fetchFromLocal();
+    return menus.firstOrNullWhere((menu) => menu.id == _menuId);
   }
 }
