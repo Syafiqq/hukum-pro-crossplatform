@@ -14,9 +14,10 @@ import 'package:loading_indicator/loading_indicator.dart';
 
 //
 class LawYearListView extends StatelessWidget {
-  late final Function? _onRequestOpenPerYearPage;
+  late final Function(String, int)? _onRequestOpenPerYearPage;
 
-  LawYearListView({Key? key, required Function? onRequestOpenPerYearPage})
+  LawYearListView(
+      {Key? key, required Function(String, int)? onRequestOpenPerYearPage})
       : super(key: key) {
     this._onRequestOpenPerYearPage = onRequestOpenPerYearPage;
   }
@@ -56,7 +57,7 @@ class LawYearListView extends StatelessWidget {
           child: Container(
             color: Colors.white,
             child: _LawYearListStatefulView(
-              onRequestOpenPerYearPage: _onRequestOpenPerYearPage,
+              onItemTapped: _onRequestOpenPerYearPage,
             ),
           ),
         ),
@@ -66,28 +67,28 @@ class LawYearListView extends StatelessWidget {
 }
 
 class _LawYearListStatefulView extends StatefulWidget {
-  late final Function? _onRequestOpenPerYearPage;
+  late final Function(String, int)? _onItemTapped;
 
   _LawYearListStatefulView(
-      {Key? key, required Function? onRequestOpenPerYearPage})
+      {Key? key, required Function(String, int)? onItemTapped})
       : super(key: key) {
-    this._onRequestOpenPerYearPage = onRequestOpenPerYearPage;
+    this._onItemTapped = onItemTapped;
   }
 
   @override
   _LawYearListStatefulViewState createState() => _LawYearListStatefulViewState(
-        onRequestOpenPerYearPage: _onRequestOpenPerYearPage,
+        onItemTapped: _onItemTapped,
       );
 }
 
 class _LawYearListStatefulViewState extends State<_LawYearListStatefulView> {
   final _scrollController = ScrollController();
 
-  late final Function? _onRequestOpenPerYearPage;
+  late final Function(String, int)? _onItemTapped;
 
-  _LawYearListStatefulViewState({required Function? onRequestOpenPerYearPage})
+  _LawYearListStatefulViewState({required Function(String, int)? onItemTapped})
       : super() {
-    this._onRequestOpenPerYearPage = onRequestOpenPerYearPage;
+    this._onItemTapped = onItemTapped;
   }
 
   @override
@@ -145,9 +146,11 @@ class _LawYearListStatefulViewState extends State<_LawYearListStatefulView> {
                         ],
                       ),
                       onTap: () {
-                        BlocProvider.of<LoadLawYearCubit>(context)
-                            .selectYear(of: state.lawYears[index]);
-                        _onRequestOpenPerYearPage?.call();
+                        final year = state.lawYears[index].id;
+                        final menuId =
+                            BlocProvider.of<LoadLawYearCubit>(context).menuId;
+
+                        _onItemTapped?.call(menuId, year);
                       },
                     );
                   case LawYearListDataPresenterType.loadMore:

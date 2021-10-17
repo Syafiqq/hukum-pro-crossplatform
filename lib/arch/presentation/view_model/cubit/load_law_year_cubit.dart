@@ -12,7 +12,9 @@ class LoadLawYearCubit extends Cubit<LawYearLoadState> {
 
   var _startingStaticId = 1000;
   int _page = 0;
-  String _menuId = "";
+
+  late String _menuId;
+  String get menuId => _menuId;
 
   LoadLawYearCubit(this._lawYearRepository)
       : super(
@@ -104,10 +106,6 @@ class LoadLawYearCubit extends Cubit<LawYearLoadState> {
       print(e);
       emit(state.copyWith(state: LoadMoreDataFetcherState.loadFailed));
     }
-  }
-
-  void selectYear({required LawYearListDataPresenter of}) {
-    _activeLawService.setActiveLawYear(ofId: of.id);
   }
 
   List<LawYearListDataPresenter> _rawDataMapper(List<LawYearEntity> years) {
