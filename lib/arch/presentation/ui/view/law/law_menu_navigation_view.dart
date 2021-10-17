@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hukum_pro/arch/presentation/entity/law_menu_order_data_presenter.dart';
-import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_menu_cubit.dart';
-import 'package:hukum_pro/arch/presentation/view_model/state/law_menu_navigation_state.dart';
+import 'package:hukum_pro/arch/presentation/view_model/cubit/law_menu_navigation_list_cubit.dart';
+import 'package:hukum_pro/arch/presentation/view_model/state/law_menu_navigation_list_state.dart';
 import 'package:hukum_pro/common/ui/app_color.dart';
 import 'package:hukum_pro/common/ui/app_font.dart';
 import 'package:loading_indicator/loading_indicator.dart';
@@ -12,7 +12,7 @@ class LawMenuNavigationView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoadLawMenuCubit, LawMenuNavigationUiState>(
+    return BlocBuilder<LawMenuNavigationListCubit, LawMenuNavigationListState>(
       builder: (context, state) {
         return state.maybeWhen(
           loadSuccess: (menus, _) {
@@ -88,7 +88,7 @@ class LawMenuNavigationView extends StatelessWidget {
       selected: menu.isSelected,
       onTap: () {
         Navigator.pop(context);
-        BlocProvider.of<LoadLawMenuCubit>(context).selectMenu(of: menu);
+        BlocProvider.of<LawMenuNavigationListCubit>(context).selectMenu(of: menu);
       },
     );
   }
@@ -133,7 +133,7 @@ class LawMenuNavigationView extends StatelessWidget {
       selected: menu.isSelected,
       onTap: () {
         Navigator.pop(context);
-        BlocProvider.of<LoadLawMenuCubit>(context).selectMenu(of: menu);
+        BlocProvider.of<LawMenuNavigationListCubit>(context).selectMenu(of: menu);
       },
     );
   }

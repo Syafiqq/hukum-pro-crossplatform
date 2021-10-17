@@ -5,7 +5,7 @@ import 'package:hukum_pro/arch/domain/entity/law/law_year_entity.dart';
 import 'package:hukum_pro/arch/domain/repository/law_menu_order_repository.dart';
 import 'package:hukum_pro/arch/domain/repository/law_repository.dart';
 import 'package:hukum_pro/arch/presentation/state/load_more_data_fetcher_state.dart';
-import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_menu_cubit.dart';
+import 'package:hukum_pro/arch/presentation/view_model/cubit/law_menu_navigation_list_cubit.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/law_per_year_list_cubit.dart';
 import 'package:hukum_pro/arch/presentation/view_model/state/law_per_year_list_state.dart';
 import 'package:hukum_pro/arch/presentation/view_model/state/law_year_list_state.dart';
@@ -21,7 +21,7 @@ import 'load_law_per_year_cubit_test.mocks.dart';
       as: #BaseMockLawMenuOrderRepository, returnNullOnMissingStub: true),
 ])
 void main() {
-  group('$LoadLawMenuCubit', () {
+  group('$LawMenuNavigationListCubit', () {
     late BaseMockLawRepository mockLawRepository;
     late BaseMockLawMenuOrderRepository mockLawMenuOrderRepository;
 

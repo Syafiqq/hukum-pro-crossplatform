@@ -7,8 +7,8 @@ import 'package:hukum_pro/arch/presentation/ui/component/dialog/common_dialog.da
 import 'package:hukum_pro/arch/presentation/ui/page/law_per_year_screen.dart';
 import 'package:hukum_pro/arch/presentation/ui/view/law/law_menu_navigation_view.dart';
 import 'package:hukum_pro/arch/presentation/ui/view/law/law_year_list_view.dart';
-import 'package:hukum_pro/arch/presentation/view_model/cubit/load_law_menu_cubit.dart';
-import 'package:hukum_pro/arch/presentation/view_model/state/law_menu_navigation_state.dart';
+import 'package:hukum_pro/arch/presentation/view_model/cubit/law_menu_navigation_list_cubit.dart';
+import 'package:hukum_pro/arch/presentation/view_model/state/law_menu_navigation_list_state.dart';
 import 'package:hukum_pro/common/ui/app_color.dart';
 import 'package:hukum_pro/common/ui/button_cta_type.dart';
 import 'package:hukum_pro/di/impl/kiwi_object_resolver.dart';
@@ -18,10 +18,10 @@ class LawScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<LoadLawMenuCubit>(
+        BlocProvider<LawMenuNavigationListCubit>(
           lazy: false,
           create: (BuildContext context) {
-            return KiwiObjectResolver.getInstance().getLoadLawMenuCubit()
+            return KiwiObjectResolver.getInstance().getLawMenuNavigationListCubit()
               ..load();
           },
         ),
@@ -41,7 +41,7 @@ class _LawScreenStatefulState extends State<_LawScreenStateful> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<LoadLawMenuCubit, LawMenuNavigationUiState>(
+    return BlocListener<LawMenuNavigationListCubit, LawMenuNavigationListState>(
       listener: (context, state) {
         state.maybeWhen(
           loadFailed: () {
@@ -56,7 +56,7 @@ class _LawScreenStatefulState extends State<_LawScreenStateful> {
                     isClosable: false,
                     dismissOnTouchOutside: false)
                 .then(
-              (value) => context.read<LoadLawMenuCubit>().load(),
+              (value) => context.read<LawMenuNavigationListCubit>().load(),
             );
           },
           loadSuccess: (_, selected) {
@@ -93,7 +93,7 @@ class _LawScreenStatefulState extends State<_LawScreenStateful> {
             ),
           ),
         ),
-        body: BlocBuilder<LoadLawMenuCubit, LawMenuNavigationUiState>(
+        body: BlocBuilder<LawMenuNavigationListCubit, LawMenuNavigationListState>(
           builder: (context, state) {
             return state.maybeWhen(
               loadSuccess: (_, selected) {

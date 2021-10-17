@@ -2,10 +2,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hukum_pro/arch/domain/entity/law/law_menu_order_entity.dart';
 import 'package:hukum_pro/arch/domain/repository/law_menu_order_repository.dart';
 import 'package:hukum_pro/arch/presentation/entity/law_menu_order_data_presenter.dart';
-import 'package:hukum_pro/arch/presentation/view_model/state/law_menu_navigation_state.dart';
+import 'package:hukum_pro/arch/presentation/view_model/state/law_menu_navigation_list_state.dart';
 import 'package:flinq/flinq.dart';
 
-class LoadLawMenuCubit extends Cubit<LawMenuNavigationUiState> {
+class LawMenuNavigationListCubit extends Cubit<LawMenuNavigationListState> {
   final LawMenuOrderRepository _lawMenuOrderRepository;
   var _startingStaticId = 1000;
 
@@ -15,14 +15,14 @@ class LoadLawMenuCubit extends Cubit<LawMenuNavigationUiState> {
 
   late List<LawMenuOrderEntity> _rawLaws;
 
-  LoadLawMenuCubit(
+  LawMenuNavigationListCubit(
     this._lawMenuOrderRepository,
-  ) : super(LawMenuNavigationUiState.initial());
+  ) : super(LawMenuNavigationListState.initial());
 
   Future<void> load() async {
     if (!(state is InitialState || state is MenuLoadFailed)) return;
 
-    emit(LawMenuNavigationUiState.loading());
+    emit(LawMenuNavigationListState.loading());
 
     try {
       var rawLaws = await _lawMenuOrderRepository.fetchFromLocal();
@@ -99,13 +99,13 @@ class LoadLawMenuCubit extends Cubit<LawMenuNavigationUiState> {
         }
       }
 
-      emit(LawMenuNavigationUiState.loadSuccess(
+      emit(LawMenuNavigationListState.loadSuccess(
         menus,
         menus.firstOrNullWhere((menu) => menu.isSelected),
       ));
     } on Exception catch (e) {
       print(e);
-      emit(LawMenuNavigationUiState.loadFailed());
+      emit(LawMenuNavigationListState.loadFailed());
     }
   }
 
@@ -125,7 +125,7 @@ class LoadLawMenuCubit extends Cubit<LawMenuNavigationUiState> {
     menus[index].isSelected = true;
     _activeMenu = _rawLaws.firstOrNullWhere((law) => law.id == menus[index].id);
 
-    emit(LawMenuNavigationUiState.loadSuccess(
+    emit(LawMenuNavigationListState.loadSuccess(
       menus,
       menus.firstOrNullWhere((menu) => menu.isSelected),
     ));
