@@ -90,7 +90,8 @@ void main() {
         );
       }
 
-      Future<void> testEmptyFlow({required LawPerYearListLoadState initial}) async {
+      Future<void> testEmptyFlow(
+          {required LawPerYearListLoadState initial}) async {
         testBloc<LawPerYearListCubit, LawPerYearListLoadState>(
           build: () {
             when(mockLawRepository.getByYear(any, any, any, any))
@@ -183,48 +184,6 @@ void main() {
           ),
         );
       });
-
-      test('it should do nothing if no year present', () {
-        testBloc<LawPerYearListCubit, LawPerYearListLoadState>(
-          build: () {
-            when(mockLawRepository.getByYear(any, any, any, any))
-                .thenAnswer((_) => Future.value([]));
-            var cubit = LawPerYearListCubit(
-                mockLawRepository, mockLawMenuOrderRepository);
-            return cubit;
-          },
-          act: (cubit) => cubit.resetAndLoad(menuId: '1', year: 1),
-          expect: () => <Matcher>[],
-        );
-      });
-
-      test('it should do nothing if no law id present', () {
-        testBloc<LawPerYearListCubit, LawPerYearListLoadState>(
-          build: () {
-            when(mockLawRepository.getByYear(any, any, any, any))
-                .thenAnswer((_) => Future.value([]));
-            var cubit = LawPerYearListCubit(
-                mockLawRepository, mockLawMenuOrderRepository);
-            return cubit;
-          },
-          act: (cubit) => cubit.resetAndLoad(menuId: '1', year: 1),
-          expect: () => <Matcher>[],
-        );
-      });
-
-      test('it should do nothing if no law id and year present', () {
-        testBloc<LawPerYearListCubit, LawPerYearListLoadState>(
-          build: () {
-            when(mockLawRepository.getByYear(any, any, any, any))
-                .thenAnswer((_) => Future.value([]));
-            var cubit = LawPerYearListCubit(
-                mockLawRepository, mockLawMenuOrderRepository);
-            return cubit;
-          },
-          act: (cubit) => cubit.resetAndLoad(menuId: '1', year: 1),
-          expect: () => <Matcher>[],
-        );
-      });
     });
 
     group('loadMore', () {
@@ -261,7 +220,8 @@ void main() {
         );
       }
 
-      Future<void> testEmptyFlow({required LawPerYearListLoadState initial}) async {
+      Future<void> testEmptyFlow(
+          {required LawPerYearListLoadState initial}) async {
         testBloc<LawPerYearListCubit, LawPerYearListLoadState>(
           build: () {
             when(mockLawRepository.getByYear(any, any, any, any))
