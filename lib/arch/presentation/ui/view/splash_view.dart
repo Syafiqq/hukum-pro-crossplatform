@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hukum_pro/arch/presentation/ui/component/dialog/common_dialog.dart';
-import 'package:hukum_pro/arch/presentation/view_model/cubit/check_local_version_and_initialize_cubit.dart';
-import 'package:hukum_pro/arch/presentation/view_model/state/check_local_version_and_initialize_state.dart';
+import 'package:hukum_pro/arch/presentation/view_model/cubit/initialize_app_cubit.dart';
+import 'package:hukum_pro/arch/presentation/view_model/state/initialize_app_state.dart';
 import 'package:hukum_pro/common/ui/app_color.dart';
 import 'package:hukum_pro/common/ui/app_font.dart';
 import 'package:hukum_pro/common/ui/button_cta_type.dart';
@@ -20,7 +20,7 @@ class SplashView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => KiwiObjectResolver.getInstance()
-          .getCheckLocalVersionAndInitializeCubit()
+          .getInitializeAppCubit()
         ..checkVersion(),
       child: Column(
         children: [
@@ -46,8 +46,8 @@ class SplashView extends StatelessWidget {
           ),
           Container(
             height: 36,
-            child: BlocConsumer<CheckLocalVersionAndInitializeCubit,
-                CheckLocalVersionAndInitializeUiState>(
+            child: BlocConsumer<InitializeAppCubit,
+                InitializeAppState>(
               listener: (context, state) {
                 state.maybeWhen(
                   versionPresent: (_) {
@@ -66,7 +66,7 @@ class SplashView extends StatelessWidget {
                             dismissOnTouchOutside: false)
                         .then(
                       (value) => context
-                          .read<CheckLocalVersionAndInitializeCubit>()
+                          .read<InitializeAppCubit>()
                           .checkVersion(),
                     );
                   },
@@ -83,7 +83,7 @@ class SplashView extends StatelessWidget {
                             dismissOnTouchOutside: false)
                         .then(
                       (value) => context
-                          .read<CheckLocalVersionAndInitializeCubit>()
+                          .read<InitializeAppCubit>()
                           .initializeApp(version),
                     );
                   },

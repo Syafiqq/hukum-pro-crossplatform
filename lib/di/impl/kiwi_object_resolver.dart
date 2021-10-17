@@ -1,4 +1,4 @@
-import 'package:hukum_pro/arch/presentation/view_model/cubit/check_local_version_and_initialize_cubit.dart';
+import 'package:hukum_pro/arch/presentation/view_model/cubit/initialize_app_cubit.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/law_menu_navigation_list_cubit.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/law_per_year_list_cubit.dart';
 import 'package:hukum_pro/arch/presentation/view_model/cubit/law_year_list_cubit.dart';
@@ -17,9 +17,9 @@ class KiwiObjectResolver implements ObjectResolver {
   Future<Store> getStore() => KiwiContainer().resolve<Future<Store>>();
 
   @override
-  CheckLocalVersionAndInitializeCubit
-      getCheckLocalVersionAndInitializeCubit() =>
-          KiwiContainer().resolve<CheckLocalVersionAndInitializeCubit>();
+  InitializeAppCubit
+      getInitializeAppCubit() =>
+          KiwiContainer().resolve<InitializeAppCubit>();
 
   @override
   LawMenuNavigationListCubit getLawMenuNavigationListCubit() =>
